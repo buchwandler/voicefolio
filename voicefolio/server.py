@@ -11,6 +11,7 @@ from pathlib import Path
 
 from .cache import fetch
 from .catalog import Catalog
+from .models import VoicefolioError
 
 
 def serve_catalog(
@@ -38,7 +39,7 @@ def serve_catalog(
             self.end_headers()
             self.wfile.write(body)
 
-        def do_GET(self) -> None:  # noqa: N802 - BaseHTTPRequestHandler API
+        def do_GET(self) -> None:
             parsed = urllib.parse.urlparse(self.path)
             if parsed.path == "/":
                 self._send(HTTPStatus.OK, html.encode(), "text/html; charset=utf-8")
@@ -58,7 +59,7 @@ def serve_catalog(
                     entry = catalog.get(ref)
                     resolved = fetch(entry, cache_dir=cache_dir)
                     body = resolved.path.read_bytes()
-                except Exception as exc:
+                except (OSError, ValueError, VoicefolioError) as exc:
                     self._send(
                         HTTPStatus.BAD_REQUEST,
                         json.dumps({"error": str(exc)}).encode(),

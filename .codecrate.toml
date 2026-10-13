@@ -1,10 +1,10 @@
 [codecrate]
-output = "context_voicerender.md"
+output = "context_voicefolio.md"
 keep_docstrings = true
 dedupe = true
 metadata = false
 respect_gitignore = true
-exclude = ["*/.venv/*", "context_voicerender.*"]
+exclude = ["*/.venv/*", "context_voicefolio.*"]
 include = [
   "**/*.py",
   "**/*.toml",

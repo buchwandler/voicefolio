@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import json
 import os
+from collections.abc import Iterable, Mapping
 from importlib.resources import files
 from pathlib import Path
 from typing import Any
-from collections.abc import Iterable, Mapping
 
 from .models import CatalogError, VoiceEntry, VoiceNotFoundError, VoiceRef
 

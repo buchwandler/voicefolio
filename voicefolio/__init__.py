@@ -4,10 +4,10 @@ try:
     from ._version import __version__
 except ImportError:  # editable checkout before setuptools-scm generated the file
     try:
-        from importlib.metadata import version
+        from importlib.metadata import PackageNotFoundError, version
 
         __version__ = version("voicefolio")
-    except Exception:
+    except PackageNotFoundError:
         __version__ = "0.0.dev0"
 
 from .catalog import Catalog, load_catalog

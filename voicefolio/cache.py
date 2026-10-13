@@ -64,7 +64,7 @@ def fetch(
     with tempfile.NamedTemporaryFile(dir=destination.parent, delete=False) as tmp:
         tmp_path = Path(tmp.name)
         try:
-            with urllib.request.urlopen(entry.url, timeout=60) as response:  # noqa: S310 - curated catalogs
+            with urllib.request.urlopen(entry.url, timeout=60) as response:
                 shutil.copyfileobj(response, tmp)
         except Exception:
             tmp_path.unlink(missing_ok=True)
