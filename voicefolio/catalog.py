@@ -80,7 +80,7 @@ class Catalog:
 
     @classmethod
     def builtin(cls) -> Catalog:
-        package_dir = files("voicefolio").joinpath("resources", "catalogs")
+        package_dir = files("voicefolio").joinpath("resources").joinpath("catalogs")
         entries: list[VoiceEntry] = []
         for resource in package_dir.iterdir():
             if resource.name.endswith(".json"):

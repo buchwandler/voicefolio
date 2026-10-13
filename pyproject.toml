@@ -13,6 +13,9 @@ authors = [{name = "buchwandler"}]
 keywords = ["tts", "voice", "voice-cloning", "speech", "audio", "catalog"]
 dependencies = [
   "typer>=0.15,<1",
+  "numpy>=1.24",
+  "sounddevice>=0.5,<1",
+  "soundfile>=0.13,<1",
 ]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -46,7 +49,6 @@ exclude = ["tests*"]
 voicefolio = [
   "py.typed",
   "resources/catalogs/*.json",
-  "resources/web/*.html",
 ]
 
 [tool.setuptools_scm]

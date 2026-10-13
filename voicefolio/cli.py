@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import shutil
-import webbrowser
 from pathlib import Path
 from typing import Annotated
 
@@ -13,10 +12,11 @@ from .cache import fetch, sha256_file
 from .catalog import Catalog, load_catalog
 from .integration import managed_reference
 from .migration import migrate_pocket_catalog
-from .server import serve_catalog
+from .models import PlaybackError
+from .playback import play_wav
 
 app = typer.Typer(
-    no_args_is_help=True, help="Browse, preview, pin, and export reference voices."
+    no_args_is_help=True, help="Manage, preview, pin, and export reference voices."
 )
 
 
@@ -80,13 +80,19 @@ def preview_command(
     catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
     cache_dir: Annotated[Path | None, typer.Option()] = None,
     offline: Annotated[bool, typer.Option()] = False,
-    open_file: Annotated[bool, typer.Option("--open/--no-open")] = True,
+    device: Annotated[str | None, typer.Option("--device")] = None,
 ) -> None:
-    """Fetch a verified WAV and open it in the system/browser audio player."""
+    """Fetch a verified WAV into cache and play it through native audio output."""
     resolved = fetch(_catalog(catalog).get(ref), cache_dir=cache_dir, offline=offline)
     typer.echo(str(resolved.path))
-    if open_file:
-        webbrowser.open(resolved.path.resolve().as_uri())
+    playback_device: str | int | None = device
+    if device is not None and device.isdecimal():
+        playback_device = int(device)
+    try:
+        play_wav(resolved.path, device=playback_device)
+    except PlaybackError as exc:
+        typer.echo(f"Error: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
 
 
 @app.command("export")
@@ -157,20 +163,6 @@ def binding_command(
     typer.echo("\n[binding.options.voice_source]")
     for key, value in source.items():
         typer.echo(f"{key} = {json.dumps(value)}")
-
-
-@app.command("browse")
-def browse_command(
-    catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
-    host: Annotated[str, typer.Option()] = "127.0.0.1",
-    port: Annotated[int, typer.Option()] = 8765,
-    cache_dir: Annotated[Path | None, typer.Option()] = None,
-    open_browser: Annotated[bool, typer.Option("--open/--no-open")] = True,
-) -> None:
-    """Run the local searchable catalog UI with verified audio previews."""
-    serve_catalog(
-        _catalog(catalog), host=host, port=port, cache_dir=cache_dir, open_browser=open_browser
-    )
 
 
 @app.command("validate")

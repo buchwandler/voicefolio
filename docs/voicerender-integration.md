@@ -6,6 +6,7 @@ Current VoiceRender already has the right conceptual distinction:
   RenderProfiles because it is not portable;
 - `managed_reference` is already understood by the Pocket adapter.
 
+Voicefolio now ships the complete pinned Kyutai WAV catalog and offers synchronous native playback through `voicefolio preview`; `voicefolio fetch` remains download/cache only. This local CLI behavior does not change the portable `managed_reference` contract: its kind, resolver, stable value, integrity/provenance pins, license, dataset, and variant remain unchanged, with no machine-local path.
 Voicefolio should become the generic resolver behind managed references instead of keeping the
 Kyutai reference catalog inside Pocket/OnnxVoice asset ownership.
 

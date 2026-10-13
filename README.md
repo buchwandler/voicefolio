@@ -34,23 +34,27 @@ Versioning is dynamic via `setuptools-scm`; there is no hard-coded package versi
 
 ```bash
 voicefolio list
-voicefolio list --dataset voice-donations --license CC0-1.0
-voicefolio show kyutai-tts-voices:voice-donations/0a67
-voicefolio preview kyutai-tts-voices:voice-donations/0a67
-voicefolio browse
-voicefolio export kyutai-tts-voices:voice-donations/0a67 -o narrator.wav
-voicefolio binding kyutai-tts-voices:voice-donations/0a67 \
-  --renderer pocket --target-id english_2026-04
+voicefolio preview kyutai-tts-voices:voice-zero/peter_yearsley
+voicefolio fetch kyutai-tts-voices:voice-zero/peter_yearsley
+voicefolio export kyutai-tts-voices:voice-zero/peter_yearsley -o narrator.wav
 ```
 
-`preview` and the browser UI download through Voicefolio, verify size + SHA-256, and serve/open
-the cached WAV. `export` writes both the WAV and a `.voicefolio.json` provenance sidecar.
+The built-in Kyutai catalog includes the complete pinned 1,161-prompt snapshot. Command behavior:
 
-## Moving the current Pocket catalog
+- `preview` = verified download/cache + native playback; it waits until playback finishes.
+- `fetch` = verified download/cache only; it does not play audio.
+- `export` = exact pinned WAV + provenance sidecar.
 
-The bundled MVP catalog intentionally contains only a small representative subset of the
-current 1,161-entry Pocket prompt catalog so the source ZIP stays compact. Convert the complete
-existing catalog without changing prompt IDs:
+`voicefolio preview --device DEVICE` selects an output device; numeric IDs are accepted. On Linux,
+`sounddevice` requires PortAudio from the host system. Install your distribution's PortAudio runtime
+package if preview reports that native playback is unavailable. Catalog listing, fetching, and export
+do not initialize the audio backend.
+
+## Maintaining older Pocket catalogs
+
+The built-in catalog is complete; normal users do not need to run a migration. `migrate-pocket` remains
+available to maintainers who need to convert a legacy Pocket prompt catalog while retaining its IDs
+and integrity pins:
 
 ```bash
 voicefolio migrate-pocket \
@@ -60,9 +64,7 @@ voicefolio migrate-pocket \
 voicefolio validate
 ```
 
-After review, remove the old prompt catalog from `pocket-onnx-bundles` and make Voicefolio the
-owner. The migration copies the existing records and changes only the container schema from
-Pocket-specific `prompts` to generic Voicefolio `voices`.
+The command converts the Pocket `prompts` container to Voicefolio's generic `voices` schema.
 
 ## RenderPlan / VoiceRender contract
 

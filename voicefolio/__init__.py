@@ -7,15 +7,16 @@ except ImportError:  # editable checkout before setuptools-scm generated the fil
         from importlib.metadata import PackageNotFoundError, version
 
         __version__ = version("voicefolio")
-    except PackageNotFoundError:
+    except ImportError:
         __version__ = "0.0.dev0"
 
 from .catalog import Catalog, load_catalog
 from .integration import managed_reference, resolve_voice_source
-from .models import ResolvedVoice, VoiceEntry, VoiceRef
+from .models import PlaybackError, ResolvedVoice, VoiceEntry, VoiceRef
 
 __all__ = [
     "Catalog",
+    "PlaybackError",
     "ResolvedVoice",
     "VoiceEntry",
     "VoiceRef",

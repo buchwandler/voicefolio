@@ -8,7 +8,7 @@ upstream voice archives
   stable ref / license
   revision / sha256
         |
-        +---- browser preview
+        +---- native local preview (sounddevice)
         +---- exact WAV export
         +---- verified local cache
         |
@@ -28,6 +28,8 @@ managed_reference
 The catalog is independent of a synthesis engine. A stable reference identifies one exact source
 WAV through its SHA-256 and source revision. Engine-specific prepared voice states or embeddings
 are derived artifacts and must not replace the catalog identity.
+
+`voicefolio preview REF` verifies or fetches the content-addressed cache asset and plays the exact WAV synchronously through sounddevice. `fetch` resolves the same verified asset without playback.
 
 ## ID rule
 

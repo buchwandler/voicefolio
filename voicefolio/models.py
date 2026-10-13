@@ -22,6 +22,10 @@ class IntegrityError(VoicefolioError):
     """Downloaded or exported audio does not match its catalog pin."""
 
 
+class PlaybackError(VoicefolioError):
+    """A verified local voice could not be played through the native audio backend."""
+
+
 @dataclass(frozen=True, slots=True)
 class VoiceRef:
     namespace: str
