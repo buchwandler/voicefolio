@@ -218,3 +218,5 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+voicefolio/_version.py
+context_voicefolio*.*

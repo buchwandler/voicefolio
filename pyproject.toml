@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=80", "setuptools-scm>=9.2", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "voicefolio"
+dynamic = ["version"]
+description = "Stable, previewable, integrity-pinned reference voice catalog for speech renderers."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+authors = [{name = "buchwandler"}]
+keywords = ["tts", "voice", "voice-cloning", "speech", "audio", "catalog"]
+dependencies = [
+  "typer>=0.15,<1",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Typing :: Typed",
+]
+
+[project.optional-dependencies]
+dev = [
+  "build>=1.2",
+  "pytest>=8",
+  "ruff>=0.12",
+  "mypy>=1.13",
+  "setuptools-scm>=9.2",
+]
+
+[project.scripts]
+voicefolio = "voicefolio.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["voicefolio*"]
+exclude = ["tests*"]
+
+[tool.setuptools.package-data]
+voicefolio = [
+  "py.typed",
+  "resources/catalogs/*.json",
+  "resources/web/*.html",
+]
+
+[tool.setuptools_scm]
+version_file = "voicefolio/_version.py"
+fallback_version = "0.0.dev0"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 96
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+packages = ["voicefolio"]

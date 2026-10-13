@@ -1,0 +1,15 @@
+# Copy this table under a RenderProfile role's binding.
+renderer = "pocket"
+target_id = "english_2026-04"
+
+[options.voice_source]
+kind = "managed_reference"
+resolver = "voicefolio"
+value = "kyutai-tts-voices:voice-donations/0a67"
+sha256 = "4bd75d0ef0ad3f4e82ac075eab2a132651d2463f83bec210edeeccaf69294886"
+source_revision = "323332d33f997de8394f24a193e1a76df720e01a"
+source_repository = "kyutai/tts-voices"
+source_path = "voice-donations/0a67.wav"
+license = "CC0-1.0"
+dataset = "voice-donations"
+variant = "original"
