@@ -1,0 +1,192 @@
+ .codecrate.toml         |  4 ++--
+ tests/test_catalog.py   | 24 ++++++++++++------------
+ tests/test_packaging.py |  1 +
+ voicefolio/__init__.py  |  4 ++--
+ voicefolio/cache.py     |  2 +-
+ voicefolio/catalog.py   |  2 +-
+ voicefolio/cli.py       |  1 -
+ voicefolio/migration.py |  2 +-
+ voicefolio/models.py    |  2 +-
+ voicefolio/server.py    |  5 +++--
+ 10 files changed, 24 insertions(+), 23 deletions(-)
+
+diff --git a/.codecrate.toml b/.codecrate.toml
+index 220b45e..ad00671 100644
+--- a/.codecrate.toml
++++ b/.codecrate.toml
+@@ -1,10 +1,10 @@
+ [codecrate]
+-output = "context_voicerender.md"
++output = "context_voicefolio.md"
+ keep_docstrings = true
+ dedupe = true
+ metadata = false
+ respect_gitignore = true
+-exclude = ["*/.venv/*", "context_voicerender.*"]
++exclude = ["*/.venv/*", "context_voicefolio.*"]
+ include = [
+   "**/*.py",
+   "**/*.toml",
+diff --git a/tests/test_catalog.py b/tests/test_catalog.py
+index e6038e7..20013b7 100644
+--- a/tests/test_catalog.py
++++ b/tests/test_catalog.py
+@@ -13,18 +13,18 @@ def test_builtin_catalog_has_stable_sample_refs():
+
+
+ def test_duplicate_ref_with_different_digest_is_rejected():
+-    common = dict(
+-        ref=VoiceRef.parse("test:a"),
+-        dataset="x",
+-        variant="original",
+-        format="wav",
+-        url="https://example.invalid/a.wav",
+-        size=1,
+-        source_repository="x/y",
+-        source_revision="r",
+-        source_path="a.wav",
+-        license="CC0-1.0",
+-    )
++    common = {
++        "ref": VoiceRef.parse("test:a"),
++        "dataset": "x",
++        "variant": "original",
++        "format": "wav",
++        "url": "https://example.invalid/a.wav",
++        "size": 1,
++        "source_repository": "x/y",
++        "source_revision": "r",
++        "source_path": "a.wav",
++        "license": "CC0-1.0",
++    }
+     first = VoiceEntry(sha256="0" * 64, **common)
+     second = VoiceEntry(sha256="1" * 64, **common)
+     with pytest.raises(CatalogError):
+diff --git a/tests/test_packaging.py b/tests/test_packaging.py
+index 924d576..fff6f0f 100644
+--- a/tests/test_packaging.py
++++ b/tests/test_packaging.py
+@@ -1,4 +1,5 @@
+ from pathlib import Path
++
+ import tomllib
+
+
+diff --git a/voicefolio/__init__.py b/voicefolio/__init__.py
+index 8bbaf59..78f4bc0 100644
+--- a/voicefolio/__init__.py
++++ b/voicefolio/__init__.py
+@@ -4,10 +4,10 @@ try:
+     from ._version import __version__
+ except ImportError:  # editable checkout before setuptools-scm generated the file
+     try:
+-        from importlib.metadata import version
++        from importlib.metadata import PackageNotFoundError, version
+
+         __version__ = version("voicefolio")
+-    except Exception:
++    except PackageNotFoundError:
+         __version__ = "0.0.dev0"
+
+ from .catalog import Catalog, load_catalog
+diff --git a/voicefolio/cache.py b/voicefolio/cache.py
+index e00012a..61a747f 100644
+--- a/voicefolio/cache.py
++++ b/voicefolio/cache.py
+@@ -64,7 +64,7 @@ def fetch(
+     with tempfile.NamedTemporaryFile(dir=destination.parent, delete=False) as tmp:
+         tmp_path = Path(tmp.name)
+         try:
+-            with urllib.request.urlopen(entry.url, timeout=60) as response:  # noqa: S310 - curated catalogs
++            with urllib.request.urlopen(entry.url, timeout=60) as response:
+                 shutil.copyfileobj(response, tmp)
+         except Exception:
+             tmp_path.unlink(missing_ok=True)
+diff --git a/voicefolio/catalog.py b/voicefolio/catalog.py
+index af32956..8ae473d 100644
+--- a/voicefolio/catalog.py
++++ b/voicefolio/catalog.py
+@@ -2,10 +2,10 @@ from __future__ import annotations
+
+ import json
+ import os
++from collections.abc import Iterable, Mapping
+ from importlib.resources import files
+ from pathlib import Path
+ from typing import Any
+-from collections.abc import Iterable, Mapping
+
+ from .models import CatalogError, VoiceEntry, VoiceNotFoundError, VoiceRef
+
+diff --git a/voicefolio/cli.py b/voicefolio/cli.py
+index f454088..549c8f8 100644
+--- a/voicefolio/cli.py
++++ b/voicefolio/cli.py
+@@ -2,7 +2,6 @@ from __future__ import annotations
+
+ import json
+ import shutil
+-import sys
+ import webbrowser
+ from pathlib import Path
+ from typing import Annotated
+diff --git a/voicefolio/migration.py b/voicefolio/migration.py
+index 65ccdff..6bb8531 100644
+--- a/voicefolio/migration.py
++++ b/voicefolio/migration.py
+@@ -1,9 +1,9 @@
+ from __future__ import annotations
+
+ import json
++from collections.abc import Mapping
+ from pathlib import Path
+ from typing import Any
+-from collections.abc import Mapping
+
+ from .catalog import CATALOG_KIND, CATALOG_SCHEMA
+ from .models import CatalogError
+diff --git a/voicefolio/models.py b/voicefolio/models.py
+index e739912..0222bb2 100644
+--- a/voicefolio/models.py
++++ b/voicefolio/models.py
+@@ -1,9 +1,9 @@
+ from __future__ import annotations
+
++from collections.abc import Mapping
+ from dataclasses import dataclass, field
+ from pathlib import Path
+ from typing import Any
+-from collections.abc import Mapping
+
+
+ class VoicefolioError(Exception):
+diff --git a/voicefolio/server.py b/voicefolio/server.py
+index 86c9137..b7ed3e5 100644
+--- a/voicefolio/server.py
++++ b/voicefolio/server.py
+@@ -11,6 +11,7 @@ from pathlib import Path
+
+ from .cache import fetch
+ from .catalog import Catalog
++from .models import VoicefolioError
+
+
+ def serve_catalog(
+@@ -38,7 +39,7 @@ def serve_catalog(
+             self.end_headers()
+             self.wfile.write(body)
+
+-        def do_GET(self) -> None:  # noqa: N802 - BaseHTTPRequestHandler API
++        def do_GET(self) -> None:
+             parsed = urllib.parse.urlparse(self.path)
+             if parsed.path == "/":
+                 self._send(HTTPStatus.OK, html.encode(), "text/html; charset=utf-8")
+@@ -58,7 +59,7 @@ def serve_catalog(
+                     entry = catalog.get(ref)
+                     resolved = fetch(entry, cache_dir=cache_dir)
+                     body = resolved.path.read_bytes()
+-                except Exception as exc:
++                except (OSError, ValueError, VoicefolioError) as exc:
+                     self._send(
+                         HTTPStatus.BAD_REQUEST,
+                         json.dumps({"error": str(exc)}).encode(),

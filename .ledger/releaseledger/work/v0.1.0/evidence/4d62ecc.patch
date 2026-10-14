@@ -1,0 +1,15 @@
+ pyproject.toml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/pyproject.toml b/pyproject.toml
+index 34eba5c..a002557 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -32,6 +32,7 @@ playback = [
+ ]
+ dev = [
+   "build>=1.2",
++  "wheel",
+   "pytest>=8",
+   "tomli>=2.0; python_version < '3.11'",
+   "ruff>=0.12",

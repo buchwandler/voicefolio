@@ -1,0 +1,16 @@
+ voicefolio/__init__.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/voicefolio/__init__.py b/voicefolio/__init__.py
+index 82c4756..fb710c0 100644
+--- a/voicefolio/__init__.py
++++ b/voicefolio/__init__.py
+@@ -4,7 +4,7 @@ try:
+     from ._version import __version__
+ except ImportError:  # editable checkout before setuptools-scm generated the file
+     try:
+-        from importlib.metadata import PackageNotFoundError, version
++        from importlib.metadata import version
+
+         __version__ = version("voicefolio")
+     except ImportError:

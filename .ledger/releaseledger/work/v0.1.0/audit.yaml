@@ -1,0 +1,305 @@
+schema_version: 1
+object_type: commit_audit_sheet
+versioning:
+  schema_version: 1
+  revision: 1
+release_version: v0.1.0
+git_base_ref: 550f254
+git_base_sha: 550f254a91a42dc4c9404e3ba5c6e6d6ad820bc6
+git_head_ref: HEAD
+git_head_sha: 41f88fdc619665f3627a784347b3d88bf4f1301f
+git_range: 550f254a91a42dc4c9404e3ba5c6e6d6ad820bc6..41f88fdc619665f3627a784347b3d88bf4f1301f
+commit_count: 11
+rows:
+  - sha: 6786273b9629130b285c7a187331a63be959930e
+    source_ref: git:6786273b9629130b285c7a187331a63be959930e
+    short_sha: "6786273"
+    changed_paths:
+      - .codecrate.toml
+      - .gitignore
+      - .ledger/ledger.toml
+      - .ledger/releaseledger/.ledger-project.toml
+      - .ledger/releaseledger/config.toml
+      - .ledger/releaseledger/data/.ledger-project.toml
+      - .ledger/taskledger/.ledger-project.toml
+      - .ledger/taskledger/config.toml
+      - .pre-commit-config.yaml
+      - README.md
+      - docs/architecture.md
+      - docs/voicerender-integration.md
+      - examples/renderprofile-binding.toml
+      - pyproject.toml
+      - tests/test_cache.py
+      - tests/test_catalog.py
+      - tests/test_integration.py
+      - tests/test_migration.py
+      - tests/test_models.py
+      - tests/test_packaging.py
+      - voicefolio/__init__.py
+      - voicefolio/__main__.py
+      - voicefolio/cache.py
+      - voicefolio/catalog.py
+      - voicefolio/cli.py
+      - voicefolio/integration.py
+      - voicefolio/migration.py
+      - voicefolio/models.py
+      - voicefolio/py.typed
+      - voicefolio/resources/catalogs/kyutai-tts-voices.sample.json
+      - voicefolio/resources/web/index.html
+      - voicefolio/server.py
+    stats:
+      files_changed: 32
+      insertions: 1753
+      deletions: 1
+    inspected: false
+    inspected_paths: []
+    observed_behavior: ""
+    public_impact: unknown
+    decision: needs_review
+    stale: false
+    evidence_subject: "feat: initial version"
+  - sha: 05a06245c60e11d9a4a310320f9902b4f7a37556
+    source_ref: git:05a06245c60e11d9a4a310320f9902b4f7a37556
+    short_sha: 05a0624
+    changed_paths:
+      - .codecrate.toml
+      - tests/test_catalog.py
+      - tests/test_packaging.py
+      - voicefolio/__init__.py
+      - voicefolio/cache.py
+      - voicefolio/catalog.py
+      - voicefolio/cli.py
+      - voicefolio/migration.py
+      - voicefolio/models.py
+      - voicefolio/server.py
+    stats:
+      files_changed: 10
+      insertions: 24
+      deletions: 23
+    inspected: false
+    inspected_paths: []
+    observed_behavior: ""
+    public_impact: unknown
+    decision: needs_review
+    stale: false
+    evidence_subject: "chore: pre-commit"
+  - sha: 99d0d904b02f97d2c30c1866d45dd37843479eac
+    source_ref: git:99d0d904b02f97d2c30c1866d45dd37843479eac
+    short_sha: 99d0d90
+    changed_paths:
+      - README.md
+      - docs/architecture.md
+      - docs/voicerender-integration.md
+      - pyproject.toml
+      - tests/test_catalog.py
+      - tests/test_cli.py
+      - tests/test_integration.py
+      - tests/test_packaging.py
+      - tests/test_playback.py
+      - voicefolio/__init__.py
+      - voicefolio/catalog.py
+      - voicefolio/cli.py
+      - voicefolio/models.py
+      - voicefolio/playback.py
+      - voicefolio/resources/catalogs/kyutai-tts-voices.json
+      - voicefolio/resources/catalogs/kyutai-tts-voices.sample.json
+      - voicefolio/resources/web/index.html
+      - voicefolio/server.py
+    stats:
+      files_changed: 18
+      insertions: 20085
+      deletions: 491
+    inspected: false
+    inspected_paths: []
+    observed_behavior: ""
+    public_impact: unknown
+    decision: needs_review
+    stale: false
+    evidence_subject: "feat: add sound device and remove browse"
+  - sha: cc51eee3ecc89d8305156c9b02394ff9f6b87f2d
+    source_ref: git:cc51eee3ecc89d8305156c9b02394ff9f6b87f2d
+    short_sha: cc51eee
+    changed_paths:
+      - voicefolio/__init__.py
+    stats:
+      files_changed: 1
+      insertions: 1
+      deletions: 1
+    inspected: false
+    inspected_paths: []
+    observed_behavior: ""
+    public_impact: unknown
+    decision: needs_review
+    stale: false
+    evidence_subject: "chore: pre-commit"
+  - sha: b6af37bc3767aa03a7f8314a2e0a2f7f534b140b
+    source_ref: git:b6af37bc3767aa03a7f8314a2e0a2f7f534b140b
+    short_sha: b6af37b
+    changed_paths:
+      - .github/workflows/ci.yml
+      - .github/workflows/codecov.yml
+      - .github/workflows/pre-commit.yml
+      - .github/workflows/python-publish.yml
+      - .github/workflows/refresh-kyutai-catalog.yml
+      - README.md
+      - docs/architecture.md
+      - docs/voicerender-integration.md
+      - pyproject.toml
+      - tests/fixtures/kyutai-voice-baseline.json
+      - tests/test_cli.py
+      - tests/test_fetch_contract.py
+      - tests/test_kyutai_source.py
+      - tests/test_packaging.py
+      - tests/test_playback.py
+      - tests/test_voice_source.py
+      - voicefolio/__init__.py
+      - voicefolio/cache.py
+      - voicefolio/cli.py
+      - voicefolio/integration.py
+      - voicefolio/models.py
+      - voicefolio/playback.py
+      - voicefolio/resources/sources/kyutai-tts-voices-licenses.json
+      - voicefolio/sources/__init__.py
+      - voicefolio/sources/huggingface.py
+      - voicefolio/sources/kyutai_tts_voices.py
+    stats:
+      files_changed: 26
+      insertions: 6459
+      deletions: 126
+    inspected: false
+    inspected_paths: []
+    observed_behavior: ""
+    public_impact: unknown
+    decision: needs_review
+    stale: false
+    evidence_subject: "feat: add catalog"
+  - sha: 9ba5a28785801923368416a03d4f588eac5536f8
+    source_ref: git:9ba5a28785801923368416a03d4f588eac5536f8
+    short_sha: 9ba5a28
+    changed_paths:
+      - pyproject.toml
+      - tests/test_packaging.py
+    stats:
+      files_changed: 2
+      insertions: 5
+      deletions: 1
+    inspected: false
+    inspected_paths: []
+    observed_behavior: ""
+    public_impact: unknown
+    decision: needs_review
+    stale: false
+    evidence_subject: "chore: fix tomli"
+  - sha: 4d62ecca4d519ea4c57f1b5cdfcbcdcda0a0a1ad
+    source_ref: git:4d62ecca4d519ea4c57f1b5cdfcbcdcda0a0a1ad
+    short_sha: 4d62ecc
+    changed_paths:
+      - pyproject.toml
+    stats:
+      files_changed: 1
+      insertions: 1
+      deletions: 0
+    inspected: false
+    inspected_paths: []
+    observed_behavior: ""
+    public_impact: unknown
+    decision: needs_review
+    stale: false
+    evidence_subject: "fix: tomli"
+  - sha: ce1566c9c7adae1a3436afb42ff23bc441d05f07
+    source_ref: git:ce1566c9c7adae1a3436afb42ff23bc441d05f07
+    short_sha: ce1566c
+    changed_paths:
+      - pyproject.toml
+    stats:
+      files_changed: 1
+      insertions: 1
+      deletions: 1
+    inspected: false
+    inspected_paths: []
+    observed_behavior: ""
+    public_impact: unknown
+    decision: needs_review
+    stale: false
+    evidence_subject: "chore: fix tomli"
+  - sha: 72f27dbe0d334687406b6ecadf5e47fa4d036c3b
+    source_ref: git:72f27dbe0d334687406b6ecadf5e47fa4d036c3b
+    short_sha: 72f27db
+    changed_paths:
+      - pyproject.toml
+    stats:
+      files_changed: 1
+      insertions: 3
+      deletions: 2
+    inspected: false
+    inspected_paths: []
+    observed_behavior: ""
+    public_impact: unknown
+    decision: needs_review
+    stale: false
+    evidence_subject: "chore: mypy"
+  - sha: cc7c16ea1b7db7d0b09cfc787906e69852df798e
+    source_ref: git:cc7c16ea1b7db7d0b09cfc787906e69852df798e
+    short_sha: cc7c16e
+    changed_paths:
+      - .codecrate.toml
+      - .github/workflows/ci.yml
+      - .github/workflows/codecov.yml
+      - .github/workflows/pre-commit.yml
+      - .github/workflows/python-publish.yml
+      - .github/workflows/refresh-kyutai-catalog.yml
+      - README.md
+      - pyproject.toml
+      - tests/test_catalog.py
+      - tests/test_cli.py
+      - tests/test_kyutai_source.py
+      - tests/test_packaging.py
+      - tests/test_server.py
+      - voicefolio/cli.py
+      - voicefolio/playback.py
+      - voicefolio/resources/web/index.html
+      - voicefolio/server.py
+    stats:
+      files_changed: 17
+      insertions: 739
+      deletions: 44
+    inspected: false
+    inspected_paths: []
+    observed_behavior: ""
+    public_impact: unknown
+    decision: needs_review
+    stale: false
+    evidence_subject: "feat: prepare release"
+  - sha: 41f88fdc619665f3627a784347b3d88bf4f1301f
+    source_ref: git:41f88fdc619665f3627a784347b3d88bf4f1301f
+    short_sha: 41f88fd
+    changed_paths:
+      - .github/workflows/python-publish.yml
+      - .pre-commit-config.yaml
+      - README.md
+      - docs/architecture.md
+      - tests/test_catalog.py
+      - tests/test_cli.py
+      - tests/test_kyutai_source.py
+      - tests/test_models.py
+      - tests/test_packaging.py
+      - tests/test_server.py
+      - voicefolio/catalog.py
+      - voicefolio/cli.py
+      - voicefolio/models.py
+      - voicefolio/resources/catalogs/kyutai-tts-voices.json
+      - voicefolio/resources/sources/kyutai-tts-voices-languages.json
+      - voicefolio/resources/web/index.html
+      - voicefolio/server.py
+      - voicefolio/sources/kyutai_tts_voices.py
+    stats:
+      files_changed: 18
+      insertions: 1817
+      deletions: 73
+    inspected: false
+    inspected_paths: []
+    observed_behavior: ""
+    public_impact: unknown
+    decision: needs_review
+    stale: false
+    evidence_subject: "feat: add lang filter"

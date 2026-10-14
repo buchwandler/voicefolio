@@ -1,0 +1,32 @@
+ pyproject.toml          | 1 +
+ tests/test_packaging.py | 5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/pyproject.toml b/pyproject.toml
+index 642d2c2..34eba5c 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -33,6 +33,7 @@ playback = [
+ dev = [
+   "build>=1.2",
+   "pytest>=8",
++  "tomli>=2.0; python_version < '3.11'",
+   "ruff>=0.12",
+   "mypy>=1.13",
+   "setuptools-scm>=9.2",
+diff --git a/tests/test_packaging.py b/tests/test_packaging.py
+index 4a109b4..6129d0c 100644
+--- a/tests/test_packaging.py
++++ b/tests/test_packaging.py
+@@ -8,7 +8,10 @@ import tarfile
+ import zipfile
+ from pathlib import Path
+
+-import tomllib
++try:
++    import tomllib
++except ModuleNotFoundError:  # Python 3.10 compatibility.
++    import tomli as tomllib
+
+
+ def test_dynamic_version_and_flat_layout():

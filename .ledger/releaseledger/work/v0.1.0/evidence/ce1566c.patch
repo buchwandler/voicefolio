@@ -1,0 +1,14 @@
+ pyproject.toml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pyproject.toml b/pyproject.toml
+index a002557..b1b3cff 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -1,5 +1,5 @@
+ [build-system]
+-requires = ["setuptools>=80", "setuptools-scm>=9.2", "wheel"]
++requires = ["setuptools>=80", "setuptools-scm>=9.2", "wheel", "tomli>=2.0; python_version < '3.11'"]
+ build-backend = "setuptools.build_meta"
+
+ [project]

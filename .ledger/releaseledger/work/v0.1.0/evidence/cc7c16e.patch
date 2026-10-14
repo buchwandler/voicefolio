@@ -1,0 +1,1206 @@
+ .codecrate.toml                              |   2 +
+ .github/workflows/ci.yml                     |   4 +-
+ .github/workflows/codecov.yml                |   4 +-
+ .github/workflows/pre-commit.yml             |   6 +-
+ .github/workflows/python-publish.yml         |   7 +-
+ .github/workflows/refresh-kyutai-catalog.yml |   8 +-
+ README.md                                    |  21 ++-
+ pyproject.toml                               |  16 ++-
+ tests/test_catalog.py                        |   7 +-
+ tests/test_cli.py                            | 186 ++++++++++++++++++++++++++-
+ tests/test_kyutai_source.py                  |  54 +++++++-
+ tests/test_packaging.py                      |  37 ++++--
+ tests/test_server.py                         | 113 ++++++++++++++++
+ voicefolio/cli.py                            | 105 ++++++++++++++-
+ voicefolio/playback.py                       |   4 +-
+ voicefolio/resources/web/index.html          |  81 ++++++++++++
+ voicefolio/server.py                         | 128 ++++++++++++++++++
+ 17 files changed, 739 insertions(+), 44 deletions(-)
+
+diff --git a/.codecrate.toml b/.codecrate.toml
+index ad00671..a110814 100644
+--- a/.codecrate.toml
++++ b/.codecrate.toml
+@@ -7,6 +7,8 @@ respect_gitignore = true
+ exclude = ["*/.venv/*", "context_voicefolio.*"]
+ include = [
+   "**/*.py",
++  "**/*.typed",
++  "**/*.html",
+   "**/*.toml",
+   "**/*.md",
+   "**/*.json",
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 206b3c2..1e55050 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -17,8 +17,8 @@ jobs:
+         os: [ubuntu-latest, macos-latest, windows-latest]
+         python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+     steps:
+-      - uses: actions/checkout@v4
+-      - uses: actions/setup-python@v5
++      - uses: actions/checkout@v7
++      - uses: actions/setup-python@v7
+         with:
+           python-version: ${{ matrix.python-version }}
+           cache: pip
+diff --git a/.github/workflows/codecov.yml b/.github/workflows/codecov.yml
+index 23c049a..7b34a30 100644
+--- a/.github/workflows/codecov.yml
++++ b/.github/workflows/codecov.yml
+@@ -7,9 +7,9 @@ jobs:
+   coverage:
+     runs-on: ubuntu-latest
+     steps:
+-      - uses: actions/checkout@v4
++      - uses: actions/checkout@v7
+       - name: Set up Python
+-        uses: actions/setup-python@v5
++        uses: actions/setup-python@v7
+         with:
+           python-version: "3.12"
+       - name: Run tests with coverage
+diff --git a/.github/workflows/pre-commit.yml b/.github/workflows/pre-commit.yml
+index 0e24e53..d5ec98e 100644
+--- a/.github/workflows/pre-commit.yml
++++ b/.github/workflows/pre-commit.yml
+@@ -9,9 +9,9 @@ jobs:
+     runs-on: ubuntu-latest
+
+     steps:
+-      - uses: actions/checkout@v4
++      - uses: actions/checkout@v7
+
+-      - uses: actions/setup-python@v5
++      - uses: actions/setup-python@v7
+         with:
+           python-version: "3.13"
+
+@@ -22,7 +22,7 @@ jobs:
+       - name: Install Python tools
+         run: |
+           python -m pip install --upgrade pip
+-          python -m pip install "ruff==0.16.0"
++          python -m pip install "ruff==0.16.9"
+
+       - name: Install Node tools
+         run: |
+diff --git a/.github/workflows/python-publish.yml b/.github/workflows/python-publish.yml
+index 10255df..b487c89 100644
+--- a/.github/workflows/python-publish.yml
++++ b/.github/workflows/python-publish.yml
+@@ -15,10 +15,13 @@ jobs:
+
+     steps:
+       - name: Check out release
+-        uses: actions/checkout@v4
++        uses: actions/checkout@v7
++
++      with:
++        fetch-depth: 0
+
+       - name: Set up Python
+-        uses: actions/setup-python@v5
++        uses: actions/setup-python@v7
+         with:
+           python-version: "3.13"
+
+diff --git a/.github/workflows/refresh-kyutai-catalog.yml b/.github/workflows/refresh-kyutai-catalog.yml
+index 4469f5a..e24db32 100644
+--- a/.github/workflows/refresh-kyutai-catalog.yml
++++ b/.github/workflows/refresh-kyutai-catalog.yml
+@@ -16,10 +16,10 @@ jobs:
+   refresh:
+     runs-on: ubuntu-latest
+     steps:
+-      - uses: actions/checkout@v4
++      - uses: actions/checkout@v7
+         with:
+           ref: main
+-      - uses: actions/setup-python@v5
++      - uses: actions/setup-python@v7
+         with:
+           python-version: "3.12"
+           cache: pip
+@@ -78,7 +78,11 @@ jobs:
+           cp /tmp/kyutai-candidate-first.json "$catalog"
+           voicefolio catalog verify "$catalog"
+           voicefolio validate
++          python -m pytest -q
++          ruff check .
++          mypy voicefolio
+           git config user.name "github-actions[bot]"
++
+           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+           git add "$catalog"
+           git commit -m "chore: refresh Voicefolio Kyutai catalog"
+diff --git a/README.md b/README.md
+index 8bef8e1..729b919 100644
+--- a/README.md
++++ b/README.md
+@@ -22,7 +22,6 @@ without gratuitous identity churn.
+
+ ## Install
+
+-## Install
+
+ ```bash
+ python -m pip install voicefolio
+@@ -37,12 +36,17 @@ Versioning is dynamic via `setuptools-scm`; there is no hard-coded package versi
+
+ ```bash
+ voicefolio list
++voicefolio browse
++voicefolio browse-web
+ voicefolio preview kyutai-tts-voices:voice-zero/peter_yearsley
+ voicefolio fetch kyutai-tts-voices:voice-zero/peter_yearsley
+ voicefolio export kyutai-tts-voices:voice-zero/peter_yearsley -o narrator.wav
+ ```
+
+-The built-in Kyutai catalog contains the complete pinned 1,161-reference snapshot. Runtime commands use packaged catalog data and do not contact Hugging Face to discover voices.
++- `browse` is a small terminal loop: `/` searches, `n`/`p` changes pages, a row number previews, and `q` quits. It uses the same verified fetch and native playback path as `preview`.
++- `browse-web` opens the minimal local browser addon. It binds only to `127.0.0.1`; the browser page filters the packaged catalog and previews WAVs through Voicefolio's verified fetch path.
++
++Each Voicefolio release ships a complete pinned Kyutai catalog snapshot. The initial migrated Pocket baseline contains 1,161 immutable references; later catalog releases may append new stable IDs. Runtime commands use packaged catalog data and do not contact Hugging Face to discover voices.
+
+ - `preview` = verified download/cache + native playback; it waits until playback finishes and requires `voicefolio[playback]`.
+ - `fetch` = verified download/cache only; it does not play audio.
+@@ -119,8 +123,17 @@ Voicefolio owns:
+ Voicefolio does **not** own TTS model bundles, embeddings, synthesis, text normalization, G2P,
+ render planning, or final audio mastering.
+
++## License
+ ## License
+
+ Voicefolio source code is Apache-2.0. Catalog entries and downloaded WAVs keep their own licenses;
+-the package does not relicense them. A recording license alone should not be treated as a general
+-statement about biometric/voice-likeness rights in every jurisdiction or use case.
++the package does not relicense them. The catalog includes mixed licenses, including non-commercial
++entries and `NOASSERTION` where upstream evidence is inconclusive. Inspect licenses before use:
++
++```bash
++voicefolio list --license CC0-1.0
++voicefolio show kyutai-tts-voices:voice-donations/0a67
++```
++
++A recording license alone should not be treated as a general statement about biometric or
++voice-likeness rights in every jurisdiction or use case.
+diff --git a/pyproject.toml b/pyproject.toml
+index e526708..9733c73 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -25,6 +25,11 @@ classifiers = [
+   "Typing :: Typed",
+ ]
+
++[project.urls]
++Homepage = "https://github.com/buchwandler/voicefolio"
++Repository = "https://github.com/buchwandler/voicefolio"
++Issues = "https://github.com/buchwandler/voicefolio/issues"
++
+ [project.optional-dependencies]
+ playback = [
+   "sounddevice>=0.5,<1",
+@@ -32,11 +37,12 @@ playback = [
+ ]
+ dev = [
+   "build>=1.2",
++  "setuptools>=80",
+   "wheel",
+   "pytest>=8",
+   "tomli>=2.0; python_version < '3.12'",
+-  "ruff>=0.12",
+-  "mypy>=1.13",
++  "ruff==0.16.9",
++  "mypy==2.3.0",
+   "setuptools-scm>=9.2",
+ ]
+
+@@ -53,6 +59,7 @@ voicefolio = [
+   "py.typed",
+   "resources/catalogs/*.json",
+   "resources/sources/*.json",
++  "resources/web/*.html",
+ ]
+
+ [tool.setuptools_scm]
+@@ -72,3 +79,8 @@ python_version = "3.10"
+ strict = true
+ packages = ["voicefolio"]
+ exclude = '(^|/)(build|dist|tests)/'
++
++
++[[tool.mypy.overrides]]
++module = ["sounddevice", "soundfile"]
++ignore_missing_imports = true
+diff --git a/tests/test_catalog.py b/tests/test_catalog.py
+index 6741019..a2f9fe3 100644
+--- a/tests/test_catalog.py
++++ b/tests/test_catalog.py
+@@ -4,11 +4,10 @@ from voicefolio.catalog import Catalog
+ from voicefolio.models import CatalogError, VoiceEntry, VoiceRef
+
+
+-def test_builtin_catalog_has_complete_pinned_kyutai_snapshot():
++def test_builtin_catalog_has_migrated_pinned_kyutai_baseline():
+     catalog = Catalog.builtin()
+     kyutai = catalog.list(namespace="kyutai-tts-voices")
+-    assert len(kyutai) == 1161
+-    assert {entry.dataset for entry in kyutai} == {
++    assert {
+         "alba-mackenna",
+         "cml-tts",
+         "ears",
+@@ -17,7 +16,7 @@ def test_builtin_catalog_has_complete_pinned_kyutai_snapshot():
+         "vctk",
+         "voice-donations",
+         "voice-zero",
+-    }
++    } <= {entry.dataset for entry in kyutai}
+
+     legacy_hashes = {
+         "alba-mackenna/a-moment-by": "a1805f0e3610f0d5985f4abb51979620a012899e810019960310944bbcba509d",
+diff --git a/tests/test_cli.py b/tests/test_cli.py
+index 43eeac0..1129f84 100644
+--- a/tests/test_cli.py
++++ b/tests/test_cli.py
+@@ -4,10 +4,11 @@ import json
+ from pathlib import Path
+ from types import SimpleNamespace
+
++import pytest
+ from typer.testing import CliRunner
+
+ from voicefolio import cli
+-from voicefolio.models import PlaybackError
++from voicefolio.models import DownloadError, IntegrityError, OfflineError, PlaybackError
+
+ REF = "kyutai-tts-voices:voice-zero/peter_yearsley"
+
+@@ -40,7 +41,6 @@ def test_preview_fetches_prints_and_plays_native(monkeypatch, tmp_path: Path) ->
+     assert str(cached_path) in result.output
+     assert fetch_calls == [(entry, tmp_path / "cache", True)]
+     assert play_calls == [(cached_path, 3)]
+-    assert not hasattr(cli, "webbrowser")
+
+
+ def test_preview_reports_playback_errors_without_traceback(monkeypatch, tmp_path: Path) -> None:
+@@ -68,7 +68,8 @@ def test_catalog_verify_accepts_packaged_catalog() -> None:
+     catalog_path = Path("voicefolio/resources/catalogs/kyutai-tts-voices.json")
+     result = CliRunner().invoke(cli.app, ["catalog", "verify", str(catalog_path)])
+     assert result.exit_code == 0, result.output
+-    assert result.output.strip() == "ok: 1161 voices"
++    raw = json.loads(catalog_path.read_text(encoding="utf-8"))
++    assert result.output.strip() == f"ok: {len(raw['voices'])} voices"
+
+
+ def test_catalog_build_uses_packaged_previous_catalog_by_default(
+@@ -90,3 +91,182 @@ def test_catalog_build_uses_packaged_previous_catalog_by_default(
+     assert result.exit_code == 0, result.output
+     assert calls == [(packaged, "kyutai/tts-voices", "main")]
+     assert json.loads(output.read_text(encoding="utf-8"))["namespace"] == ("kyutai-tts-voices")
++
++
++@pytest.mark.parametrize(
++    ("error_type", "message", "options"),
++    [
++        (OfflineError, "voice is not cached", ["--offline"]),
++        (DownloadError, "network unavailable", []),
++        (IntegrityError, "SHA-256 mismatch", []),
++    ],
++)
++def test_fetch_voicefolio_errors_are_concise(
++    monkeypatch, error_type, message: str, options: list[str]
++) -> None:
++    def fail_fetch(*args, **kwargs):
++        raise error_type(message)
++
++    monkeypatch.setattr(cli, "fetch", fail_fetch)
++    result = CliRunner().invoke(cli.app, ["fetch", REF, *options])
++
++    assert result.exit_code == 1
++    assert f"Error: {message}" in result.output
++    assert "Traceback" not in result.output
++
++
++def test_unknown_voice_error_is_concise() -> None:
++    result = CliRunner().invoke(cli.app, ["show", "kyutai-tts-voices:does-not-exist"])
++
++    assert result.exit_code == 1
++    assert "Error: voice 'kyutai-tts-voices:does-not-exist' is not in the active catalog" in result.output
++    assert "Traceback" not in result.output
++
++
++def test_malformed_catalog_error_is_concise(tmp_path: Path) -> None:
++    malformed = tmp_path / "malformed.json"
++    malformed.write_text("{not-json", encoding="utf-8")
++
++    result = CliRunner().invoke(cli.app, ["list", "--catalog", str(malformed)])
++
++    assert result.exit_code == 1
++    assert "Error: cannot read catalog" in result.output
++    assert "Traceback" not in result.output
++
++
++
++def _browse_entries():
++    return tuple(
++        SimpleNamespace(
++            ref=f"demo:{name}", license="CC0-1.0", variant="original", dataset="demo"
++        )
++        for name in ("voice-1", "voice-2", "voice-3")
++    )
++
++
++def _browse_catalog(entries):
++    def list_voices(*, dataset, license, variant, query):
++        rows = entries
++        if dataset:
++            rows = tuple(entry for entry in rows if entry.dataset == dataset)
++        if license:
++            rows = tuple(entry for entry in rows if entry.license == license)
++        if variant:
++            rows = tuple(entry for entry in rows if entry.variant == variant)
++        if query:
++            rows = tuple(entry for entry in rows if query.lower() in str(entry.ref).lower())
++        return rows
++
++    return SimpleNamespace(list=list_voices)
++
++
++def test_browse_pages_searches_and_quits(monkeypatch) -> None:
++    monkeypatch.setattr(cli, "_catalog", lambda paths: _browse_catalog(_browse_entries()))
++
++    result = CliRunner().invoke(
++        cli.app,
++        ["browse", "--page-size", "2"],
++        input="n\np\n/\nvoice-3\nq\n",
++    )
++
++    assert result.exit_code == 0, result.output
++    assert "Page 2/2" in result.output
++    assert "Voicefolio — 1 voices" in result.output
++    assert "demo:voice-3" in result.output
++
++
++def test_browse_number_fetches_and_plays_selected_voice(monkeypatch, tmp_path: Path) -> None:
++    entries = _browse_entries()
++    monkeypatch.setattr(cli, "_catalog", lambda paths: _browse_catalog(entries))
++    fetch_calls = []
++    play_calls = []
++    cached = tmp_path / "voice.wav"
++
++    def fake_fetch(entry, *, cache_dir, offline):
++        fetch_calls.append((entry, cache_dir, offline))
++        return SimpleNamespace(path=cached)
++
++    monkeypatch.setattr(cli, "fetch", fake_fetch)
++    monkeypatch.setattr(
++        cli, "play_wav", lambda path, *, device: play_calls.append((path, device))
++    )
++    result = CliRunner().invoke(
++        cli.app,
++        ["browse", "--page-size", "3", "--cache-dir", str(tmp_path), "--device", "2"],
++        input="2\nq\n",
++    )
++
++    assert result.exit_code == 0, result.output
++    assert fetch_calls == [(entries[1], tmp_path, False)]
++    assert play_calls == [(cached, 2)]
++
++
++def test_browse_recovers_from_offline_cache_miss(monkeypatch) -> None:
++    monkeypatch.setattr(cli, "_catalog", lambda paths: _browse_catalog(_browse_entries()))
++    play_calls = []
++
++    def fail_fetch(*args, **kwargs):
++        raise OfflineError("voice is not cached")
++
++    monkeypatch.setattr(cli, "fetch", fail_fetch)
++    monkeypatch.setattr(
++        cli, "play_wav", lambda *args, **kwargs: play_calls.append(args)
++    )
++    result = CliRunner().invoke(cli.app, ["browse"], input="1\nq\n")
++
++    assert result.exit_code == 0, result.output
++    assert "Error: voice is not cached" in result.output
++    assert result.output.count("Voicefolio —") == 2
++    assert not play_calls
++
++
++def test_browse_recovers_when_optional_playback_is_missing(monkeypatch, tmp_path: Path) -> None:
++    monkeypatch.setattr(cli, "_catalog", lambda paths: _browse_catalog(_browse_entries()))
++    monkeypatch.setattr(
++        cli,
++        "fetch",
++        lambda *args, **kwargs: SimpleNamespace(path=tmp_path / "voice.wav"),
++    )
++
++    def fail_playback(path, *, device):
++        raise PlaybackError("Install voicefolio[playback] for native preview.")
++
++    monkeypatch.setattr(cli, "play_wav", fail_playback)
++    result = CliRunner().invoke(cli.app, ["browse"], input="1\nq\n")
++
++    assert result.exit_code == 0, result.output
++    assert "Error: Install voicefolio[playback]" in result.output
++    assert result.output.count("Voicefolio —") == 2
++
++
++
++def test_browse_web_command_passes_local_server_options(monkeypatch, tmp_path: Path) -> None:
++    catalog = object()
++    calls = []
++    catalog_path = tmp_path / "extra.json"
++    cache_dir = tmp_path / "cache"
++    monkeypatch.setattr(cli, "_catalog", lambda paths: catalog)
++    monkeypatch.setattr(
++        cli,
++        "serve_browser",
++        lambda actual, **options: calls.append((actual, options)),
++    )
++
++    result = CliRunner().invoke(
++        cli.app,
++        [
++            "browse-web",
++            "--catalog",
++            str(catalog_path),
++            "--cache-dir",
++            str(cache_dir),
++            "--offline",
++            "--port",
++            "8765",
++        ],
++    )
++
++    assert result.exit_code == 0, result.output
++    assert calls == [
++        (catalog, {"cache_dir": cache_dir, "offline": True, "port": 8765})
++    ]
+diff --git a/tests/test_kyutai_source.py b/tests/test_kyutai_source.py
+index 2276f8a..c179ea9 100644
+--- a/tests/test_kyutai_source.py
++++ b/tests/test_kyutai_source.py
+@@ -8,7 +8,9 @@ from typing import Any
+ from unittest.mock import patch
+
+ import pytest
++from typer.testing import CliRunner
+
++from voicefolio import cli
+ from voicefolio.catalog import Catalog
+ from voicefolio.models import CatalogError
+ from voicefolio.sources import huggingface
+@@ -75,13 +77,55 @@ def _snapshot(rows: list[dict[str, Any]], *, revision: str = REVISION) -> dict[s
+     }
+
+
+-def test_packaged_catalog_matches_every_migrated_pocket_id_and_digest() -> None:
++def test_packaged_catalog_preserves_every_migrated_pocket_id_and_digest() -> None:
+     baseline_path = Path(__file__).parent / "fixtures" / "kyutai-voice-baseline.json"
+     baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+-    entries = Catalog.builtin().list(namespace=NAMESPACE)
+-    actual = [[entry.ref.id, entry.sha256] for entry in entries]
+-    assert len(actual) == 1161
+-    assert actual == baseline
++    expected = {voice_id: sha256 for voice_id, sha256 in baseline}
++    actual = {
++        entry.ref.id: entry.sha256
++        for entry in Catalog.builtin().list(namespace=NAMESPACE)
++    }
++    assert len(actual) >= len(expected)
++    for voice_id, expected_sha256 in expected.items():
++        assert actual[voice_id] == expected_sha256
++
++
++def test_synthetic_append_preserves_baseline_and_validates_as_1162_voices(
++    tmp_path: Path,
++) -> None:
++    packaged_path = Path(__file__).parents[1] / "voicefolio/resources/catalogs/kyutai-tts-voices.json"
++    baseline = json.loads(packaged_path.read_text(encoding="utf-8"))
++    discovered = copy.deepcopy(baseline)
++    appended = copy.deepcopy(
++        next(row for row in baseline["voices"] if row["id"] == "voice-donations/0a67")
++    )
++    appended["id"] = "voice-donations/__synthetic_append__"
++    appended["source_path"] = f"{appended['id']}.wav"
++    appended["url"] = huggingface.resolve_url(
++        appended["source_repository"],
++        appended["source_revision"],
++        appended["source_path"],
++    )
++    discovered["voices"].append(appended)
++    discovered["voices"].sort(key=lambda row: row["id"])
++    discovered["source"]["prompt_count"] = len(discovered["voices"])
++
++    result = build_catalog(baseline, discovered_snapshot=discovered)
++    verify_kyutai_catalog(result)
++    expected = {row["id"]: row["sha256"] for row in baseline["voices"]}
++    actual = {row["id"]: row["sha256"] for row in result["voices"]}
++    assert len(actual) == 1162
++    assert all(actual[voice_id] == sha256 for voice_id, sha256 in expected.items())
++    assert "voice-donations/__synthetic_append__" in actual
++
++    candidate_path = tmp_path / "candidate.json"
++    candidate_path.write_text(json.dumps(result), encoding="utf-8")
++    validation = CliRunner().invoke(
++        cli.app, ["validate", "--catalog", str(candidate_path)]
++    )
++    assert validation.exit_code == 0, validation.output
++    assert validation.output.strip() == "ok: 1162 voices"
++
+
+
+ def test_license_policy_keeps_override_and_fails_closed() -> None:
+diff --git a/tests/test_packaging.py b/tests/test_packaging.py
+index 6129d0c..b4b0182 100644
+--- a/tests/test_packaging.py
++++ b/tests/test_packaging.py
+@@ -1,5 +1,6 @@
+ from __future__ import annotations
+
++import json
+ import os
+ import shutil
+ import subprocess
+@@ -8,6 +9,8 @@ import tarfile
+ import zipfile
+ from pathlib import Path
+
++import pytest
++
+ try:
+     import tomllib
+ except ModuleNotFoundError:  # Python 3.10 compatibility.
+@@ -26,9 +29,8 @@ def test_dynamic_version_and_flat_layout():
+     assert (
+         "resources/sources/*.json" in data["tool"]["setuptools"]["package-data"]["voicefolio"]
+     )
+-    assert not any(
+-        "resources/web/" in item
+-        for item in data["tool"]["setuptools"]["package-data"]["voicefolio"]
++    assert (
++        "resources/web/*.html" in data["tool"]["setuptools"]["package-data"]["voicefolio"]
+     )
+     assert not (root / "src").exists()
+
+@@ -37,9 +39,10 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
+     root = Path(__file__).parents[1]
+     catalog = root / "voicefolio/resources/catalogs/kyutai-tts-voices.json"
+     license_policy = root / "voicefolio/resources/sources/kyutai-tts-voices-licenses.json"
++    browser_page = root / "voicefolio/resources/web/index.html"
+     shutil.rmtree(root / "build", ignore_errors=True)
+     (root / "voicefolio.egg-info" / "SOURCES.txt").unlink(missing_ok=True)
+-    subprocess.run(
++    result = subprocess.run(
+         [
+             sys.executable,
+             "-m",
+@@ -51,11 +54,16 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
+             str(tmp_path),
+         ],
+         cwd=root,
+-        check=True,
++        check=False,
+         capture_output=True,
+         text=True,
+     )
+-
++    if result.returncode:
++        pytest.fail(
++            "package build failed\n"
++            f"stdout:\n{result.stdout}\n"
++            f"stderr:\n{result.stderr}"
++        )
+     wheel = next(tmp_path.glob("*.whl"))
+     with zipfile.ZipFile(wheel) as archive:
+         member = "voicefolio/resources/catalogs/kyutai-tts-voices.json"
+@@ -79,7 +87,9 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
+             ]
+             assert len(declarations) == 1
+             assert 'extra == "playback"' in declarations[0]
+-        assert "voicefolio/resources/web/index.html" not in archive.namelist()
++        browser_member = "voicefolio/resources/web/index.html"
++        assert browser_member in archive.namelist()
++        assert archive.read(browser_member) == browser_page.read_bytes()
+
+     sdist = next(tmp_path.glob("*.tar.gz"))
+     with tarfile.open(sdist, "r:gz") as archive:
+@@ -100,9 +110,12 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
+         assert policy is not None
+         assert policy.read() == license_policy.read_bytes()
+         assert any(name.endswith("/voicefolio/py.typed") for name in archive.getnames())
+-        assert not any(
+-            name.endswith("/voicefolio/resources/web/index.html") for name in archive.getnames()
++        browser_member = next(
++            name for name in archive.getnames() if name.endswith("/voicefolio/resources/web/index.html")
+         )
++        browser_source = archive.extractfile(browser_member)
++        assert browser_source is not None
++        assert browser_source.read() == browser_page.read_bytes()
+
+     env = os.environ.copy()
+     env["PYTHONPATH"] = str(wheel)
+@@ -113,7 +126,8 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
+             (
+                 "from voicefolio import Catalog; "
+                 "catalog = Catalog.builtin(); "
+-                "assert len(catalog.list(namespace='kyutai-tts-voices')) == 1161; "
++                "entry = catalog.get('kyutai-tts-voices:voice-donations/0a67'); "
++                "assert entry.sha256 == '4bd75d0ef0ad3f4e82ac075eab2a132651d2463f83bec210edeeccaf69294886'; "
+                 "print('wheel catalog:', len(catalog))"
+             ),
+         ],
+@@ -123,4 +137,5 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
+         capture_output=True,
+         text=True,
+     )
+-    assert smoke.stdout.strip() == "wheel catalog: 1161"
++    expected_count = len(json.loads(catalog.read_text(encoding="utf-8"))["voices"])
++    assert smoke.stdout.strip() == f"wheel catalog: {expected_count}"
+diff --git a/tests/test_server.py b/tests/test_server.py
+new file mode 100644
+index 0000000..3d43788
+--- /dev/null
++++ b/tests/test_server.py
+@@ -0,0 +1,113 @@
++from __future__ import annotations
++
++import json
++import threading
++from collections.abc import Iterator
++from contextlib import contextmanager
++from http.server import HTTPServer
++from pathlib import Path
++from types import SimpleNamespace
++from urllib.parse import quote
++from urllib.request import urlopen
++
++from voicefolio import server
++from voicefolio.catalog import Catalog
++from voicefolio.models import VoiceEntry, VoiceRef
++
++
++def _entry(voice_id: str, digest: str) -> VoiceEntry:
++    return VoiceEntry(
++        ref=VoiceRef("demo", voice_id),
++        dataset=voice_id.split("/", 1)[0],
++        variant="original",
++        format="wav",
++        url=f"https://example.invalid/{voice_id}.wav",
++        size=1,
++        sha256=digest,
++        source_repository="example/voices",
++        source_revision="a" * 40,
++        source_path=f"{voice_id}.wav",
++        license="CC0-1.0",
++    )
++
++
++@contextmanager
++def _running_server(catalog: Catalog) -> Iterator[str]:
++    httpd = HTTPServer(("127.0.0.1", 0), server._handler_for(catalog, cache_dir=None, offline=False))
++    thread = threading.Thread(target=httpd.serve_forever, daemon=True)
++    thread.start()
++    try:
++        yield f"http://127.0.0.1:{httpd.server_port}"
++    finally:
++        httpd.shutdown()
++        thread.join()
++        httpd.server_close()
++
++
++def test_browser_page_and_voice_filters_are_served_locally() -> None:
++    catalog = Catalog(
++        [
++            _entry("dataset/alpha", "a" * 64),
++            _entry("dataset/beta", "b" * 64),
++        ]
++    )
++    with _running_server(catalog) as base_url:
++        with urlopen(f"{base_url}/") as response:
++            page = response.read().decode("utf-8")
++            assert response.headers["Content-Type"].startswith("text/html")
++        with urlopen(f"{base_url}/api/voices?query=alpha") as response:
++            voices = json.loads(response.read())
++
++    assert "<audio id=\"player\"" in page
++    assert len(voices) == 1
++    assert voices[0]["ref"] == "demo:dataset/alpha"
++
++
++def test_browser_audio_route_uses_verified_fetch(monkeypatch, tmp_path: Path) -> None:
++    entry = _entry("dataset/alpha", "a" * 64)
++    catalog = Catalog([entry])
++    audio_path = tmp_path / "alpha.wav"
++    audio_path.write_bytes(b"verified wav")
++    fetch_calls = []
++
++    def fake_fetch(actual_entry, *, cache_dir, offline):
++        fetch_calls.append((actual_entry, cache_dir, offline))
++        return SimpleNamespace(path=audio_path)
++
++    monkeypatch.setattr(server, "fetch", fake_fetch)
++    with (
++        _running_server(catalog) as base_url,
++        urlopen(f"{base_url}/api/audio?ref={quote(str(entry.ref))}") as response,
++    ):
++            payload = response.read()
++            assert response.headers["Content-Type"] == "audio/wav"
++
++    assert payload == b"verified wav"
++    assert fetch_calls == [(entry, None, False)]
++
++
++def test_browser_server_binds_loopback_opens_page_and_closes(monkeypatch) -> None:
++    calls = {}
++
++    class FakeServer:
++        server_port = 8765
++
++        def __init__(self, address, handler):
++            calls["address"] = address
++            calls["handler"] = handler
++
++        def serve_forever(self):
++            raise KeyboardInterrupt
++
++        def server_close(self):
++            calls["closed"] = True
++
++    opened = []
++    monkeypatch.setattr(server, "HTTPServer", FakeServer)
++    monkeypatch.setattr(server.webbrowser, "open", opened.append)
++
++    server.serve_browser(Catalog(), port=8765)
++
++    assert calls["address"] == ("127.0.0.1", 8765)
++    assert calls["closed"] is True
++    assert opened == ["http://127.0.0.1:8765/"]
+diff --git a/voicefolio/cli.py b/voicefolio/cli.py
+index f8e8010..55f5c7f 100644
+--- a/voicefolio/cli.py
++++ b/voicefolio/cli.py
+@@ -2,8 +2,10 @@ from __future__ import annotations
+
+ import json
+ import shutil
++from collections.abc import Callable
++from functools import wraps
+ from pathlib import Path
+-from typing import Annotated
++from typing import Annotated, ParamSpec
+
+ import typer
+
+@@ -12,8 +14,9 @@ from .cache import fetch, sha256_file
+ from .catalog import Catalog, load_catalog
+ from .integration import managed_reference
+ from .migration import migrate_pocket_catalog
+-from .models import CatalogError, PlaybackError
++from .models import CatalogError, PlaybackError, VoicefolioError
+ from .playback import play_wav
++from .server import serve_browser
+ from .sources.kyutai_tts_voices import (
+     DEFAULT_REPOSITORY,
+     DEFAULT_REVISION,
+@@ -28,6 +31,21 @@ app = typer.Typer(
+ )
+
+
++P = ParamSpec("P")
++
++
++def _handle_voicefolio_errors(function: Callable[P, None]) -> Callable[P, None]:
++    @wraps(function)
++    def wrapped(*args: P.args, **kwargs: P.kwargs) -> None:
++        try:
++            function(*args, **kwargs)
++        except VoicefolioError as exc:
++            typer.echo(f"Error: {exc}", err=True)
++            raise typer.Exit(code=1) from exc
++
++    return wrapped
++
++
+ catalog_app = typer.Typer(no_args_is_help=True, help="Build and verify source catalogs.")
+ app.add_typer(catalog_app, name="catalog")
+
+@@ -92,6 +110,7 @@ def version_command() -> None:
+
+
+ @app.command("list")
++@_handle_voicefolio_errors
+ def list_command(
+     catalog: Annotated[
+         list[Path] | None, typer.Option("--catalog", help="Additional catalog JSON.")
+@@ -114,6 +133,7 @@ def list_command(
+
+
+ @app.command("show")
++@_handle_voicefolio_errors
+ def show_command(
+     ref: str,
+     catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
+@@ -124,6 +144,7 @@ def show_command(
+
+
+ @app.command("fetch")
++@_handle_voicefolio_errors
+ def fetch_command(
+     ref: str,
+     catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
+@@ -136,6 +157,7 @@ def fetch_command(
+
+
+ @app.command("preview")
++@_handle_voicefolio_errors
+ def preview_command(
+     ref: str,
+     catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
+@@ -156,7 +178,83 @@ def preview_command(
+         raise typer.Exit(code=1) from exc
+
+
++@app.command("browse")
++@_handle_voicefolio_errors
++def browse_command(
++    catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
++    query: Annotated[str | None, typer.Option("--query", "-q")] = None,
++    dataset: Annotated[str | None, typer.Option()] = None,
++    license: Annotated[str | None, typer.Option()] = None,
++    variant: Annotated[str | None, typer.Option()] = None,
++    page_size: Annotated[int, typer.Option(help="Voices shown per page.")] = 20,
++    cache_dir: Annotated[Path | None, typer.Option()] = None,
++    offline: Annotated[bool, typer.Option()] = False,
++    device: Annotated[str | None, typer.Option("--device")] = None,
++) -> None:
++    """Interactively filter, page through, and preview catalog voices."""
++    if page_size < 1:
++        raise typer.BadParameter("page-size must be positive")
++
++    active = _catalog(catalog)
++    page = 0
++    while True:
++        rows = active.list(dataset=dataset, license=license, variant=variant, query=query)
++        page_count = max(1, (len(rows) + page_size - 1) // page_size)
++        page = min(page, page_count - 1)
++        page_rows = rows[page * page_size : (page + 1) * page_size]
++
++        typer.echo(f"Voicefolio — {len(rows)} voices")
++        typer.echo(f"Filter: {query or '<none>'}  Page {page + 1}/{page_count}")
++        for number, entry in enumerate(page_rows, start=1):
++            typer.echo(f"{number:>2} {entry.ref}  {entry.license}")
++        typer.echo("[number] play  / search  n next  p previous  q quit")
++
++        command = typer.prompt(">").strip()
++        if command.lower() == "q":
++            return
++        if command.lower() == "n":
++            page = min(page + 1, page_count - 1)
++            continue
++        if command.lower() == "p":
++            page = max(page - 1, 0)
++            continue
++        if command == "/" or command.startswith("/"):
++            query = typer.prompt("Search (empty clears)").strip() if command == "/" else command[1:].strip()
++            query = query or None
++            page = 0
++            continue
++        if not command.isdecimal() or not 1 <= int(command) <= len(page_rows):
++            typer.echo("Choose a listed number, /search, n, p, or q.", err=True)
++            continue
++
++        entry = page_rows[int(command) - 1]
++        playback_device: str | int | None = device
++        if device is not None and device.isdecimal():
++            playback_device = int(device)
++        try:
++            resolved = fetch(entry, cache_dir=cache_dir, offline=offline)
++            typer.echo(f"Playing {entry.ref}")
++            play_wav(resolved.path, device=playback_device)
++        except VoicefolioError as exc:
++            typer.echo(f"Error: {exc}", err=True)
++
++
++@app.command("browse-web")
++@_handle_voicefolio_errors
++def browse_web_command(
++    catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
++    cache_dir: Annotated[Path | None, typer.Option()] = None,
++    offline: Annotated[bool, typer.Option()] = False,
++    port: Annotated[int, typer.Option(help="Loopback HTTP port; 0 selects an available port.")] = 0,
++) -> None:
++    """Open the minimal local browser addon for catalog search and preview."""
++    if not 0 <= port <= 65535:
++        raise typer.BadParameter("port must be between 0 and 65535")
++    serve_browser(_catalog(catalog), cache_dir=cache_dir, offline=offline, port=port)
++
++
+ @app.command("export")
++@_handle_voicefolio_errors
+ def export_command(
+     ref: str,
+     output: Annotated[Path, typer.Option("--output", "-o")],
+@@ -202,6 +300,7 @@ def export_command(
+
+
+ @app.command("binding")
++@_handle_voicefolio_errors
+ def binding_command(
+     ref: str,
+     renderer: Annotated[str, typer.Option()] = "pocket",
+@@ -227,6 +326,7 @@ def binding_command(
+
+
+ @app.command("validate")
++@_handle_voicefolio_errors
+ def validate_command(
+     catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
+ ) -> None:
+@@ -236,6 +336,7 @@ def validate_command(
+
+
+ @app.command("migrate-pocket")
++@_handle_voicefolio_errors
+ def migrate_pocket_command(
+     source: Path,
+     output: Annotated[Path, typer.Option("--output", "-o")],
+diff --git a/voicefolio/playback.py b/voicefolio/playback.py
+index d298d59..dcdae8d 100644
+--- a/voicefolio/playback.py
++++ b/voicefolio/playback.py
+@@ -8,8 +8,8 @@ from .models import PlaybackError
+ def play_wav(path: str | Path, *, device: str | int | None = None) -> None:
+     """Synchronously play a local WAV through the native sounddevice backend."""
+     try:
+-        import sounddevice as sd  # type: ignore[import-untyped]
+-        import soundfile as sf  # type: ignore[import-untyped]
++        import sounddevice as sd
++        import soundfile as sf
+     except (ImportError, OSError) as exc:
+         raise PlaybackError("Install voicefolio[playback] for native preview.") from exc
+
+diff --git a/voicefolio/resources/web/index.html b/voicefolio/resources/web/index.html
+new file mode 100644
+index 0000000..0c1ab3b
+--- /dev/null
++++ b/voicefolio/resources/web/index.html
+@@ -0,0 +1,81 @@
++<!doctype html>
++<html lang="en">
++  <head>
++    <meta charset="utf-8" />
++    <meta name="viewport" content="width=device-width, initial-scale=1" />
++    <title>Voicefolio</title>
++    <style>
++      body { font: 16px system-ui, sans-serif; margin: 2rem auto; max-width: 60rem; padding: 0 1rem; }
++      form { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1rem 0; }
++      label { display: grid; gap: .25rem; }
++      input, select, button { font: inherit; padding: .4rem; }
++      li { border-bottom: 1px solid #ddd; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; padding: .7rem 0; }
++      .meta { color: #555; }
++      #status { min-height: 1.5rem; }
++      audio { display: block; margin-top: 1rem; width: 100%; }
++    </style>
++  </head>
++  <body>
++    <h1>Voicefolio</h1>
++    <p>Browse the packaged catalog and preview verified voices from your local cache or upstream.</p>
++    <form id="filters">
++      <label>Search <input name="query" type="search" /></label>
++      <label>Dataset <input name="dataset" /></label>
++      <label>License <input name="license" /></label>
++      <label>Variant
++        <select name="variant">
++          <option value="">All</option>
++          <option value="original">Original</option>
++          <option value="enhanced">Enhanced</option>
++        </select>
++      </label>
++      <button type="submit">Filter</button>
++    </form>
++    <p id="status" role="status"></p>
++    <ul id="voices"></ul>
++    <h2>Preview</h2>
++    <audio id="player" controls></audio>
++    <script>
++      const form = document.querySelector("#filters");
++      const list = document.querySelector("#voices");
++      const status = document.querySelector("#status");
++      const player = document.querySelector("#player");
++
++      async function loadVoices(event) {
++        if (event) event.preventDefault();
++        status.textContent = "Loading catalog…";
++        const params = new URLSearchParams(new FormData(form));
++        try {
++          const response = await fetch(`/api/voices?${params}`);
++          const voices = await response.json();
++          if (!response.ok) throw new Error(voices.error || "Catalog request failed");
++          list.replaceChildren();
++          for (const voice of voices) {
++            const row = document.createElement("li");
++            const details = document.createElement("span");
++            details.textContent = voice.ref;
++            const meta = document.createElement("span");
++            meta.className = "meta";
++            meta.textContent = `${voice.dataset} · ${voice.variant} · ${voice.license}`;
++            const button = document.createElement("button");
++            button.type = "button";
++            button.textContent = "Play";
++            button.addEventListener("click", () => {
++              player.src = `/api/audio?ref=${encodeURIComponent(voice.ref)}`;
++              player.play().catch(() => { status.textContent = "Preview could not be started."; });
++            });
++            row.append(details, meta, button);
++            list.append(row);
++          }
++          status.textContent = `${voices.length} voices`;
++        } catch (error) {
++          status.textContent = error.message;
++        }
++      }
++
++      form.addEventListener("submit", loadVoices);
++      form.addEventListener("change", loadVoices);
++      loadVoices();
++    </script>
++  </body>
++</html>
+diff --git a/voicefolio/server.py b/voicefolio/server.py
+new file mode 100644
+index 0000000..b6bb3c5
+--- /dev/null
++++ b/voicefolio/server.py
+@@ -0,0 +1,128 @@
++from __future__ import annotations
++
++import json
++import webbrowser
++from http.server import BaseHTTPRequestHandler, HTTPServer
++from importlib.resources import files
++from pathlib import Path
++from typing import Any
++from urllib.parse import parse_qs, urlsplit
++
++from .cache import fetch
++from .catalog import Catalog
++from .models import VoicefolioError, VoiceNotFoundError
++
++
++def _handler_for(
++    catalog: Catalog, *, cache_dir: Path | None, offline: bool
++) -> type[BaseHTTPRequestHandler]:
++    page = (
++        files("voicefolio")
++        .joinpath("resources")
++        .joinpath("web")
++        .joinpath("index.html")
++        .read_bytes()
++    )
++
++    class VoicefolioHandler(BaseHTTPRequestHandler):
++        def do_GET(self) -> None:
++            parsed = urlsplit(self.path)
++            params = parse_qs(parsed.query)
++            if parsed.path == "/":
++                self._send_bytes(200, page, "text/html; charset=utf-8")
++                return
++            if parsed.path == "/api/voices":
++                entries = catalog.list(
++                    dataset=_first(params, "dataset"),
++                    license=_first(params, "license"),
++                    variant=_first(params, "variant"),
++                    query=_first(params, "query"),
++                )
++                self._send_json(
++                    200,
++                    [
++                        {
++                            "ref": str(entry.ref),
++                            "dataset": entry.dataset,
++                            "variant": entry.variant,
++                            "license": entry.license,
++                        }
++                        for entry in entries
++                    ],
++                )
++                return
++            if parsed.path == "/api/audio":
++                ref = _first(params, "ref")
++                if not ref:
++                    self._send_json(400, {"error": "ref is required"})
++                    return
++                self._send_audio(ref)
++                return
++            self._send_json(404, {"error": "not found"})
++
++        def _send_audio(self, ref: str) -> None:
++            try:
++                resolved = fetch(catalog.get(ref), cache_dir=cache_dir, offline=offline)
++                size = resolved.path.stat().st_size
++                self.send_response(200)
++                self.send_header("Content-Type", "audio/wav")
++                self.send_header("Content-Length", str(size))
++                self.send_header("Cache-Control", "no-store")
++                self.end_headers()
++                with resolved.path.open("rb") as audio:
++                    while chunk := audio.read(64 * 1024):
++                        self.wfile.write(chunk)
++            except VoiceNotFoundError as exc:
++                self._send_json(404, {"error": str(exc)})
++            except VoicefolioError as exc:
++                self._send_json(503, {"error": str(exc)})
++            except OSError as exc:
++                self._send_json(500, {"error": f"cannot read cached audio: {exc}"})
++
++        def _send_json(self, status: int, payload: Any) -> None:
++            self._send_bytes(
++                status,
++                json.dumps(payload, ensure_ascii=False).encode("utf-8"),
++                "application/json; charset=utf-8",
++            )
++
++        def _send_bytes(self, status: int, payload: bytes, content_type: str) -> None:
++            self.send_response(status)
++            self.send_header("Content-Type", content_type)
++            self.send_header("Content-Length", str(len(payload)))
++            self.send_header("Cache-Control", "no-store")
++            self.end_headers()
++            self.wfile.write(payload)
++
++        def log_message(self, format: str, *args: Any) -> None:
++            return
++
++    return VoicefolioHandler
++
++
++def _first(params: dict[str, list[str]], name: str) -> str | None:
++    values = params.get(name)
++    return values[0] if values else None
++
++
++def serve_browser(
++    catalog: Catalog,
++    *,
++    cache_dir: Path | None = None,
++    offline: bool = False,
++    port: int = 0,
++) -> None:
++    """Serve the packaged browser UI on loopback until interrupted."""
++    server = HTTPServer(
++        ("127.0.0.1", port),
++        _handler_for(catalog, cache_dir=cache_dir, offline=offline),
++    )
++    url = f"http://127.0.0.1:{server.server_port}/"
++    print(f"Voicefolio browser: {url} (press Ctrl-C to stop)", flush=True)
++    webbrowser.open(url)
++    try:
++        server.serve_forever()
++    except KeyboardInterrupt:
++        pass
++    finally:
++        server.server_close()

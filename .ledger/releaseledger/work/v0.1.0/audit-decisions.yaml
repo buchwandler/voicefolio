@@ -1,0 +1,238 @@
+rows:
+  - sha: 6786273b9629130b285c7a187331a63be959930e
+    inspected: true
+    inspected_paths:
+      - .codecrate.toml
+      - .gitignore
+      - .ledger/ledger.toml
+      - .ledger/releaseledger/.ledger-project.toml
+      - .ledger/releaseledger/config.toml
+      - .ledger/releaseledger/data/.ledger-project.toml
+      - .ledger/taskledger/.ledger-project.toml
+      - .ledger/taskledger/config.toml
+      - .pre-commit-config.yaml
+      - README.md
+      - docs/architecture.md
+      - docs/voicerender-integration.md
+      - examples/renderprofile-binding.toml
+      - pyproject.toml
+      - tests/test_cache.py
+      - tests/test_catalog.py
+      - tests/test_integration.py
+      - tests/test_migration.py
+      - tests/test_models.py
+      - tests/test_packaging.py
+      - voicefolio/__init__.py
+      - voicefolio/__main__.py
+      - voicefolio/cache.py
+      - voicefolio/catalog.py
+      - voicefolio/cli.py
+      - voicefolio/integration.py
+      - voicefolio/migration.py
+      - voicefolio/models.py
+      - voicefolio/py.typed
+      - voicefolio/resources/catalogs/kyutai-tts-voices.sample.json
+      - voicefolio/resources/web/index.html
+      - voicefolio/server.py
+    observed_behavior: "Introduced the Voicefolio package with a packaged voice catalog, verified caching and export, managed-reference integration, migration tooling, CLI commands, and initial tests."
+    public_impact: public
+    decision: accepted
+    target_entry_key: null
+    target_entry_id: null
+    notes: ""
+    stale: false
+  - sha: 05a06245c60e11d9a4a310320f9902b4f7a37556
+    inspected: true
+    inspected_paths:
+      - .codecrate.toml
+      - tests/test_catalog.py
+      - tests/test_packaging.py
+      - voicefolio/__init__.py
+      - voicefolio/cache.py
+      - voicefolio/catalog.py
+      - voicefolio/cli.py
+      - voicefolio/migration.py
+      - voicefolio/models.py
+      - voicefolio/server.py
+    observed_behavior: "Applied formatting and packaging cleanup without changing the user-facing product contract."
+    public_impact: internal
+    decision: internal
+    target_entry_key: null
+    target_entry_id: null
+    notes: ""
+    stale: false
+  - sha: 99d0d904b02f97d2c30c1866d45dd37843479eac
+    inspected: true
+    inspected_paths:
+      - README.md
+      - docs/architecture.md
+      - docs/voicerender-integration.md
+      - pyproject.toml
+      - tests/test_catalog.py
+      - tests/test_cli.py
+      - tests/test_integration.py
+      - tests/test_packaging.py
+      - tests/test_playback.py
+      - voicefolio/__init__.py
+      - voicefolio/catalog.py
+      - voicefolio/cli.py
+      - voicefolio/models.py
+      - voicefolio/playback.py
+      - voicefolio/resources/catalogs/kyutai-tts-voices.json
+      - voicefolio/resources/catalogs/kyutai-tts-voices.sample.json
+      - voicefolio/resources/web/index.html
+      - voicefolio/server.py
+    observed_behavior: "Added native WAV playback with selectable output devices, a verified fetch-versus-preview workflow, and a complete packaged catalog snapshot."
+    public_impact: public
+    decision: accepted
+    target_entry_key: null
+    target_entry_id: null
+    notes: ""
+    stale: false
+  - sha: cc51eee3ecc89d8305156c9b02394ff9f6b87f2d
+    inspected: true
+    inspected_paths:
+      - voicefolio/__init__.py
+    observed_behavior: "Adjusted the package version export during maintenance cleanup."
+    public_impact: internal
+    decision: internal
+    target_entry_key: null
+    target_entry_id: null
+    notes: ""
+    stale: false
+  - sha: b6af37bc3767aa03a7f8314a2e0a2f7f534b140b
+    inspected: true
+    inspected_paths:
+      - .github/workflows/ci.yml
+      - .github/workflows/codecov.yml
+      - .github/workflows/pre-commit.yml
+      - .github/workflows/python-publish.yml
+      - .github/workflows/refresh-kyutai-catalog.yml
+      - README.md
+      - docs/architecture.md
+      - docs/voicerender-integration.md
+      - pyproject.toml
+      - tests/fixtures/kyutai-voice-baseline.json
+      - tests/test_cli.py
+      - tests/test_fetch_contract.py
+      - tests/test_kyutai_source.py
+      - tests/test_packaging.py
+      - tests/test_playback.py
+      - tests/test_voice_source.py
+      - voicefolio/__init__.py
+      - voicefolio/cache.py
+      - voicefolio/cli.py
+      - voicefolio/integration.py
+      - voicefolio/models.py
+      - voicefolio/playback.py
+      - voicefolio/resources/sources/kyutai-tts-voices-licenses.json
+      - voicefolio/sources/__init__.py
+      - voicefolio/sources/huggingface.py
+      - voicefolio/sources/kyutai_tts_voices.py
+    observed_behavior: "Added the authoritative Kyutai catalog pipeline with license policy checks, immutable reference preservation, pinned source integrity, typed fetch errors, progress reporting, and managed-reference preflight validation."
+    public_impact: public
+    decision: accepted
+    target_entry_key: null
+    target_entry_id: null
+    notes: ""
+    stale: false
+  - sha: 9ba5a28785801923368416a03d4f588eac5536f8
+    inspected: true
+    inspected_paths:
+      - pyproject.toml
+      - tests/test_packaging.py
+    observed_behavior: "Adjusted the tomli packaging dependency and its packaging test."
+    public_impact: internal
+    decision: internal
+    target_entry_key: null
+    target_entry_id: null
+    notes: ""
+    stale: false
+  - sha: 4d62ecca4d519ea4c57f1b5cdfcbcdcda0a0a1ad
+    inspected: true
+    inspected_paths:
+      - pyproject.toml
+    observed_behavior: "Added the required tomli dependency for supported Python environments."
+    public_impact: internal
+    decision: internal
+    target_entry_key: null
+    target_entry_id: null
+    notes: ""
+    stale: false
+  - sha: ce1566c9c7adae1a3436afb42ff23bc441d05f07
+    inspected: true
+    inspected_paths:
+      - pyproject.toml
+    observed_behavior: "Corrected the tomli dependency declaration for packaging."
+    public_impact: internal
+    decision: internal
+    target_entry_key: null
+    target_entry_id: null
+    notes: ""
+    stale: false
+  - sha: 72f27dbe0d334687406b6ecadf5e47fa4d036c3b
+    inspected: true
+    inspected_paths:
+      - pyproject.toml
+    observed_behavior: "Updated mypy configuration and type-checking settings."
+    public_impact: internal
+    decision: internal
+    target_entry_key: null
+    target_entry_id: null
+    notes: ""
+    stale: false
+  - sha: cc7c16ea1b7db7d0b09cfc787906e69852df798e
+    inspected: true
+    inspected_paths:
+      - .codecrate.toml
+      - .github/workflows/ci.yml
+      - .github/workflows/codecov.yml
+      - .github/workflows/pre-commit.yml
+      - .github/workflows/python-publish.yml
+      - .github/workflows/refresh-kyutai-catalog.yml
+      - README.md
+      - pyproject.toml
+      - tests/test_catalog.py
+      - tests/test_cli.py
+      - tests/test_kyutai_source.py
+      - tests/test_packaging.py
+      - tests/test_server.py
+      - voicefolio/cli.py
+      - voicefolio/playback.py
+      - voicefolio/resources/web/index.html
+      - voicefolio/server.py
+    observed_behavior: "Added interactive terminal browsing, a loopback browser catalog UI, filtered catalog endpoints, and consistent CLI error handling."
+    public_impact: public
+    decision: accepted
+    target_entry_key: null
+    target_entry_id: null
+    notes: ""
+    stale: false
+  - sha: 41f88fdc619665f3627a784347b3d88bf4f1301f
+    inspected: true
+    inspected_paths:
+      - .github/workflows/python-publish.yml
+      - .pre-commit-config.yaml
+      - README.md
+      - docs/architecture.md
+      - tests/test_catalog.py
+      - tests/test_cli.py
+      - tests/test_kyutai_source.py
+      - tests/test_models.py
+      - tests/test_packaging.py
+      - tests/test_server.py
+      - voicefolio/catalog.py
+      - voicefolio/cli.py
+      - voicefolio/models.py
+      - voicefolio/resources/catalogs/kyutai-tts-voices.json
+      - voicefolio/resources/sources/kyutai-tts-voices-languages.json
+      - voicefolio/resources/web/index.html
+      - voicefolio/server.py
+      - voicefolio/sources/kyutai_tts_voices.py
+    observed_behavior: "Added authoritative language metadata and filtering to catalog listing, terminal browsing, browser endpoints, and catalog validation."
+    public_impact: public
+    decision: accepted
+    target_entry_key: null
+    target_entry_id: null
+    notes: ""
+    stale: false

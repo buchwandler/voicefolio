@@ -1,0 +1,114 @@
+schema: releaseledger.entry-batch.v1
+operation: create
+schema_version: 1
+object_type: release_entry_batch
+release_version: v0.1.0
+git_base_ref: 550f254a91a42dc4c9404e3ba5c6e6d6ad820bc6
+git_base_sha: 550f254a91a42dc4c9404e3ba5c6e6d6ad820bc6
+git_head_ref: 41f88fdc619665f3627a784347b3d88bf4f1301f
+git_head_sha: 41f88fdc619665f3627a784347b3d88bf4f1301f
+include_merges: nontrivial
+entries:
+  - kind: added
+    summary: "Added the Voicefolio catalog, verified cache, export, managed references, migration tooling, and CLI"
+    status: accepted
+    source_refs:
+      - git:6786273b9629130b285c7a187331a63be959930e
+    paths:
+      - README.md
+      - pyproject.toml
+      - voicefolio/cache.py
+      - voicefolio/catalog.py
+      - voicefolio/cli.py
+      - voicefolio/integration.py
+      - voicefolio/models.py
+      - voicefolio/migration.py
+    sources:
+      - git:6786273b9629130b285c7a187331a63be959930e
+    contributors:
+      - "@holgern"
+  - kind: added
+    summary: "Added native WAV preview with selectable output devices and a fetch-only path for verified catalog assets"
+    status: accepted
+    source_refs:
+      - git:99d0d904b02f97d2c30c1866d45dd37843479eac
+    paths:
+      - README.md
+      - pyproject.toml
+      - voicefolio/cli.py
+      - voicefolio/playback.py
+      - voicefolio/catalog.py
+    sources:
+      - git:99d0d904b02f97d2c30c1866d45dd37843479eac
+    contributors:
+      - "@holgern"
+  - kind: added
+    summary: "Added authoritative Kyutai catalog refresh, immutable IDs, pinned integrity, and preflight validation"
+    status: accepted
+    source_refs:
+      - git:b6af37bc3767aa03a7f8314a2e0a2f7f534b140b
+    paths:
+      - README.md
+      - voicefolio/cache.py
+      - voicefolio/catalog.py
+      - voicefolio/integration.py
+      - voicefolio/sources/kyutai_tts_voices.py
+    sources:
+      - git:b6af37bc3767aa03a7f8314a2e0a2f7f534b140b
+    contributors:
+      - "@holgern"
+  - kind: added
+    summary: "Added interactive terminal browsing and a loopback browser interface for filtered catalog search and verified previews"
+    status: accepted
+    source_refs:
+      - git:cc7c16ea1b7db7d0b09cfc787906e69852df798e
+    paths:
+      - README.md
+      - voicefolio/cli.py
+      - voicefolio/resources/web/index.html
+      - voicefolio/server.py
+    sources:
+      - git:cc7c16ea1b7db7d0b09cfc787906e69852df798e
+    contributors:
+      - "@holgern"
+  - kind: added
+    summary: "Added language metadata and filtering across catalog APIs, CLI listing, browsing, and validation"
+    status: accepted
+    source_refs:
+      - git:41f88fdc619665f3627a784347b3d88bf4f1301f
+    paths:
+      - README.md
+      - voicefolio/catalog.py
+      - voicefolio/cli.py
+      - voicefolio/models.py
+      - voicefolio/server.py
+      - voicefolio/sources/kyutai_tts_voices.py
+    sources:
+      - git:41f88fdc619665f3627a784347b3d88bf4f1301f
+    contributors:
+      - "@holgern"
+  - kind: internal
+    summary: "Improved packaging, dependency declarations, formatting, and type-checking configuration"
+    status: accepted
+    internal: true
+    source_refs:
+      - git:05a06245c60e11d9a4a310320f9902b4f7a37556
+      - git:cc51eee3ecc89d8305156c9b02394ff9f6b87f2d
+      - git:9ba5a28785801923368416a03d4f588eac5536f8
+      - git:4d62ecca4d519ea4c57f1b5cdfcbcdcda0a0a1ad
+      - git:ce1566c9c7adae1a3436afb42ff23bc441d05f07
+      - git:72f27dbe0d334687406b6ecadf5e47fa4d036c3b
+    paths:
+      - pyproject.toml
+      - .codecrate.toml
+      - voicefolio/__init__.py
+      - tests/test_packaging.py
+    sources:
+      - git:05a06245c60e11d9a4a310320f9902b4f7a37556
+      - git:cc51eee3ecc89d8305156c9b02394ff9f6b87f2d
+      - git:9ba5a28785801923368416a03d4f588eac5536f8
+      - git:4d62ecca4d519ea4c57f1b5cdfcbcdcda0a0a1ad
+      - git:ce1566c9c7adae1a3436afb42ff23bc441d05f07
+      - git:72f27dbe0d334687406b6ecadf5e47fa4d036c3b
+    contributors:
+      - "@holgern"
