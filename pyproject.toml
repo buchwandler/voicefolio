@@ -33,6 +33,7 @@ playback = [
 dev = [
   "build>=1.2",
   "pytest>=8",
+  "tomli>=2.0; python_version < '3.11'",
   "ruff>=0.12",
   "mypy>=1.13",
   "setuptools-scm>=9.2",
