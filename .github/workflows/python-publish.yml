@@ -17,7 +17,7 @@ jobs:
       - name: Check out release
         uses: actions/checkout@v7
 
-      with:
+        with:
         fetch-depth: 0
 
       - name: Set up Python
@@ -77,6 +77,8 @@ jobs:
                   "voicefolio/py.typed",
                   "voicefolio/resources/catalogs/kyutai-tts-voices.json",
                   "voicefolio/resources/sources/kyutai-tts-voices-licenses.json",
+                  "voicefolio/resources/sources/kyutai-tts-voices-languages.json",
+                  "voicefolio/resources/web/index.html",
               }
               assert expected <= names
           PY

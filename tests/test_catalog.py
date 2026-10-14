@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 from voicefolio.catalog import Catalog
@@ -77,3 +79,96 @@ def test_duplicate_ref_with_different_digest_is_rejected():
     second = VoiceEntry(sha256="1" * 64, **common)
     with pytest.raises(CatalogError):
         Catalog([first, second])
+
+
+def _language_entry(
+    ref: str,
+    *,
+    dataset: str,
+    language: str,
+    variant: str = "original",
+    license: str = "CC0-1.0",
+) -> VoiceEntry:
+    return VoiceEntry(
+        ref=VoiceRef.parse(f"test:{ref}"),
+        dataset=dataset,
+        variant=variant,
+        format="wav",
+        url=f"https://example.invalid/{ref}.wav",
+        size=1,
+        sha256="0" * 64,
+        source_repository="test/voices",
+        source_revision="revision",
+        source_path=f"{ref}.wav",
+        license=license,
+        language=language,
+    )
+
+
+def test_catalog_filters_by_language_and_composes_filters_in_stable_order():
+    catalog = Catalog(
+        [
+            _language_entry(
+                "z-en-enhanced",
+                dataset="set-a",
+                language="en",
+                variant="enhanced",
+                license="CC0-1.0",
+            ),
+            _language_entry("a-fr", dataset="set-a", language="fr", license="CC-BY-4.0"),
+            _language_entry("b-und", dataset="set-b", language="und"),
+            _language_entry("c-en", dataset="set-a", language="en", license="CC-BY-4.0"),
+        ]
+    )
+
+    assert [entry.language for entry in catalog.list(language="en")] == ["en", "en"]
+    assert [entry.ref.id for entry in catalog.list(language="fr")] == ["a-fr"]
+    assert [entry.ref.id for entry in catalog.list(language="und")] == ["b-und"]
+    assert [entry.ref.id for entry in catalog.list(language="en")] == [
+        "c-en",
+        "z-en-enhanced",
+    ]
+    assert [
+        entry.ref.id
+        for entry in catalog.list(
+            language="en",
+            dataset="set-a",
+            query="c-en",
+            variant="original",
+            license="CC-BY-4.0",
+        )
+    ] == ["c-en"]
+
+
+def test_schema_one_catalog_row_without_language_defaults_to_und(tmp_path):
+    path = tmp_path / "legacy-catalog.json"
+    path.write_text(
+        json.dumps(
+            {
+                "schema": 1,
+                "kind": "voicefolio-catalog",
+                "namespace": "test",
+                "voices": [
+                    {
+                        "id": "legacy/voice",
+                        "dataset": "legacy",
+                        "variant": "original",
+                        "format": "wav",
+                        "url": "https://example.invalid/legacy.wav",
+                        "size": 1,
+                        "sha256": "0" * 64,
+                        "source_repository": "test/voices",
+                        "source_revision": "revision",
+                        "source_path": "legacy.wav",
+                        "license": "CC0-1.0",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    entry = Catalog.from_paths([path]).get("test:legacy/voice")
+
+    assert entry.language == "und"
+    assert entry.to_dict()["language"] == "und"

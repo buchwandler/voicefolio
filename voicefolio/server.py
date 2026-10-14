@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import webbrowser
+from collections import Counter
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from importlib.resources import files
 from pathlib import Path
@@ -31,9 +32,25 @@ def _handler_for(
             if parsed.path == "/":
                 self._send_bytes(200, page, "text/html; charset=utf-8")
                 return
+            if parsed.path == "/api/languages":
+                counts = Counter(entry.language for entry in catalog.list())
+                labels = {"en": "English", "fr": "French", "und": "Unknown"}
+                self._send_json(
+                    200,
+                    [
+                        {
+                            "value": language,
+                            "label": labels.get(language, language),
+                            "count": count,
+                        }
+                        for language, count in sorted(counts.items())
+                    ],
+                )
+                return
             if parsed.path == "/api/voices":
                 entries = catalog.list(
                     dataset=_first(params, "dataset"),
+                    language=_first(params, "language"),
                     license=_first(params, "license"),
                     variant=_first(params, "variant"),
                     query=_first(params, "query"),
@@ -44,6 +61,7 @@ def _handler_for(
                         {
                             "ref": str(entry.ref),
                             "dataset": entry.dataset,
+                            "language": entry.language,
                             "variant": entry.variant,
                             "license": entry.license,
                         }

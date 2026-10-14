@@ -116,6 +116,7 @@ def list_command(
         list[Path] | None, typer.Option("--catalog", help="Additional catalog JSON.")
     ] = None,
     dataset: Annotated[str | None, typer.Option()] = None,
+    language: Annotated[str | None, typer.Option("--language", "-l")] = None,
     license: Annotated[str | None, typer.Option()] = None,
     variant: Annotated[str | None, typer.Option()] = None,
     query: Annotated[str | None, typer.Option("--query", "-q")] = None,
@@ -123,13 +124,18 @@ def list_command(
 ) -> None:
     """List stable voice IDs without downloading audio."""
     rows = _catalog(catalog).list(
-        dataset=dataset, license=license, variant=variant, query=query
+        dataset=dataset,
+        language=language,
+        license=license,
+        variant=variant,
+        query=query,
     )
     if json_output:
         typer.echo(json.dumps([row.to_dict() for row in rows], indent=2))
         return
+    typer.echo("REF\tLANGUAGE\tLICENSE\tVARIANT\tDATASET")
     for row in rows:
-        typer.echo(f"{row.ref}\t{row.license}\t{row.variant}\t{row.dataset}")
+        typer.echo(f"{row.ref}\t{row.language}\t{row.license}\t{row.variant}\t{row.dataset}")
 
 
 @app.command("show")
@@ -184,6 +190,7 @@ def browse_command(
     catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
     query: Annotated[str | None, typer.Option("--query", "-q")] = None,
     dataset: Annotated[str | None, typer.Option()] = None,
+    language: Annotated[str | None, typer.Option("--language", "-l")] = None,
     license: Annotated[str | None, typer.Option()] = None,
     variant: Annotated[str | None, typer.Option()] = None,
     page_size: Annotated[int, typer.Option(help="Voices shown per page.")] = 20,
@@ -196,18 +203,34 @@ def browse_command(
         raise typer.BadParameter("page-size must be positive")
 
     active = _catalog(catalog)
+    available_languages = sorted({entry.language for entry in active.list()} | {"und"})
+    if language is not None and language not in available_languages:
+        available = ", ".join(available_languages)
+        raise typer.BadParameter(f"unknown language {language!r}. Available: {available}.")
+
     page = 0
     while True:
-        rows = active.list(dataset=dataset, license=license, variant=variant, query=query)
+        rows = active.list(
+            dataset=dataset,
+            language=language,
+            license=license,
+            variant=variant,
+            query=query,
+        )
         page_count = max(1, (len(rows) + page_size - 1) // page_size)
         page = min(page, page_count - 1)
         page_rows = rows[page * page_size : (page + 1) * page_size]
 
         typer.echo(f"Voicefolio — {len(rows)} voices")
-        typer.echo(f"Filter: {query or '<none>'}  Page {page + 1}/{page_count}")
+        typer.echo(
+            f"Filters: search={query or '<none>'}  language={language or '<all>'}  "
+            f"dataset={dataset or '<all>'}  license={license or '<all>'}  "
+            f"variant={variant or '<all>'}"
+        )
+        typer.echo(f"Page {page + 1}/{page_count}")
         for number, entry in enumerate(page_rows, start=1):
-            typer.echo(f"{number:>2} {entry.ref}  {entry.license}")
-        typer.echo("[number] play  / search  n next  p previous  q quit")
+            typer.echo(f"{number:>2} {entry.ref}  {entry.language}  {entry.license}")
+        typer.echo("[number] play  / search  l language  n next  p previous  q quit")
 
         command = typer.prompt(">").strip()
         if command.lower() == "q":
@@ -218,13 +241,31 @@ def browse_command(
         if command.lower() == "p":
             page = max(page - 1, 0)
             continue
+        if command.lower() == "l":
+            selected_language = typer.prompt(
+                "Language (empty clears)", default="", show_default=False
+            ).strip()
+            if not selected_language:
+                language = None
+                page = 0
+            elif selected_language not in available_languages:
+                available = ", ".join(available_languages)
+                typer.echo(f"Unknown language '{selected_language}'. Available: {available}.")
+            else:
+                language = selected_language
+                page = 0
+            continue
         if command == "/" or command.startswith("/"):
-            query = typer.prompt("Search (empty clears)").strip() if command == "/" else command[1:].strip()
+            query = (
+                typer.prompt("Search (empty clears)").strip()
+                if command == "/"
+                else command[1:].strip()
+            )
             query = query or None
             page = 0
             continue
         if not command.isdecimal() or not 1 <= int(command) <= len(page_rows):
-            typer.echo("Choose a listed number, /search, n, p, or q.", err=True)
+            typer.echo("Choose a listed number, /search, l, n, p, or q.", err=True)
             continue
 
         entry = page_rows[int(command) - 1]
@@ -245,7 +286,9 @@ def browse_web_command(
     catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
     cache_dir: Annotated[Path | None, typer.Option()] = None,
     offline: Annotated[bool, typer.Option()] = False,
-    port: Annotated[int, typer.Option(help="Loopback HTTP port; 0 selects an available port.")] = 0,
+    port: Annotated[
+        int, typer.Option(help="Loopback HTTP port; 0 selects an available port.")
+    ] = 0,
 ) -> None:
     """Open the minimal local browser addon for catalog search and preview."""
     if not 0 <= port <= 65535:

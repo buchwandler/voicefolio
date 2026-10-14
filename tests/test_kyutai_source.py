@@ -19,7 +19,9 @@ from voicefolio.sources.kyutai_tts_voices import (
     NAMESPACE,
     build_catalog,
     discover_snapshot,
+    load_language_policy,
     load_license_policy,
+    resolve_language,
     resolve_license,
     verify_kyutai_catalog,
 )
@@ -37,9 +39,11 @@ def _row(
 ) -> dict[str, Any]:
     path = f"{voice_id}.wav"
     license_name, license_note = resolve_license(path)
+    language = resolve_language(path)
     row: dict[str, Any] = {
         "id": voice_id,
         "dataset": voice_id.split("/", 1)[0],
+        "language": language,
         "variant": "enhanced" if voice_id.endswith("_enhanced") else "original",
         "base_id": voice_id.removesuffix("_enhanced")
         if voice_id.endswith("_enhanced")
@@ -82,8 +86,7 @@ def test_packaged_catalog_preserves_every_migrated_pocket_id_and_digest() -> Non
     baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
     expected = {voice_id: sha256 for voice_id, sha256 in baseline}
     actual = {
-        entry.ref.id: entry.sha256
-        for entry in Catalog.builtin().list(namespace=NAMESPACE)
+        entry.ref.id: entry.sha256 for entry in Catalog.builtin().list(namespace=NAMESPACE)
     }
     assert len(actual) >= len(expected)
     for voice_id, expected_sha256 in expected.items():
@@ -93,7 +96,9 @@ def test_packaged_catalog_preserves_every_migrated_pocket_id_and_digest() -> Non
 def test_synthetic_append_preserves_baseline_and_validates_as_1162_voices(
     tmp_path: Path,
 ) -> None:
-    packaged_path = Path(__file__).parents[1] / "voicefolio/resources/catalogs/kyutai-tts-voices.json"
+    packaged_path = (
+        Path(__file__).parents[1] / "voicefolio/resources/catalogs/kyutai-tts-voices.json"
+    )
     baseline = json.loads(packaged_path.read_text(encoding="utf-8"))
     discovered = copy.deepcopy(baseline)
     appended = copy.deepcopy(
@@ -120,12 +125,9 @@ def test_synthetic_append_preserves_baseline_and_validates_as_1162_voices(
 
     candidate_path = tmp_path / "candidate.json"
     candidate_path.write_text(json.dumps(result), encoding="utf-8")
-    validation = CliRunner().invoke(
-        cli.app, ["validate", "--catalog", str(candidate_path)]
-    )
+    validation = CliRunner().invoke(cli.app, ["validate", "--catalog", str(candidate_path)])
     assert validation.exit_code == 0, validation.output
     assert validation.output.strip() == "ok: 1162 voices"
-
 
 
 def test_license_policy_keeps_override_and_fails_closed() -> None:
@@ -221,6 +223,10 @@ def test_discovery_filters_wavs_pins_metadata_and_sorts() -> None:
     enhanced = rows[-1]
     assert enhanced["variant"] == "enhanced"
     assert enhanced["base_id"] == "voice-zero/person"
+    assert enhanced["language"] == "en"
+    assert resolve_language("voice-zero/person.wav") == resolve_language(
+        "voice-zero/person_enhanced.wav"
+    )
     assert enhanced["source_revision"] == REVISION
     assert f"/resolve/{REVISION}/" in enhanced["url"]
     assert enhanced["license_evidence"] == (
@@ -290,6 +296,7 @@ def test_build_appends_new_ids_in_sorted_order_and_is_deterministic() -> None:
         ("sha256", "A" * 64, "lowercase hexadecimal"),
         ("source_revision", "main", "lowercase 40-character"),
         ("license_evidence", "https://example.invalid/README.md", "pinned README"),
+        ("language", "English", "unsupported language"),
     ],
 )
 def test_maintainer_verifier_rejects_invalid_rows(field: str, value: Any, message: str) -> None:
@@ -308,3 +315,44 @@ def test_maintainer_verifier_rejects_unsorted_rows_and_missing_enhanced_base() -
     enhanced = _row("voice-zero/person_enhanced")
     with pytest.raises(CatalogError, match="missing its original base"):
         verify_kyutai_catalog(_snapshot([enhanced]))
+
+
+def test_language_policy_override_wins_and_ambiguous_prefixes_fail():
+    policy = load_language_policy()
+    policy["rules"].append({"prefix": "unmute-prod-website/", "language": "fr"})
+
+    assert (
+        resolve_language("unmute-prod-website/ex04_narration_longform_00001.wav", policy)
+        == "en"
+    )
+    with pytest.raises(CatalogError, match="multiple unique language rule"):
+        resolve_language("unmute-prod-website/other.wav", policy)
+
+
+def test_language_policy_missing_coverage_and_invalid_values_fail_closed():
+    with pytest.raises(CatalogError, match="no unique language rule"):
+        resolve_language("unknown-collection/voice.wav")
+
+    policy = load_language_policy()
+    policy["rules"][0]["language"] = "French"
+    with pytest.raises(CatalogError, match="unsupported language"):
+        resolve_language("cml-tts/fr/example.wav", policy)
+
+
+def test_packaged_catalog_language_policy_covers_each_voice_and_variants():
+    catalog_path = (
+        Path(__file__).parents[1] / "voicefolio/resources/catalogs/kyutai-tts-voices.json"
+    )
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+
+    assert len(catalog["voices"]) == 1161
+    for row in catalog["voices"]:
+        assert row["language"] in {"en", "fr", "und"}
+        assert row["language"] == resolve_language(row["source_path"])
+
+    assert resolve_language("cml-tts/fr/example.wav") == "fr"
+    assert resolve_language("cml-tts/fr/example_enhanced.wav") == "fr"
+    mismatched = _row("voice-donations/mismatch")
+    mismatched["language"] = "en"
+    with pytest.raises(CatalogError, match="language differs"):
+        verify_kyutai_catalog(_snapshot([mismatched]))

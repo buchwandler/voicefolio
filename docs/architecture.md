@@ -42,6 +42,8 @@ The packaged catalog keeps schema 1 (`kind = "voicefolio-catalog"`) and the `kyu
 - existing ID with a different SHA-256: fail the refresh; never reassign the ref;
 - new ID: append a row pinned to the newly resolved 40-character source commit.
 
+Descriptive language tags are source-owned catalog metadata and are validated against the source policy; they do not participate in the stable voice reference or SHA-256 identity. Language metadata is frozen with a published row under the append-only policy; changing an existing label requires an explicit maintainer migration rather than filename or accent guessing.
+
 Therefore, historical entry revisions may differ from the latest discovery revision recorded in top-level `source` metadata. CI verifies the baseline, rebuilds twice for byte-identical output, and commits only a verified catalog update. Catalog updates are included in Voicefolio releases; the scheduled workflow does not publish to PyPI.
 
 ## Managed references and runtime

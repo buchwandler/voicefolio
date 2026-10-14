@@ -22,7 +22,6 @@ without gratuitous identity churn.
 
 ## Install
 
-
 ```bash
 python -m pip install voicefolio
 voicefolio version
@@ -34,17 +33,34 @@ Versioning is dynamic via `setuptools-scm`; there is no hard-coded package versi
 
 ## Commands
 
+````bash
 ```bash
 voicefolio list
+voicefolio list --language en
 voicefolio browse
+voicefolio browse --language fr
 voicefolio browse-web
 voicefolio preview kyutai-tts-voices:voice-zero/peter_yearsley
 voicefolio fetch kyutai-tts-voices:voice-zero/peter_yearsley
 voicefolio export kyutai-tts-voices:voice-zero/peter_yearsley -o narrator.wav
-```
+````
 
-- `browse` is a small terminal loop: `/` searches, `n`/`p` changes pages, a row number previews, and `q` quits. It uses the same verified fetch and native playback path as `preview`.
+`browse` is a small terminal loop: `/` searches, `l` changes the language filter, `n`/`p` changes pages, a row number previews, and `q` quits. In the language prompt, an empty value clears the filter; invalid values leave the current filter unchanged.
+
 - `browse-web` opens the minimal local browser addon. It binds only to `127.0.0.1`; the browser page filters the packaged catalog and previews WAVs through Voicefolio's verified fetch path.
+
+Language describes the language of a reference recording where authoritative source evidence exists. `und` means the language is not authoritatively known; language is not an accent label. Filtering is descriptive only and never changes stable refs, source revisions, or SHA-256 integrity pins.
+
+Terminal browse controls:
+
+```text
+/ search
+l language
+n next
+p previous
+<number> preview
+q quit
+```
 
 Each Voicefolio release ships a complete pinned Kyutai catalog snapshot. The initial migrated Pocket baseline contains 1,161 immutable references; later catalog releases may append new stable IDs. Runtime commands use packaged catalog data and do not contact Hugging Face to discover voices.
 
@@ -123,7 +139,6 @@ Voicefolio owns:
 Voicefolio does **not** own TTS model bundles, embeddings, synthesis, text normalization, G2P,
 render planning, or final audio mastering.
 
-## License
 ## License
 
 Voicefolio source code is Apache-2.0. Catalog entries and downloaded WAVs keep their own licenses;

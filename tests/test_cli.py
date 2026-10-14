@@ -119,7 +119,10 @@ def test_unknown_voice_error_is_concise() -> None:
     result = CliRunner().invoke(cli.app, ["show", "kyutai-tts-voices:does-not-exist"])
 
     assert result.exit_code == 1
-    assert "Error: voice 'kyutai-tts-voices:does-not-exist' is not in the active catalog" in result.output
+    assert (
+        "Error: voice 'kyutai-tts-voices:does-not-exist' is not in the active catalog"
+        in result.output
+    )
     assert "Traceback" not in result.output
 
 
@@ -134,21 +137,30 @@ def test_malformed_catalog_error_is_concise(tmp_path: Path) -> None:
     assert "Traceback" not in result.output
 
 
-
 def _browse_entries():
     return tuple(
         SimpleNamespace(
-            ref=f"demo:{name}", license="CC0-1.0", variant="original", dataset="demo"
+            ref=f"demo:{name}",
+            language=language,
+            license="CC0-1.0",
+            variant="original",
+            dataset="demo",
         )
-        for name in ("voice-1", "voice-2", "voice-3")
+        for name, language in (
+            ("voice-1", "en"),
+            ("voice-2", "fr"),
+            ("voice-3", "und"),
+        )
     )
 
 
 def _browse_catalog(entries):
-    def list_voices(*, dataset, license, variant, query):
+    def list_voices(*, dataset=None, language=None, license=None, variant=None, query=None):
         rows = entries
         if dataset:
             rows = tuple(entry for entry in rows if entry.dataset == dataset)
+        if language:
+            rows = tuple(entry for entry in rows if entry.language == language)
         if license:
             rows = tuple(entry for entry in rows if entry.license == license)
         if variant:
@@ -209,9 +221,7 @@ def test_browse_recovers_from_offline_cache_miss(monkeypatch) -> None:
         raise OfflineError("voice is not cached")
 
     monkeypatch.setattr(cli, "fetch", fail_fetch)
-    monkeypatch.setattr(
-        cli, "play_wav", lambda *args, **kwargs: play_calls.append(args)
-    )
+    monkeypatch.setattr(cli, "play_wav", lambda *args, **kwargs: play_calls.append(args))
     result = CliRunner().invoke(cli.app, ["browse"], input="1\nq\n")
 
     assert result.exit_code == 0, result.output
@@ -237,7 +247,6 @@ def test_browse_recovers_when_optional_playback_is_missing(monkeypatch, tmp_path
     assert result.exit_code == 0, result.output
     assert "Error: Install voicefolio[playback]" in result.output
     assert result.output.count("Voicefolio —") == 2
-
 
 
 def test_browse_web_command_passes_local_server_options(monkeypatch, tmp_path: Path) -> None:
@@ -267,6 +276,99 @@ def test_browse_web_command_passes_local_server_options(monkeypatch, tmp_path: P
     )
 
     assert result.exit_code == 0, result.output
-    assert calls == [
-        (catalog, {"cache_dir": cache_dir, "offline": True, "port": 8765})
-    ]
+    assert calls == [(catalog, {"cache_dir": cache_dir, "offline": True, "port": 8765})]
+
+
+def test_list_language_filter_outputs_language_column(monkeypatch):
+    entries = _browse_entries()
+    monkeypatch.setattr(cli, "_catalog", lambda paths: _browse_catalog(entries))
+
+    result = CliRunner().invoke(cli.app, ["list", "--language", "fr"])
+
+    assert result.exit_code == 0, result.output
+    assert "REF\tLANGUAGE\tLICENSE\tVARIANT\tDATASET" in result.output
+    assert "demo:voice-2\tfr\tCC0-1.0" in result.output
+    assert "demo:voice-1" not in result.output
+
+
+def test_browse_language_option_filters_rows_and_shows_active_filters(monkeypatch):
+    entries = _browse_entries()
+    monkeypatch.setattr(cli, "_catalog", lambda paths: _browse_catalog(entries))
+
+    result = CliRunner().invoke(cli.app, ["browse", "--language", "en"], input="q\n")
+
+    assert result.exit_code == 0, result.output
+    assert "Voicefolio — 1 voices" in result.output
+    assert "language=en" in result.output
+    assert "demo:voice-1  en  CC0-1.0" in result.output
+    assert "demo:voice-2" not in result.output
+
+
+def test_browse_language_change_resets_page_and_empty_input_clears(monkeypatch):
+    entries = _browse_entries()
+    monkeypatch.setattr(cli, "_catalog", lambda paths: _browse_catalog(entries))
+
+    changed = CliRunner().invoke(
+        cli.app,
+        ["browse", "--page-size", "1"],
+        input="n\nl\nfr\nq\n",
+    )
+    assert changed.exit_code == 0, changed.output
+    assert "Page 2/3" in changed.output
+    assert "language=fr" in changed.output
+    assert "Page 1/1" in changed.output
+
+    cleared = CliRunner().invoke(
+        cli.app,
+        ["browse", "--language", "fr"],
+        input="l\n\nq\n",
+    )
+    assert cleared.exit_code == 0, cleared.output
+    assert "Voicefolio — 1 voices" in cleared.output
+    assert "Voicefolio — 3 voices" in cleared.output
+    assert "language=<all>" in cleared.output
+
+
+def test_browse_invalid_language_keeps_active_filter(monkeypatch):
+    entries = _browse_entries()
+    monkeypatch.setattr(cli, "_catalog", lambda paths: _browse_catalog(entries))
+
+    result = CliRunner().invoke(
+        cli.app,
+        ["browse", "--language", "en"],
+        input="l\nde\nq\n",
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "Unknown language 'de'. Available: en, fr, und." in result.output
+    assert result.output.count("language=en") == 2
+
+
+def test_browse_number_selects_entry_after_interactive_language_filter(
+    monkeypatch, tmp_path: Path
+):
+    entries = _browse_entries()
+    monkeypatch.setattr(cli, "_catalog", lambda paths: _browse_catalog(entries))
+    fetch_calls = []
+    play_calls = []
+    cached = tmp_path / "voice.wav"
+    monkeypatch.setattr(
+        cli,
+        "fetch",
+        lambda entry, **options: (
+            fetch_calls.append((entry, options)) or SimpleNamespace(path=cached)
+        ),
+    )
+    monkeypatch.setattr(
+        cli, "play_wav", lambda path, *, device: play_calls.append((path, device))
+    )
+
+    result = CliRunner().invoke(
+        cli.app,
+        ["browse", "--page-size", "3"],
+        input="l\nfr\n1\nq\n",
+    )
+
+    assert result.exit_code == 0, result.output
+    assert fetch_calls == [(entries[1], {"cache_dir": None, "offline": False})]
+    assert play_calls == [(cached, None)]

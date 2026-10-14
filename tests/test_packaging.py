@@ -29,9 +29,7 @@ def test_dynamic_version_and_flat_layout():
     assert (
         "resources/sources/*.json" in data["tool"]["setuptools"]["package-data"]["voicefolio"]
     )
-    assert (
-        "resources/web/*.html" in data["tool"]["setuptools"]["package-data"]["voicefolio"]
-    )
+    assert "resources/web/*.html" in data["tool"]["setuptools"]["package-data"]["voicefolio"]
     assert not (root / "src").exists()
 
 
@@ -40,6 +38,7 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
     catalog = root / "voicefolio/resources/catalogs/kyutai-tts-voices.json"
     license_policy = root / "voicefolio/resources/sources/kyutai-tts-voices-licenses.json"
     browser_page = root / "voicefolio/resources/web/index.html"
+    language_policy = root / "voicefolio/resources/sources/kyutai-tts-voices-languages.json"
     shutil.rmtree(root / "build", ignore_errors=True)
     (root / "voicefolio.egg-info" / "SOURCES.txt").unlink(missing_ok=True)
     result = subprocess.run(
@@ -59,11 +58,7 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
         text=True,
     )
     if result.returncode:
-        pytest.fail(
-            "package build failed\n"
-            f"stdout:\n{result.stdout}\n"
-            f"stderr:\n{result.stderr}"
-        )
+        pytest.fail(f"package build failed\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}")
     wheel = next(tmp_path.glob("*.whl"))
     with zipfile.ZipFile(wheel) as archive:
         member = "voicefolio/resources/catalogs/kyutai-tts-voices.json"
@@ -72,6 +67,9 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
         policy_member = "voicefolio/resources/sources/kyutai-tts-voices-licenses.json"
         assert policy_member in archive.namelist()
         assert archive.read(policy_member) == license_policy.read_bytes()
+        language_member = "voicefolio/resources/sources/kyutai-tts-voices-languages.json"
+        assert language_member in archive.namelist()
+        assert archive.read(language_member) == language_policy.read_bytes()
         assert "voicefolio/py.typed" in archive.namelist()
         metadata_member = next(
             name for name in archive.namelist() if name.endswith(".dist-info/METADATA")
@@ -109,9 +107,19 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
         policy = archive.extractfile(policy_member)
         assert policy is not None
         assert policy.read() == license_policy.read_bytes()
+        language_policy_member = next(
+            name
+            for name in archive.getnames()
+            if name.endswith("/voicefolio/resources/sources/kyutai-tts-voices-languages.json")
+        )
+        language_policy_source = archive.extractfile(language_policy_member)
+        assert language_policy_source is not None
+        assert language_policy_source.read() == language_policy.read_bytes()
         assert any(name.endswith("/voicefolio/py.typed") for name in archive.getnames())
         browser_member = next(
-            name for name in archive.getnames() if name.endswith("/voicefolio/resources/web/index.html")
+            name
+            for name in archive.getnames()
+            if name.endswith("/voicefolio/resources/web/index.html")
         )
         browser_source = archive.extractfile(browser_member)
         assert browser_source is not None
@@ -126,6 +134,9 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
             (
                 "from voicefolio import Catalog; "
                 "catalog = Catalog.builtin(); "
+                "from importlib.resources import files; "
+                "page = files('voicefolio').joinpath('resources').joinpath('web').joinpath('index.html').read_text(); "
+                "assert 'Language' in page and 'api/languages' in page; "
                 "entry = catalog.get('kyutai-tts-voices:voice-donations/0a67'); "
                 "assert entry.sha256 == '4bd75d0ef0ad3f4e82ac075eab2a132651d2463f83bec210edeeccaf69294886'; "
                 "print('wheel catalog:', len(catalog))"

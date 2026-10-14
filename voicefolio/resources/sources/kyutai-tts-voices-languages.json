@@ -1,0 +1,17 @@
+{
+  "source_repository": "kyutai/tts-voices",
+  "rules": [
+    { "prefix": "cml-tts/fr/", "language": "fr" },
+    { "prefix": "ears/", "language": "en" },
+    { "prefix": "expresso/", "language": "en" },
+    { "prefix": "vctk/", "language": "en" },
+    { "prefix": "voice-zero/", "language": "en" },
+    { "prefix": "alba-mackenna/", "language": "und" },
+    { "prefix": "voice-donations/", "language": "und" },
+    { "prefix": "unmute-prod-website/", "language": "und" }
+  ],
+  "overrides": {
+    "unmute-prod-website/ex04_narration_longform_00001.wav": "en",
+    "unmute-prod-website/p329_022.wav": "en"
+  }
+}

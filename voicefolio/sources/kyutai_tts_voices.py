@@ -25,6 +25,8 @@ _LICENSES = frozenset({"CC0-1.0", "CC-BY-4.0", "CC-BY-NC-4.0", "NOASSERTION"})
 _SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 _POLICY_RESOURCE = "kyutai-tts-voices-licenses.json"
+_LANGUAGE_POLICY_RESOURCE = "kyutai-tts-voices-languages.json"
+_SUPPORTED_LANGUAGES = frozenset({"en", "fr", "und"})
 
 
 def load_license_policy() -> dict[str, Any]:
@@ -39,6 +41,24 @@ def load_license_policy() -> dict[str, Any]:
         raise CatalogError(f"cannot read Kyutai license policy: {exc}") from exc
     if not isinstance(policy, dict):
         raise CatalogError("Kyutai license policy root must be an object")
+    return policy
+
+
+def load_language_policy() -> dict[str, Any]:
+    """Load the packaged fail-closed Kyutai language decisions."""
+    resource = (
+        files("voicefolio")
+        .joinpath("resources")
+        .joinpath("sources")
+        .joinpath(_LANGUAGE_POLICY_RESOURCE)
+    )
+    try:
+        with resource.open("r", encoding="utf-8") as handle:
+            policy = json.load(handle)
+    except (OSError, json.JSONDecodeError) as exc:
+        raise CatalogError(f"cannot read Kyutai language policy: {exc}") from exc
+    if not isinstance(policy, dict):
+        raise CatalogError("Kyutai language policy root must be an object")
     return policy
 
 
@@ -102,6 +122,54 @@ def resolve_license(
     return _license_decision(matches[0], f"license rule for {path}")
 
 
+def _language_decision(value: Any, label: str) -> str:
+    if not isinstance(value, str) or value not in _SUPPORTED_LANGUAGES:
+        supported = ", ".join(sorted(_SUPPORTED_LANGUAGES))
+        raise CatalogError(f"{label}: unsupported language {value!r}; expected {supported}")
+    return value
+
+
+def resolve_language(source_path: str, policy: Mapping[str, Any] | None = None) -> str:
+    """Return the unique policy language for a source path; exact overrides win."""
+    path = _safe_relative_path(source_path, "source path")
+    if not path.endswith(".wav"):
+        raise CatalogError(f"{path}: language policy applies to WAV files only")
+    active_policy = policy if policy is not None else load_language_policy()
+    if active_policy.get("source_repository") != DEFAULT_REPOSITORY:
+        raise CatalogError("Kyutai language policy source_repository is invalid")
+    overrides = _mapping(active_policy.get("overrides", {}), "language policy overrides")
+    normalized_overrides: dict[str, str] = {}
+    for override_path, value in overrides.items():
+        safe_path = _safe_relative_path(override_path, "language policy override path")
+        if not safe_path.endswith(".wav"):
+            raise CatalogError(f"{safe_path}: language override must target a WAV file")
+        normalized_overrides[safe_path] = _language_decision(
+            value, f"language override for {safe_path}"
+        )
+    if path in normalized_overrides:
+        return normalized_overrides[path]
+
+    rules = active_policy.get("rules")
+    if not isinstance(rules, list):
+        raise CatalogError("language policy rules must be an array")
+    matches: list[str] = []
+    for index, raw_rule in enumerate(rules):
+        rule = _mapping(raw_rule, f"language policy rules[{index}]")
+        prefix = rule.get("prefix")
+        if not isinstance(prefix, str) or not prefix.endswith("/"):
+            raise CatalogError(
+                f"language policy rules[{index}]: prefix must be a non-empty relative path prefix"
+            )
+        _safe_relative_path(prefix[:-1], f"language policy rules[{index}] prefix")
+        language = _language_decision(rule.get("language"), f"language policy rules[{index}]")
+        if path.startswith(prefix):
+            matches.append(language)
+    if len(matches) != 1:
+        reason = "no" if not matches else "multiple"
+        raise CatalogError(f"{path}: {reason} unique language rule covers this source path")
+    return matches[0]
+
+
 def _read_catalog(value: Mapping[str, Any] | str | Path) -> dict[str, Any]:
     if isinstance(value, Mapping):
         return copy.deepcopy(dict(value))
@@ -126,9 +194,15 @@ def discover_snapshot(
     revision: str = DEFAULT_REVISION,
     *,
     license_policy: Mapping[str, Any] | None = None,
+    language_policy: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Discover and pin every WAV in one exact Kyutai repository snapshot."""
     policy = license_policy if license_policy is not None else load_license_policy()
+    language_rules = language_policy if language_policy is not None else load_language_policy()
+    if language_rules.get("source_repository") != repository:
+        raise CatalogError(
+            "language policy source repository differs from requested repository"
+        )
     source_repository = policy.get("source_repository")
     source_readme = policy.get("source_readme")
     if source_repository != repository:
@@ -153,10 +227,12 @@ def discover_snapshot(
         base_id = voice_id.removesuffix("_enhanced") if variant == "enhanced" else None
         size, sha256 = file_integrity(repository, actual_revision, source_path, metadata)
         license_name, license_note = resolve_license(source_path, policy)
+        language = resolve_language(source_path, language_rules)
         rows.append(
             {
                 "id": voice_id,
                 "dataset": dataset,
+                "language": language,
                 "variant": variant,
                 "base_id": base_id,
                 "format": "wav",
@@ -189,7 +265,7 @@ def discover_snapshot(
         },
         "voices": rows,
     }
-    verify_kyutai_catalog(catalog, license_policy=policy)
+    verify_kyutai_catalog(catalog, license_policy=policy, language_policy=language_rules)
     return catalog
 
 
@@ -204,10 +280,14 @@ def _catalog_rows(catalog: Mapping[str, Any], label: str) -> list[Mapping[str, A
 
 
 def verify_kyutai_catalog(
-    catalog: Mapping[str, Any], *, license_policy: Mapping[str, Any] | None = None
+    catalog: Mapping[str, Any],
+    *,
+    license_policy: Mapping[str, Any] | None = None,
+    language_policy: Mapping[str, Any] | None = None,
 ) -> None:
     """Raise CatalogError unless a schema-1 Kyutai catalog satisfies maintainer invariants."""
     policy = license_policy if license_policy is not None else load_license_policy()
+    language_rules = language_policy if language_policy is not None else load_language_policy()
     data = _mapping(catalog, "catalog")
     if data.get("schema") != CATALOG_SCHEMA or isinstance(data.get("schema"), bool):
         raise CatalogError(f"catalog schema must be {CATALOG_SCHEMA}")
@@ -225,6 +305,8 @@ def verify_kyutai_catalog(
     if not isinstance(requested_revision, str) or not requested_revision:
         raise CatalogError("catalog requested_revision must be non-empty")
     policy_repository = policy.get("source_repository")
+    if language_rules.get("source_repository") != repository:
+        raise CatalogError("catalog source repository does not match the language policy")
     source_readme = policy.get("source_readme")
     if repository != policy_repository:
         raise CatalogError("catalog source repository does not match the license policy")
@@ -266,6 +348,10 @@ def verify_kyutai_catalog(
         expected_url = resolve_url(row_repository, row_revision, source_path)
         if row.get("url") != expected_url:
             raise CatalogError(f"{label} URL must be pinned to its source revision and path")
+        expected_language = resolve_language(source_path, language_rules)
+        actual_language = _language_decision(row.get("language"), label)
+        if actual_language != expected_language:
+            raise CatalogError(f"{label} language differs from the authoritative policy")
         license_name, license_note = resolve_license(source_path, policy)
         actual_license, actual_note = _license_decision(row, label)
         if actual_license != license_name or actual_note != license_note:
@@ -314,21 +400,28 @@ def build_catalog(
     repository: str = DEFAULT_REPOSITORY,
     revision: str = DEFAULT_REVISION,
     license_policy: Mapping[str, Any] | None = None,
+    language_policy: Mapping[str, Any] | None = None,
     discovered_snapshot: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Build a latest-discovery catalog while preserving published ref identities."""
     policy = license_policy if license_policy is not None else load_license_policy()
+    language_rules = language_policy if language_policy is not None else load_language_policy()
     discovered = (
         copy.deepcopy(dict(discovered_snapshot))
         if discovered_snapshot is not None
-        else discover_snapshot(repository, revision, license_policy=policy)
+        else discover_snapshot(
+            repository,
+            revision,
+            license_policy=policy,
+            language_policy=language_rules,
+        )
     )
-    verify_kyutai_catalog(discovered, license_policy=policy)
+    verify_kyutai_catalog(discovered, license_policy=policy, language_policy=language_rules)
     if previous_catalog is None:
         return discovered
 
     previous = _read_catalog(previous_catalog)
-    verify_kyutai_catalog(previous, license_policy=policy)
+    verify_kyutai_catalog(previous, license_policy=policy, language_policy=language_rules)
     previous_rows = _catalog_rows(previous, "previous catalog")
     discovered_rows = _catalog_rows(discovered, "discovered snapshot")
     previous_by_id = {str(row["id"]): row for row in previous_rows}
@@ -356,5 +449,5 @@ def build_catalog(
     result["voices"] = [
         copy.deepcopy(dict(merged_by_id[voice_id])) for voice_id in sorted(merged_by_id)
     ]
-    verify_kyutai_catalog(result, license_policy=policy)
+    verify_kyutai_catalog(result, license_policy=policy, language_policy=language_rules)
     return result

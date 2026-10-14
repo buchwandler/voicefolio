@@ -94,6 +94,7 @@ class VoiceEntry:
     source_revision: str
     source_path: str
     license: str
+    language: str = "und"
     base_id: str | None = None
     license_note: str | None = None
     license_evidence: str | None = None
@@ -102,6 +103,10 @@ class VoiceEntry:
     def __post_init__(self) -> None:
         if self.variant not in {"original", "enhanced"}:
             raise CatalogError(f"unsupported variant {self.variant!r} for {self.ref}")
+        if not isinstance(self.language, str) or self.language not in {"en", "fr", "und"}:
+            raise CatalogError(
+                f"unsupported language {self.language!r} for {self.ref}; expected en, fr, or und"
+            )
         if self.format.lower() != "wav":
             raise CatalogError(f"MVP supports WAV catalog assets only: {self.ref}")
         if self.size <= 0:
@@ -116,6 +121,7 @@ class VoiceEntry:
             "ref": str(self.ref),
             "id": self.ref.id,
             "dataset": self.dataset,
+            "language": self.language,
             "variant": self.variant,
             "base_id": self.base_id,
             "format": self.format,

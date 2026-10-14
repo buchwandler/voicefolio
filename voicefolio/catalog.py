@@ -47,6 +47,7 @@ class Catalog:
         *,
         namespace: str | None = None,
         dataset: str | None = None,
+        language: str | None = None,
         variant: str | None = None,
         license: str | None = None,
         query: str | None = None,
@@ -57,6 +58,8 @@ class Catalog:
             if namespace and entry.ref.namespace != namespace:
                 continue
             if dataset and entry.dataset != dataset:
+                continue
+            if language and entry.language != language:
                 continue
             if variant and entry.variant != variant:
                 continue
@@ -136,6 +139,7 @@ def _parse_catalog(raw: Any, *, source: str) -> list[VoiceEntry]:
                     source_revision=str(row["source_revision"]),
                     source_path=str(row["source_path"]),
                     license=str(row["license"]),
+                    language=str(row.get("language", "und")),
                     license_note=row.get("license_note"),
                     license_evidence=row.get("license_evidence"),
                     metadata=_required_mapping(row.get("metadata", {}), "metadata", source),
