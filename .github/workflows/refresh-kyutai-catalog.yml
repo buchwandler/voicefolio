@@ -1,0 +1,85 @@
+name: Refresh Kyutai catalog
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "37 4 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: voicefolio-kyutai-catalog-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install Voicefolio development tooling
+        run: python -m pip install -e ".[dev]"
+      - name: Validate the checked-in baseline
+        run: |
+          voicefolio catalog verify voicefolio/resources/catalogs/kyutai-tts-voices.json
+          voicefolio validate
+      - name: Build and verify two refresh candidates
+        run: |
+          voicefolio catalog build-kyutai \
+            --repository kyutai/tts-voices \
+            --revision main \
+            --previous voicefolio/resources/catalogs/kyutai-tts-voices.json \
+            --output /tmp/kyutai-candidate-first.json
+          voicefolio catalog verify /tmp/kyutai-candidate-first.json
+          voicefolio catalog build-kyutai \
+            --repository kyutai/tts-voices \
+            --revision main \
+            --previous voicefolio/resources/catalogs/kyutai-tts-voices.json \
+            --output /tmp/kyutai-candidate-second.json
+          voicefolio catalog verify /tmp/kyutai-candidate-second.json
+          cmp --silent /tmp/kyutai-candidate-first.json /tmp/kyutai-candidate-second.json
+      - name: Assert existing published rows are unchanged
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          baseline = json.loads(
+              Path("voicefolio/resources/catalogs/kyutai-tts-voices.json").read_text(
+                  encoding="utf-8"
+              )
+          )
+          candidate = json.loads(
+              Path("/tmp/kyutai-candidate-first.json").read_text(encoding="utf-8")
+          )
+          old_rows = {row["id"]: row for row in baseline["voices"]}
+          new_rows = {row["id"]: row for row in candidate["voices"]}
+          if not set(old_rows).issubset(new_rows):
+              raise SystemExit("refresh removed a published voice ID")
+          changed = [voice_id for voice_id, row in old_rows.items() if new_rows[voice_id] != row]
+          if changed:
+              raise SystemExit(f"refresh modified published rows: {changed[:10]}")
+          added = sorted(set(new_rows) - set(old_rows))
+          print(f"Preserved {len(old_rows)} published rows; appended {len(added)} new IDs.")
+          PY
+      - name: Commit an unchanged-identity catalog update
+        run: |
+          catalog=voicefolio/resources/catalogs/kyutai-tts-voices.json
+          if cmp --silent "$catalog" /tmp/kyutai-candidate-first.json; then
+            echo "Kyutai catalog is unchanged"
+            exit 0
+          fi
+          cp /tmp/kyutai-candidate-first.json "$catalog"
+          voicefolio catalog verify "$catalog"
+          voicefolio validate
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$catalog"
+          git commit -m "chore: refresh Voicefolio Kyutai catalog"
+          git push origin HEAD:main

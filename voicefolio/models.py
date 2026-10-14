@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 
 class VoicefolioError(Exception):
@@ -22,8 +22,32 @@ class IntegrityError(VoicefolioError):
     """Downloaded or exported audio does not match its catalog pin."""
 
 
+class OfflineError(VoicefolioError):
+    """A requested asset is unavailable because offline mode is enabled."""
+
+
+class DownloadError(VoicefolioError):
+    """A cataloged asset could not be downloaded."""
+
+
+class AccessError(DownloadError):
+    """The upstream provider denied access to a cataloged asset."""
+
+
+class AssetNotFoundError(DownloadError):
+    """A cataloged asset is missing at its pinned upstream revision."""
+
+
 class PlaybackError(VoicefolioError):
     """A verified local voice could not be played through the native audio backend."""
+
+
+@dataclass(frozen=True, slots=True)
+class FetchProgress:
+    phase: Literal["cache_check", "download", "verify", "ready"]
+    ref: str
+    completed: int | None = None
+    total: int | None = None
 
 
 @dataclass(frozen=True, slots=True)

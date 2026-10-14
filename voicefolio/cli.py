@@ -12,16 +12,77 @@ from .cache import fetch, sha256_file
 from .catalog import Catalog, load_catalog
 from .integration import managed_reference
 from .migration import migrate_pocket_catalog
-from .models import PlaybackError
+from .models import CatalogError, PlaybackError
 from .playback import play_wav
+from .sources.kyutai_tts_voices import (
+    DEFAULT_REPOSITORY,
+    DEFAULT_REVISION,
+    verify_kyutai_catalog,
+)
+from .sources.kyutai_tts_voices import (
+    build_catalog as build_kyutai_catalog,
+)
 
 app = typer.Typer(
     no_args_is_help=True, help="Manage, preview, pin, and export reference voices."
 )
 
 
+catalog_app = typer.Typer(no_args_is_help=True, help="Build and verify source catalogs.")
+app.add_typer(catalog_app, name="catalog")
+
+
 def _catalog(catalog: list[Path] | None) -> Catalog:
     return load_catalog(catalog or ())
+
+
+def _builtin_kyutai_catalog_path() -> Path:
+    return Path(__file__).parent / "resources" / "catalogs" / "kyutai-tts-voices.json"
+
+
+@catalog_app.command("build-kyutai")
+def build_kyutai_command(
+    repository: Annotated[str, typer.Option(help="Hugging Face dataset repository.")] = (
+        DEFAULT_REPOSITORY
+    ),
+    revision: Annotated[str, typer.Option(help="Upstream branch, tag, or commit.")] = (
+        DEFAULT_REVISION
+    ),
+    previous: Annotated[
+        Path | None, typer.Option(help="Previous catalog used to protect published refs.")
+    ] = None,
+    output: Annotated[Path | None, typer.Option(help="Output catalog JSON path.")] = None,
+) -> None:
+    """Build the authoritative Kyutai catalog from a pinned upstream snapshot."""
+    packaged_catalog = _builtin_kyutai_catalog_path()
+    previous_path = previous or packaged_catalog
+    output_path = output or packaged_catalog
+    try:
+        result = build_kyutai_catalog(previous_path, repository=repository, revision=revision)
+        verify_kyutai_catalog(result)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(
+            json.dumps(result, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+    except (CatalogError, OSError) as exc:
+        typer.echo(f"Error: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+    typer.echo(str(output_path))
+
+
+@catalog_app.command("verify")
+def verify_catalog_command(catalog_path: Path) -> None:
+    """Verify a Kyutai source catalog against Voicefolio maintainer invariants."""
+    try:
+        raw = json.loads(catalog_path.read_text(encoding="utf-8"))
+        if not isinstance(raw, dict):
+            raise CatalogError("catalog root must be an object")
+        verify_kyutai_catalog(raw)
+    except (CatalogError, OSError, json.JSONDecodeError) as exc:
+        typer.echo(f"Error: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+    typer.echo(f"ok: {len(raw['voices'])} voices")
 
 
 @app.command("version")

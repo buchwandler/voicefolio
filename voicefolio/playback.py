@@ -11,7 +11,7 @@ def play_wav(path: str | Path, *, device: str | int | None = None) -> None:
         import sounddevice as sd  # type: ignore[import-untyped]
         import soundfile as sf  # type: ignore[import-untyped]
     except (ImportError, OSError) as exc:
-        raise PlaybackError(f"native audio playback is unavailable: {exc}") from exc
+        raise PlaybackError("Install voicefolio[playback] for native preview.") from exc
 
     audio_path = Path(path)
     try:

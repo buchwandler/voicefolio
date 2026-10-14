@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import builtins
 import sys
 from pathlib import Path
 from types import ModuleType
@@ -70,4 +71,21 @@ def test_play_wav_wraps_decoder_and_backend_errors(
     )
 
     with pytest.raises(PlaybackError, match="cannot play"):
+        play_wav(tmp_path / "voice.wav")
+
+
+def test_missing_playback_extra_has_install_guidance(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    original_import = builtins.__import__
+
+    def import_without_playback(name: str, *args: Any, **kwargs: Any) -> Any:
+        if name in {"sounddevice", "soundfile"}:
+            raise ImportError(name)
+        return original_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, "__import__", import_without_playback)
+    with pytest.raises(
+        PlaybackError, match=r"Install voicefolio\[playback\] for native preview"
+    ):
         play_wav(tmp_path / "voice.wav")

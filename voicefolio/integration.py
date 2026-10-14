@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from pathlib import Path
 from typing import Any
 
 from .cache import fetch
 from .catalog import Catalog, load_catalog
-from .models import IntegrityError, ResolvedVoice
+from .models import FetchProgress, IntegrityError, ResolvedVoice, VoiceEntry
 
 
 def managed_reference(ref: str, *, catalog: Catalog | None = None) -> dict[str, Any]:
@@ -30,35 +30,53 @@ def managed_reference(ref: str, *, catalog: Catalog | None = None) -> dict[str, 
     }
 
 
-def resolve_voice_source(
-    source: Mapping[str, Any],
-    *,
-    catalog: Catalog | None = None,
-    cache_dir: str | Path | None = None,
-    offline: bool = False,
-) -> ResolvedVoice:
-    """Resolve a Voicefolio managed_reference to a verified local WAV.
-
-    This is the intended integration point for VoiceRender. It revalidates every pin
-    stored in the RenderProfile before returning a path.
-    """
-    if source.get("kind") != "managed_reference" or source.get("resolver") != "voicefolio":
-        raise ValueError("voice source is not a Voicefolio managed reference")
+def validate_voice_source(
+    source: Mapping[str, Any], *, catalog: Catalog | None = None
+) -> VoiceEntry:
+    """Validate persisted managed-reference pins without downloading the WAV."""
+    if source.get("kind") != "managed_reference":
+        raise IntegrityError("voice source kind must be 'managed_reference'")
+    if source.get("resolver") != "voicefolio":
+        raise IntegrityError("voice source resolver must be 'voicefolio'")
     ref = source.get("value")
-    if not isinstance(ref, str) or not ref:
-        raise ValueError("Voicefolio voice source requires a non-empty value")
-    entry = (catalog or load_catalog()).get(ref)
+    if not isinstance(ref, str) or not ref.strip():
+        raise IntegrityError("Voicefolio voice source requires a non-empty value")
+    active_catalog = catalog if catalog is not None else load_catalog()
+    try:
+        entry = active_catalog.get(ref)
+    except ValueError as exc:
+        raise IntegrityError(f"invalid Voicefolio voice reference {ref!r}: {exc}") from exc
+
     expected = {
         "sha256": entry.sha256,
         "source_revision": entry.source_revision,
         "source_repository": entry.source_repository,
         "source_path": entry.source_path,
     }
-    for name, actual_expected in expected.items():
-        value = source.get(name)
-        if value != actual_expected:
+    for name, catalog_value in expected.items():
+        profile_value = source.get(name)
+        if profile_value != catalog_value:
             raise IntegrityError(
                 f"Voicefolio source pin {name} changed for {ref}: "
-                f"profile={value!r}, catalog={actual_expected!r}"
+                f"profile={profile_value!r}, catalog={catalog_value!r}"
             )
-    return fetch(entry, cache_dir=cache_dir, offline=offline)
+    for name in ("license", "dataset", "variant"):
+        if name in source and source[name] != getattr(entry, name):
+            raise IntegrityError(
+                f"Voicefolio source description {name} changed for {ref}: "
+                f"profile={source[name]!r}, catalog={getattr(entry, name)!r}"
+            )
+    return entry
+
+
+def resolve_voice_source(
+    source: Mapping[str, Any],
+    *,
+    catalog: Catalog | None = None,
+    cache_dir: str | Path | None = None,
+    offline: bool = False,
+    progress: Callable[[FetchProgress], None] | None = None,
+) -> ResolvedVoice:
+    """Validate and resolve a Voicefolio managed_reference to a verified local WAV."""
+    entry = validate_voice_source(source, catalog=catalog)
+    return fetch(entry, cache_dir=cache_dir, offline=offline, progress=progress)

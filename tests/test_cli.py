@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -61,3 +62,31 @@ def test_preview_reports_playback_errors_without_traceback(monkeypatch, tmp_path
     assert result.exit_code == 1
     assert "Error: PortAudio unavailable" in result.output
     assert "Traceback" not in result.output
+
+
+def test_catalog_verify_accepts_packaged_catalog() -> None:
+    catalog_path = Path("voicefolio/resources/catalogs/kyutai-tts-voices.json")
+    result = CliRunner().invoke(cli.app, ["catalog", "verify", str(catalog_path)])
+    assert result.exit_code == 0, result.output
+    assert result.output.strip() == "ok: 1161 voices"
+
+
+def test_catalog_build_uses_packaged_previous_catalog_by_default(
+    monkeypatch, tmp_path: Path
+) -> None:
+    packaged = Path("voicefolio/resources/catalogs/kyutai-tts-voices.json")
+    output = tmp_path / "candidate.json"
+    calls = []
+
+    def fake_build(previous, *, repository, revision):
+        calls.append((previous, repository, revision))
+        return json.loads(packaged.read_text(encoding="utf-8"))
+
+    monkeypatch.setattr(cli, "_builtin_kyutai_catalog_path", lambda: packaged)
+    monkeypatch.setattr(cli, "build_kyutai_catalog", fake_build)
+    monkeypatch.setattr(cli, "verify_kyutai_catalog", lambda catalog: None)
+    result = CliRunner().invoke(cli.app, ["catalog", "build-kyutai", "--output", str(output)])
+
+    assert result.exit_code == 0, result.output
+    assert calls == [(packaged, "kyutai/tts-voices", "main")]
+    assert json.loads(output.read_text(encoding="utf-8"))["namespace"] == ("kyutai-tts-voices")

@@ -1,0 +1,60 @@
+{
+  "source_repository": "kyutai/tts-voices",
+  "source_readme": "README.md",
+  "rules": [
+    {
+      "prefix": "alba-mackenna/",
+      "license": "CC-BY-4.0",
+      "license_note": null
+    },
+    {
+      "prefix": "cml-tts/fr/",
+      "license": "CC-BY-4.0",
+      "license_note": null
+    },
+    {
+      "prefix": "ears/",
+      "license": "CC-BY-NC-4.0",
+      "license_note": "Non-commercial: upstream README licenses EARS prompts as CC BY-NC 4.0."
+    },
+    {
+      "prefix": "expresso/",
+      "license": "CC-BY-NC-4.0",
+      "license_note": "Non-commercial: upstream README licenses Expresso prompts as CC BY-NC 4.0."
+    },
+    {
+      "prefix": "unmute-prod-website/",
+      "license": "CC0-1.0",
+      "license_note": "Upstream README describes most unmute-prod-website prompts as Kyutai recordings usable as CC0."
+    },
+    {
+      "prefix": "voice-donations/",
+      "license": "CC0-1.0",
+      "license_note": null
+    },
+    {
+      "prefix": "voice-zero/",
+      "license": "CC0-1.0",
+      "license_note": null
+    },
+    {
+      "prefix": "vctk/",
+      "license": "CC-BY-4.0",
+      "license_note": null
+    }
+  ],
+  "overrides": {
+    "unmute-prod-website/degaulle-2.wav": {
+      "license": "NOASSERTION",
+      "license_note": "Upstream README does not establish a definitive license for this file."
+    },
+    "unmute-prod-website/ex04_narration_longform_00001.wav": {
+      "license": "CC-BY-NC-4.0",
+      "license_note": "Non-commercial: upstream README identifies this prompt as Expresso material."
+    },
+    "unmute-prod-website/p329_022.wav": {
+      "license": "CC-BY-4.0",
+      "license_note": "Upstream README identifies this prompt as VCTK material under CC BY 4.0."
+    }
+  }
+}

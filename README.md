@@ -22,15 +22,18 @@ without gratuitous identity churn.
 
 ## Install
 
+## Install
+
 ```bash
-python -m pip install -e '.[dev]'
+python -m pip install voicefolio
 voicefolio version
 ```
 
-Versioning is dynamic via `setuptools-scm`; there is no hard-coded package version and no
-`src/` directory.
+For native audio preview, install the optional playback dependencies with `python -m pip install 'voicefolio[playback]'`. Developers can install `python -m pip install -e '.[dev]'` or include playback as `python -m pip install -e '.[dev,playback]'`. Catalog, integration, and fetch consumers do not require NumPy, sounddevice, or soundfile.
 
-## MVP commands
+Versioning is dynamic via `setuptools-scm`; there is no hard-coded package version and no `src/` directory.
+
+## Commands
 
 ```bash
 voicefolio list
@@ -39,32 +42,43 @@ voicefolio fetch kyutai-tts-voices:voice-zero/peter_yearsley
 voicefolio export kyutai-tts-voices:voice-zero/peter_yearsley -o narrator.wav
 ```
 
-The built-in Kyutai catalog includes the complete pinned 1,161-prompt snapshot. Command behavior:
+The built-in Kyutai catalog contains the complete pinned 1,161-reference snapshot. Runtime commands use packaged catalog data and do not contact Hugging Face to discover voices.
 
-- `preview` = verified download/cache + native playback; it waits until playback finishes.
+- `preview` = verified download/cache + native playback; it waits until playback finishes and requires `voicefolio[playback]`.
 - `fetch` = verified download/cache only; it does not play audio.
 - `export` = exact pinned WAV + provenance sidecar.
 
-`voicefolio preview --device DEVICE` selects an output device; numeric IDs are accepted. On Linux,
-`sounddevice` requires PortAudio from the host system. Install your distribution's PortAudio runtime
-package if preview reports that native playback is unavailable. Catalog listing, fetching, and export
-do not initialize the audio backend.
+`voicefolio preview --device DEVICE` selects an output device; numeric IDs are accepted. On Linux, native playback may also require the host PortAudio runtime. If playback dependencies are missing, Voicefolio reports: `Install voicefolio[playback] for native preview.` Catalog listing, validation, fetching, and export do not initialize the audio backend.
 
-## Maintaining older Pocket catalogs
+## Maintaining the authoritative Kyutai catalog
 
-The built-in catalog is complete; normal users do not need to run a migration. `migrate-pocket` remains
-available to maintainers who need to convert a legacy Pocket prompt catalog while retaining its IDs
-and integrity pins:
+Voicefolio owns upstream discovery, license policy, and refreshes. Maintainers can build a candidate against the latest upstream commit while preserving the checked-in catalog as the immutable baseline:
+
+```bash
+voicefolio catalog build-kyutai \
+  --repository kyutai/tts-voices \
+  --revision main \
+  --previous voicefolio/resources/catalogs/kyutai-tts-voices.json \
+  --output /tmp/kyutai-tts-voices.json
+
+voicefolio catalog verify /tmp/kyutai-tts-voices.json
+```
+
+When updating the packaged catalog, `build-kyutai` defaults both its output and previous baseline to the packaged catalog. Existing refs and rows are immutable: same bytes preserve the old row, a removed upstream path remains revision-pinned, changed bytes for an existing ID fail, and new paths are appended as new IDs. The scheduled Voicefolio workflow validates and deterministically rebuilds this catalog; normal runtime use remains packaged and network-independent. Validated catalog updates are distributed through Voicefolio releases; CI does not automatically publish to PyPI.
+
+## Historical Pocket migration
+
+`migrate-pocket` remains compatibility/bootstrap tooling for at least one release after `pocket-onnx-bundles` removes its prompt catalog. It is not the active catalog refresh path:
 
 ```bash
 voicefolio migrate-pocket \
   ../pocket-onnx-bundles/catalog/voice-prompts.json \
-  -o voicefolio/resources/catalogs/kyutai-tts-voices.json
+  -o /tmp/kyutai-voicefolio.json
 
-voicefolio validate
+voicefolio catalog verify /tmp/kyutai-voicefolio.json
 ```
 
-The command converts the Pocket `prompts` container to Voicefolio's generic `voices` schema.
+The command converts the historical Pocket `prompts` container to Voicefolio's schema-1 `voices` container without changing IDs or integrity pins.
 
 ## RenderPlan / VoiceRender contract
 
@@ -87,19 +101,18 @@ dataset = "voice-donations"
 variant = "original"
 ```
 
-RenderPlan can already persist nested binding tables. VoiceRender should resolve the source with
-`voicefolio.resolve_voice_source()` before handing the verified local WAV to a renderer. That
-keeps RenderProfiles portable and prevents machine-specific paths from becoming identity.
+RenderPlan can already persist nested binding tables. VoiceRender should call `voicefolio.validate_voice_source()` during profile/preflight validation; it checks source pins without downloading the WAV. During execution, call `voicefolio.resolve_voice_source()` to revalidate the same pins and fetch the verified local asset. This keeps RenderProfiles portable and prevents machine-specific paths from becoming identity.
 See `docs/voicerender-integration.md`.
 
 ## Catalog ownership
 
 Voicefolio owns:
 
+- direct upstream discovery and deterministic catalog refresh;
 - stable source-qualified IDs;
 - catalog metadata and provenance;
 - source revision + SHA-256 integrity pins;
-- license metadata/evidence;
+- the authoritative license policy and per-row metadata/evidence;
 - caching, preview, and exact WAV export;
 - renderer-neutral managed-reference resolution.
 

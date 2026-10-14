@@ -11,17 +11,41 @@ except ImportError:  # editable checkout before setuptools-scm generated the fil
         __version__ = "0.0.dev0"
 
 from .catalog import Catalog, load_catalog
-from .integration import managed_reference, resolve_voice_source
-from .models import PlaybackError, ResolvedVoice, VoiceEntry, VoiceRef
+from .integration import managed_reference, resolve_voice_source, validate_voice_source
+from .models import (
+    AccessError,
+    AssetNotFoundError,
+    CatalogError,
+    DownloadError,
+    FetchProgress,
+    IntegrityError,
+    OfflineError,
+    PlaybackError,
+    ResolvedVoice,
+    VoiceEntry,
+    VoicefolioError,
+    VoiceNotFoundError,
+    VoiceRef,
+)
 
 __all__ = [
+    "AccessError",
+    "AssetNotFoundError",
     "Catalog",
+    "CatalogError",
+    "DownloadError",
+    "FetchProgress",
+    "IntegrityError",
+    "OfflineError",
     "PlaybackError",
     "ResolvedVoice",
     "VoiceEntry",
+    "VoiceNotFoundError",
     "VoiceRef",
+    "VoicefolioError",
     "__version__",
     "load_catalog",
     "managed_reference",
     "resolve_voice_source",
+    "validate_voice_source",
 ]
