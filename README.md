@@ -22,7 +22,6 @@ without gratuitous identity churn.
 
 ## Install
 
-## Install
 
 ```bash
 python -m pip install voicefolio
@@ -37,12 +36,17 @@ Versioning is dynamic via `setuptools-scm`; there is no hard-coded package versi
 
 ```bash
 voicefolio list
+voicefolio browse
+voicefolio browse-web
 voicefolio preview kyutai-tts-voices:voice-zero/peter_yearsley
 voicefolio fetch kyutai-tts-voices:voice-zero/peter_yearsley
 voicefolio export kyutai-tts-voices:voice-zero/peter_yearsley -o narrator.wav
 ```
 
-The built-in Kyutai catalog contains the complete pinned 1,161-reference snapshot. Runtime commands use packaged catalog data and do not contact Hugging Face to discover voices.
+- `browse` is a small terminal loop: `/` searches, `n`/`p` changes pages, a row number previews, and `q` quits. It uses the same verified fetch and native playback path as `preview`.
+- `browse-web` opens the minimal local browser addon. It binds only to `127.0.0.1`; the browser page filters the packaged catalog and previews WAVs through Voicefolio's verified fetch path.
+
+Each Voicefolio release ships a complete pinned Kyutai catalog snapshot. The initial migrated Pocket baseline contains 1,161 immutable references; later catalog releases may append new stable IDs. Runtime commands use packaged catalog data and do not contact Hugging Face to discover voices.
 
 - `preview` = verified download/cache + native playback; it waits until playback finishes and requires `voicefolio[playback]`.
 - `fetch` = verified download/cache only; it does not play audio.
@@ -120,7 +124,16 @@ Voicefolio does **not** own TTS model bundles, embeddings, synthesis, text norma
 render planning, or final audio mastering.
 
 ## License
+## License
 
 Voicefolio source code is Apache-2.0. Catalog entries and downloaded WAVs keep their own licenses;
-the package does not relicense them. A recording license alone should not be treated as a general
-statement about biometric/voice-likeness rights in every jurisdiction or use case.
+the package does not relicense them. The catalog includes mixed licenses, including non-commercial
+entries and `NOASSERTION` where upstream evidence is inconclusive. Inspect licenses before use:
+
+```bash
+voicefolio list --license CC0-1.0
+voicefolio show kyutai-tts-voices:voice-donations/0a67
+```
+
+A recording license alone should not be treated as a general statement about biometric or
+voice-likeness rights in every jurisdiction or use case.

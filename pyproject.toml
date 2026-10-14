@@ -25,6 +25,11 @@ classifiers = [
   "Typing :: Typed",
 ]
 
+[project.urls]
+Homepage = "https://github.com/buchwandler/voicefolio"
+Repository = "https://github.com/buchwandler/voicefolio"
+Issues = "https://github.com/buchwandler/voicefolio/issues"
+
 [project.optional-dependencies]
 playback = [
   "sounddevice>=0.5,<1",
@@ -32,11 +37,12 @@ playback = [
 ]
 dev = [
   "build>=1.2",
+  "setuptools>=80",
   "wheel",
   "pytest>=8",
   "tomli>=2.0; python_version < '3.12'",
-  "ruff>=0.12",
-  "mypy>=1.13",
+  "ruff==0.16.9",
+  "mypy==2.3.0",
   "setuptools-scm>=9.2",
 ]
 
@@ -53,6 +59,7 @@ voicefolio = [
   "py.typed",
   "resources/catalogs/*.json",
   "resources/sources/*.json",
+  "resources/web/*.html",
 ]
 
 [tool.setuptools_scm]
@@ -72,3 +79,8 @@ python_version = "3.10"
 strict = true
 packages = ["voicefolio"]
 exclude = '(^|/)(build|dist|tests)/'
+
+
+[[tool.mypy.overrides]]
+module = ["sounddevice", "soundfile"]
+ignore_missing_imports = true

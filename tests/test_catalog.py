@@ -4,11 +4,10 @@ from voicefolio.catalog import Catalog
 from voicefolio.models import CatalogError, VoiceEntry, VoiceRef
 
 
-def test_builtin_catalog_has_complete_pinned_kyutai_snapshot():
+def test_builtin_catalog_has_migrated_pinned_kyutai_baseline():
     catalog = Catalog.builtin()
     kyutai = catalog.list(namespace="kyutai-tts-voices")
-    assert len(kyutai) == 1161
-    assert {entry.dataset for entry in kyutai} == {
+    assert {
         "alba-mackenna",
         "cml-tts",
         "ears",
@@ -17,7 +16,7 @@ def test_builtin_catalog_has_complete_pinned_kyutai_snapshot():
         "vctk",
         "voice-donations",
         "voice-zero",
-    }
+    } <= {entry.dataset for entry in kyutai}
 
     legacy_hashes = {
         "alba-mackenna/a-moment-by": "a1805f0e3610f0d5985f4abb51979620a012899e810019960310944bbcba509d",

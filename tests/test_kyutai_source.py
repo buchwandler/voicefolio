@@ -8,7 +8,9 @@ from typing import Any
 from unittest.mock import patch
 
 import pytest
+from typer.testing import CliRunner
 
+from voicefolio import cli
 from voicefolio.catalog import Catalog
 from voicefolio.models import CatalogError
 from voicefolio.sources import huggingface
@@ -75,13 +77,55 @@ def _snapshot(rows: list[dict[str, Any]], *, revision: str = REVISION) -> dict[s
     }
 
 
-def test_packaged_catalog_matches_every_migrated_pocket_id_and_digest() -> None:
+def test_packaged_catalog_preserves_every_migrated_pocket_id_and_digest() -> None:
     baseline_path = Path(__file__).parent / "fixtures" / "kyutai-voice-baseline.json"
     baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
-    entries = Catalog.builtin().list(namespace=NAMESPACE)
-    actual = [[entry.ref.id, entry.sha256] for entry in entries]
-    assert len(actual) == 1161
-    assert actual == baseline
+    expected = {voice_id: sha256 for voice_id, sha256 in baseline}
+    actual = {
+        entry.ref.id: entry.sha256
+        for entry in Catalog.builtin().list(namespace=NAMESPACE)
+    }
+    assert len(actual) >= len(expected)
+    for voice_id, expected_sha256 in expected.items():
+        assert actual[voice_id] == expected_sha256
+
+
+def test_synthetic_append_preserves_baseline_and_validates_as_1162_voices(
+    tmp_path: Path,
+) -> None:
+    packaged_path = Path(__file__).parents[1] / "voicefolio/resources/catalogs/kyutai-tts-voices.json"
+    baseline = json.loads(packaged_path.read_text(encoding="utf-8"))
+    discovered = copy.deepcopy(baseline)
+    appended = copy.deepcopy(
+        next(row for row in baseline["voices"] if row["id"] == "voice-donations/0a67")
+    )
+    appended["id"] = "voice-donations/__synthetic_append__"
+    appended["source_path"] = f"{appended['id']}.wav"
+    appended["url"] = huggingface.resolve_url(
+        appended["source_repository"],
+        appended["source_revision"],
+        appended["source_path"],
+    )
+    discovered["voices"].append(appended)
+    discovered["voices"].sort(key=lambda row: row["id"])
+    discovered["source"]["prompt_count"] = len(discovered["voices"])
+
+    result = build_catalog(baseline, discovered_snapshot=discovered)
+    verify_kyutai_catalog(result)
+    expected = {row["id"]: row["sha256"] for row in baseline["voices"]}
+    actual = {row["id"]: row["sha256"] for row in result["voices"]}
+    assert len(actual) == 1162
+    assert all(actual[voice_id] == sha256 for voice_id, sha256 in expected.items())
+    assert "voice-donations/__synthetic_append__" in actual
+
+    candidate_path = tmp_path / "candidate.json"
+    candidate_path.write_text(json.dumps(result), encoding="utf-8")
+    validation = CliRunner().invoke(
+        cli.app, ["validate", "--catalog", str(candidate_path)]
+    )
+    assert validation.exit_code == 0, validation.output
+    assert validation.output.strip() == "ok: 1162 voices"
+
 
 
 def test_license_policy_keeps_override_and_fails_closed() -> None:

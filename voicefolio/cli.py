@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import json
 import shutil
+from collections.abc import Callable
+from functools import wraps
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, ParamSpec
 
 import typer
 
@@ -12,8 +14,9 @@ from .cache import fetch, sha256_file
 from .catalog import Catalog, load_catalog
 from .integration import managed_reference
 from .migration import migrate_pocket_catalog
-from .models import CatalogError, PlaybackError
+from .models import CatalogError, PlaybackError, VoicefolioError
 from .playback import play_wav
+from .server import serve_browser
 from .sources.kyutai_tts_voices import (
     DEFAULT_REPOSITORY,
     DEFAULT_REVISION,
@@ -26,6 +29,21 @@ from .sources.kyutai_tts_voices import (
 app = typer.Typer(
     no_args_is_help=True, help="Manage, preview, pin, and export reference voices."
 )
+
+
+P = ParamSpec("P")
+
+
+def _handle_voicefolio_errors(function: Callable[P, None]) -> Callable[P, None]:
+    @wraps(function)
+    def wrapped(*args: P.args, **kwargs: P.kwargs) -> None:
+        try:
+            function(*args, **kwargs)
+        except VoicefolioError as exc:
+            typer.echo(f"Error: {exc}", err=True)
+            raise typer.Exit(code=1) from exc
+
+    return wrapped
 
 
 catalog_app = typer.Typer(no_args_is_help=True, help="Build and verify source catalogs.")
@@ -92,6 +110,7 @@ def version_command() -> None:
 
 
 @app.command("list")
+@_handle_voicefolio_errors
 def list_command(
     catalog: Annotated[
         list[Path] | None, typer.Option("--catalog", help="Additional catalog JSON.")
@@ -114,6 +133,7 @@ def list_command(
 
 
 @app.command("show")
+@_handle_voicefolio_errors
 def show_command(
     ref: str,
     catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
@@ -124,6 +144,7 @@ def show_command(
 
 
 @app.command("fetch")
+@_handle_voicefolio_errors
 def fetch_command(
     ref: str,
     catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
@@ -136,6 +157,7 @@ def fetch_command(
 
 
 @app.command("preview")
+@_handle_voicefolio_errors
 def preview_command(
     ref: str,
     catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
@@ -156,7 +178,83 @@ def preview_command(
         raise typer.Exit(code=1) from exc
 
 
+@app.command("browse")
+@_handle_voicefolio_errors
+def browse_command(
+    catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
+    query: Annotated[str | None, typer.Option("--query", "-q")] = None,
+    dataset: Annotated[str | None, typer.Option()] = None,
+    license: Annotated[str | None, typer.Option()] = None,
+    variant: Annotated[str | None, typer.Option()] = None,
+    page_size: Annotated[int, typer.Option(help="Voices shown per page.")] = 20,
+    cache_dir: Annotated[Path | None, typer.Option()] = None,
+    offline: Annotated[bool, typer.Option()] = False,
+    device: Annotated[str | None, typer.Option("--device")] = None,
+) -> None:
+    """Interactively filter, page through, and preview catalog voices."""
+    if page_size < 1:
+        raise typer.BadParameter("page-size must be positive")
+
+    active = _catalog(catalog)
+    page = 0
+    while True:
+        rows = active.list(dataset=dataset, license=license, variant=variant, query=query)
+        page_count = max(1, (len(rows) + page_size - 1) // page_size)
+        page = min(page, page_count - 1)
+        page_rows = rows[page * page_size : (page + 1) * page_size]
+
+        typer.echo(f"Voicefolio — {len(rows)} voices")
+        typer.echo(f"Filter: {query or '<none>'}  Page {page + 1}/{page_count}")
+        for number, entry in enumerate(page_rows, start=1):
+            typer.echo(f"{number:>2} {entry.ref}  {entry.license}")
+        typer.echo("[number] play  / search  n next  p previous  q quit")
+
+        command = typer.prompt(">").strip()
+        if command.lower() == "q":
+            return
+        if command.lower() == "n":
+            page = min(page + 1, page_count - 1)
+            continue
+        if command.lower() == "p":
+            page = max(page - 1, 0)
+            continue
+        if command == "/" or command.startswith("/"):
+            query = typer.prompt("Search (empty clears)").strip() if command == "/" else command[1:].strip()
+            query = query or None
+            page = 0
+            continue
+        if not command.isdecimal() or not 1 <= int(command) <= len(page_rows):
+            typer.echo("Choose a listed number, /search, n, p, or q.", err=True)
+            continue
+
+        entry = page_rows[int(command) - 1]
+        playback_device: str | int | None = device
+        if device is not None and device.isdecimal():
+            playback_device = int(device)
+        try:
+            resolved = fetch(entry, cache_dir=cache_dir, offline=offline)
+            typer.echo(f"Playing {entry.ref}")
+            play_wav(resolved.path, device=playback_device)
+        except VoicefolioError as exc:
+            typer.echo(f"Error: {exc}", err=True)
+
+
+@app.command("browse-web")
+@_handle_voicefolio_errors
+def browse_web_command(
+    catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
+    cache_dir: Annotated[Path | None, typer.Option()] = None,
+    offline: Annotated[bool, typer.Option()] = False,
+    port: Annotated[int, typer.Option(help="Loopback HTTP port; 0 selects an available port.")] = 0,
+) -> None:
+    """Open the minimal local browser addon for catalog search and preview."""
+    if not 0 <= port <= 65535:
+        raise typer.BadParameter("port must be between 0 and 65535")
+    serve_browser(_catalog(catalog), cache_dir=cache_dir, offline=offline, port=port)
+
+
 @app.command("export")
+@_handle_voicefolio_errors
 def export_command(
     ref: str,
     output: Annotated[Path, typer.Option("--output", "-o")],
@@ -202,6 +300,7 @@ def export_command(
 
 
 @app.command("binding")
+@_handle_voicefolio_errors
 def binding_command(
     ref: str,
     renderer: Annotated[str, typer.Option()] = "pocket",
@@ -227,6 +326,7 @@ def binding_command(
 
 
 @app.command("validate")
+@_handle_voicefolio_errors
 def validate_command(
     catalog: Annotated[list[Path] | None, typer.Option("--catalog")] = None,
 ) -> None:
@@ -236,6 +336,7 @@ def validate_command(
 
 
 @app.command("migrate-pocket")
+@_handle_voicefolio_errors
 def migrate_pocket_command(
     source: Path,
     output: Annotated[Path, typer.Option("--output", "-o")],

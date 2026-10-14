@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Voicefolio</title>
+    <style>
+      body { font: 16px system-ui, sans-serif; margin: 2rem auto; max-width: 60rem; padding: 0 1rem; }
+      form { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1rem 0; }
+      label { display: grid; gap: .25rem; }
+      input, select, button { font: inherit; padding: .4rem; }
+      li { border-bottom: 1px solid #ddd; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; padding: .7rem 0; }
+      .meta { color: #555; }
+      #status { min-height: 1.5rem; }
+      audio { display: block; margin-top: 1rem; width: 100%; }
+    </style>
+  </head>
+  <body>
+    <h1>Voicefolio</h1>
+    <p>Browse the packaged catalog and preview verified voices from your local cache or upstream.</p>
+    <form id="filters">
+      <label>Search <input name="query" type="search" /></label>
+      <label>Dataset <input name="dataset" /></label>
+      <label>License <input name="license" /></label>
+      <label>Variant
+        <select name="variant">
+          <option value="">All</option>
+          <option value="original">Original</option>
+          <option value="enhanced">Enhanced</option>
+        </select>
+      </label>
+      <button type="submit">Filter</button>
+    </form>
+    <p id="status" role="status"></p>
+    <ul id="voices"></ul>
+    <h2>Preview</h2>
+    <audio id="player" controls></audio>
+    <script>
+      const form = document.querySelector("#filters");
+      const list = document.querySelector("#voices");
+      const status = document.querySelector("#status");
+      const player = document.querySelector("#player");
+
+      async function loadVoices(event) {
+        if (event) event.preventDefault();
+        status.textContent = "Loading catalog…";
+        const params = new URLSearchParams(new FormData(form));
+        try {
+          const response = await fetch(`/api/voices?${params}`);
+          const voices = await response.json();
+          if (!response.ok) throw new Error(voices.error || "Catalog request failed");
+          list.replaceChildren();
+          for (const voice of voices) {
+            const row = document.createElement("li");
+            const details = document.createElement("span");
+            details.textContent = voice.ref;
+            const meta = document.createElement("span");
+            meta.className = "meta";
+            meta.textContent = `${voice.dataset} · ${voice.variant} · ${voice.license}`;
+            const button = document.createElement("button");
+            button.type = "button";
+            button.textContent = "Play";
+            button.addEventListener("click", () => {
+              player.src = `/api/audio?ref=${encodeURIComponent(voice.ref)}`;
+              player.play().catch(() => { status.textContent = "Preview could not be started."; });
+            });
+            row.append(details, meta, button);
+            list.append(row);
+          }
+          status.textContent = `${voices.length} voices`;
+        } catch (error) {
+          status.textContent = error.message;
+        }
+      }
+
+      form.addEventListener("submit", loadVoices);
+      form.addEventListener("change", loadVoices);
+      loadVoices();
+    </script>
+  </body>
+</html>

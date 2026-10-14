@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 import shutil
 import subprocess
@@ -7,6 +8,8 @@ import sys
 import tarfile
 import zipfile
 from pathlib import Path
+
+import pytest
 
 try:
     import tomllib
@@ -26,9 +29,8 @@ def test_dynamic_version_and_flat_layout():
     assert (
         "resources/sources/*.json" in data["tool"]["setuptools"]["package-data"]["voicefolio"]
     )
-    assert not any(
-        "resources/web/" in item
-        for item in data["tool"]["setuptools"]["package-data"]["voicefolio"]
+    assert (
+        "resources/web/*.html" in data["tool"]["setuptools"]["package-data"]["voicefolio"]
     )
     assert not (root / "src").exists()
 
@@ -37,9 +39,10 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
     root = Path(__file__).parents[1]
     catalog = root / "voicefolio/resources/catalogs/kyutai-tts-voices.json"
     license_policy = root / "voicefolio/resources/sources/kyutai-tts-voices-licenses.json"
+    browser_page = root / "voicefolio/resources/web/index.html"
     shutil.rmtree(root / "build", ignore_errors=True)
     (root / "voicefolio.egg-info" / "SOURCES.txt").unlink(missing_ok=True)
-    subprocess.run(
+    result = subprocess.run(
         [
             sys.executable,
             "-m",
@@ -51,11 +54,16 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
             str(tmp_path),
         ],
         cwd=root,
-        check=True,
+        check=False,
         capture_output=True,
         text=True,
     )
-
+    if result.returncode:
+        pytest.fail(
+            "package build failed\n"
+            f"stdout:\n{result.stdout}\n"
+            f"stderr:\n{result.stderr}"
+        )
     wheel = next(tmp_path.glob("*.whl"))
     with zipfile.ZipFile(wheel) as archive:
         member = "voicefolio/resources/catalogs/kyutai-tts-voices.json"
@@ -79,7 +87,9 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
             ]
             assert len(declarations) == 1
             assert 'extra == "playback"' in declarations[0]
-        assert "voicefolio/resources/web/index.html" not in archive.namelist()
+        browser_member = "voicefolio/resources/web/index.html"
+        assert browser_member in archive.namelist()
+        assert archive.read(browser_member) == browser_page.read_bytes()
 
     sdist = next(tmp_path.glob("*.tar.gz"))
     with tarfile.open(sdist, "r:gz") as archive:
@@ -100,9 +110,12 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
         assert policy is not None
         assert policy.read() == license_policy.read_bytes()
         assert any(name.endswith("/voicefolio/py.typed") for name in archive.getnames())
-        assert not any(
-            name.endswith("/voicefolio/resources/web/index.html") for name in archive.getnames()
+        browser_member = next(
+            name for name in archive.getnames() if name.endswith("/voicefolio/resources/web/index.html")
         )
+        browser_source = archive.extractfile(browser_member)
+        assert browser_source is not None
+        assert browser_source.read() == browser_page.read_bytes()
 
     env = os.environ.copy()
     env["PYTHONPATH"] = str(wheel)
@@ -113,7 +126,8 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
             (
                 "from voicefolio import Catalog; "
                 "catalog = Catalog.builtin(); "
-                "assert len(catalog.list(namespace='kyutai-tts-voices')) == 1161; "
+                "entry = catalog.get('kyutai-tts-voices:voice-donations/0a67'); "
+                "assert entry.sha256 == '4bd75d0ef0ad3f4e82ac075eab2a132651d2463f83bec210edeeccaf69294886'; "
                 "print('wheel catalog:', len(catalog))"
             ),
         ],
@@ -123,4 +137,5 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
         capture_output=True,
         text=True,
     )
-    assert smoke.stdout.strip() == "wheel catalog: 1161"
+    expected_count = len(json.loads(catalog.read_text(encoding="utf-8"))["voices"])
+    assert smoke.stdout.strip() == f"wheel catalog: {expected_count}"

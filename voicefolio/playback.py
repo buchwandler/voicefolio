@@ -8,8 +8,8 @@ from .models import PlaybackError
 def play_wav(path: str | Path, *, device: str | int | None = None) -> None:
     """Synchronously play a local WAV through the native sounddevice backend."""
     try:
-        import sounddevice as sd  # type: ignore[import-untyped]
-        import soundfile as sf  # type: ignore[import-untyped]
+        import sounddevice as sd
+        import soundfile as sf
     except (ImportError, OSError) as exc:
         raise PlaybackError("Install voicefolio[playback] for native preview.") from exc
 
