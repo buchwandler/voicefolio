@@ -32,6 +32,7 @@ playback = [
 ]
 dev = [
   "build>=1.2",
+  "wheel",
   "pytest>=8",
   "tomli>=2.0; python_version < '3.11'",
   "ruff>=0.12",
