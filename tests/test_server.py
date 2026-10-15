@@ -4,6 +4,7 @@ import json
 import threading
 from collections.abc import Iterator
 from contextlib import contextmanager
+from dataclasses import replace
 from http.server import HTTPServer
 from pathlib import Path
 from types import SimpleNamespace
@@ -59,7 +60,11 @@ def test_browser_page_and_voice_filters_are_served_locally() -> None:
         with urlopen(f"{base_url}/") as response:
             page = response.read().decode("utf-8")
             assert response.headers["Content-Type"].startswith("text/html")
+            csp = response.headers["Content-Security-Policy"]
+            assert response.headers["X-Content-Type-Options"] == "nosniff"
         with urlopen(f"{base_url}/api/voices?query=alpha") as response:
+            assert response.headers["X-Content-Type-Options"] == "nosniff"
+            assert response.headers["Cache-Control"] == "no-store"
             voices = json.loads(response.read())
         with urlopen(f"{base_url}/api/voices?language=en") as response:
             english = json.loads(response.read())
@@ -72,6 +77,12 @@ def test_browser_page_and_voice_filters_are_served_locally() -> None:
 
     assert '<audio id="player"' in page
     assert '<select name="language" id="language">' in page
+    assert "'unsafe-inline'" not in csp
+    assert "'sha256-" in csp
+    assert "innerHTML" not in page
+    assert 'name="namespace"' in page
+    assert 'name="pitch_band"' in page
+    assert 'textContent = "Synthesized demo"' in page
     assert 'fetch("/api/languages")' in page
     assert len(voices) == 1
     assert voices[0]["ref"] == "demo:dataset/alpha"
@@ -84,6 +95,107 @@ def test_browser_page_and_voice_filters_are_served_locally() -> None:
         {"value": "fr", "label": "French", "count": 1},
         {"value": "und", "label": "Unknown", "count": 1},
     ]
+
+
+def test_browser_facets_filters_pagination_and_total_count() -> None:
+    entries = [
+        replace(
+            _entry("dataset/alpha", "a" * 64, language="en"),
+            metadata={
+                "speaker_name": "Alice Example",
+                "gender": "female",
+                "pitch_band": "low",
+                "emotion": "calm",
+            },
+        ),
+        replace(
+            _entry("dataset/beta", "b" * 64, language="en"),
+            metadata={
+                "speaker_name": "Bob Example",
+                "gender": "male",
+                "pitch_band": "high",
+                "emotion": "happy",
+            },
+        ),
+        replace(
+            _entry("dataset/gamma", "c" * 64, language="fr"),
+            metadata={
+                "speaker_name": "Cora Example",
+                "gender": "female",
+                "pitch_band": "low",
+                "emotion": "calm",
+            },
+        ),
+    ]
+    with _running_server(Catalog(entries)) as base_url:
+        with urlopen(f"{base_url}/api/sources") as response:
+            facets = json.loads(response.read())
+        with urlopen(f"{base_url}/api/voices?gender=female&limit=1&offset=0") as response:
+            voices = json.loads(response.read())
+            total_count = response.headers["X-Total-Count"]
+        with urlopen(f"{base_url}/api/voices?speaker=Bob&limit=5") as response:
+            speakers = json.loads(response.read())
+
+    assert {row["value"] for row in facets["namespaces"]} == {"demo"}
+    assert {row["value"] for row in facets["genders"]} == {"female", "male"}
+    assert {row["value"] for row in facets["emotions"]} == {"calm", "happy"}
+    assert len(voices) == 1
+    assert voices[0]["speaker"] == "Alice Example"
+    assert voices[0]["pitch_band"] == "low"
+    assert total_count == "2"
+    assert [voice["speaker"] for voice in speakers] == ["Bob Example"]
+
+
+def test_browser_audio_formats_and_linked_demo_are_explicit(
+    monkeypatch, tmp_path: Path
+) -> None:
+    entry = replace(
+        _entry("dataset/alpha", "a" * 64),
+        format="flac",
+        url="https://example.invalid/dataset/alpha.flac",
+    )
+    catalog = Catalog([entry])
+    flac_path = tmp_path / "alpha.flac"
+    flac_path.write_bytes(b"source flac")
+    wav_path = tmp_path / "alpha-rendered.wav"
+    wav_path.write_bytes(b"renderer wav")
+    demo_path = tmp_path / "demo.wav"
+    demo_path.write_bytes(b"verified demo")
+    monkeypatch.setattr(
+        server, "fetch", lambda *args, **kwargs: SimpleNamespace(path=flac_path)
+    )
+    monkeypatch.setattr(
+        server,
+        "materialize_wav",
+        lambda *args, **kwargs: SimpleNamespace(path=wav_path),
+    )
+    monkeypatch.setattr(
+        server,
+        "fetch_linked_asset",
+        lambda *args, **kwargs: SimpleNamespace(
+            path=demo_path, asset=SimpleNamespace(format="wav")
+        ),
+    )
+
+    with _running_server(catalog) as base_url:
+        with urlopen(f"{base_url}/api/audio?ref={quote(str(entry.ref))}") as response:
+            source_bytes = response.read()
+            source_type = response.headers["Content-Type"]
+        with urlopen(
+            f"{base_url}/api/audio?ref={quote(str(entry.ref))}&renderer=wav"
+        ) as response:
+            renderer_bytes = response.read()
+            renderer_type = response.headers["Content-Type"]
+        with urlopen(
+            f"{base_url}/api/audio?ref={quote(str(entry.ref))}&asset=preview_demo"
+        ) as response:
+            demo_bytes = response.read()
+
+    assert source_bytes == b"source flac"
+    assert source_type == "audio/flac"
+    assert renderer_bytes == b"renderer wav"
+    assert renderer_type == "audio/wav"
+    assert demo_bytes == b"verified demo"
 
 
 def test_browser_audio_route_uses_verified_fetch(monkeypatch, tmp_path: Path) -> None:

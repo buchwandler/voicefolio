@@ -11,6 +11,7 @@ except ImportError:  # editable checkout before setuptools-scm generated the fil
         __version__ = "0.0.dev0"
 
 from .catalog import Catalog, load_catalog
+from .errors import MaterializationError, MissingAudioDependencyError
 from .integration import managed_reference, resolve_voice_source, validate_voice_source
 from .models import (
     AccessError,
@@ -19,6 +20,7 @@ from .models import (
     DownloadError,
     FetchProgress,
     IntegrityError,
+    MaterializedVoice,
     OfflineError,
     PlaybackError,
     ResolvedVoice,
@@ -27,6 +29,7 @@ from .models import (
     VoiceNotFoundError,
     VoiceRef,
 )
+from .progress import ProgressCallback, ProgressEvent
 
 __all__ = [
     "AccessError",
@@ -36,8 +39,13 @@ __all__ = [
     "DownloadError",
     "FetchProgress",
     "IntegrityError",
+    "MaterializationError",
+    "MaterializedVoice",
+    "MissingAudioDependencyError",
     "OfflineError",
     "PlaybackError",
+    "ProgressCallback",
+    "ProgressEvent",
     "ResolvedVoice",
     "VoiceEntry",
     "VoiceNotFoundError",

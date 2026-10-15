@@ -1,0 +1,12 @@
+{
+  "count": 2114,
+  "emotion_count": 1963,
+  "filename_override_count": 4,
+  "ids_sha256": "a3b61cc0f7985d9bb830e954c2e5b704b903b08496d54fd3828923b5349b4104",
+  "original_count": 151,
+  "pins_sha256": "0bb62349daddac669b9cead1bf3491eb49178f30b048caa32301756cb73ed031",
+  "quarantined_count": 42,
+  "schema": 1,
+  "source_repository": "OwenTyme/voice-zero",
+  "source_revision": "490cfbee850a6d409076f477c766f567000a79b6"
+}

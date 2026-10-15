@@ -9,7 +9,7 @@ from typing import Any
 import pytest
 
 from voicefolio.models import PlaybackError
-from voicefolio.playback import play_wav
+from voicefolio.playback import play_audio, play_wav
 
 
 def _module(name: str, **attributes: Any) -> ModuleType:
@@ -46,6 +46,36 @@ def test_play_wav_uses_native_backend_synchronously(
     assert calls == [
         ("read", audio_path, "float32", False),
         ("play", audio, 24000, "USB Output"),
+        ("wait",),
+    ]
+
+
+def test_play_audio_accepts_flac_source_path(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    audio_path = tmp_path / "voice.flac"
+    audio = object()
+    calls: list[tuple[Any, ...]] = []
+
+    def read(path: Path, *, dtype: str, always_2d: bool) -> tuple[object, int]:
+        calls.append(("read", path, dtype, always_2d))
+        return audio, 24_000
+
+    def play(data: object, sample_rate: int, *, device: str | int | None) -> None:
+        calls.append(("play", data, sample_rate, device))
+
+    monkeypatch.setitem(sys.modules, "soundfile", _module("soundfile", read=read))
+    monkeypatch.setitem(
+        sys.modules,
+        "sounddevice",
+        _module("sounddevice", play=play, wait=lambda: calls.append(("wait",))),
+    )
+
+    play_audio(audio_path)
+
+    assert calls == [
+        ("read", audio_path, "float32", False),
+        ("play", audio, 24_000, None),
         ("wait",),
     ]
 

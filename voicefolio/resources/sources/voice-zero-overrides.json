@@ -1,0 +1,32 @@
+{
+  "source_repository": "OwenTyme/voice-zero",
+  "filename_aliases": {
+    "voices/a_janelle_risa.flac": {
+      "attribution_filename": "a_janelle_risa.flac.flac",
+      "reason": "The pinned voices README has a duplicated .flac suffix; the pinned Git tree contains a_janelle_risa.flac and the actor/source row is otherwise exact."
+    },
+    "voices/alan_davis_drake2.flac": {
+      "attribution_filename": "alan_davis_drave2.flac",
+      "reason": "The pinned voices README spells the file drave2, while the pinned Git tree path is drake2; the speaker, accent, and source row identify the same Alan Davis Drake recording."
+    },
+    "voices/kristin_hughes-angry.flac": {
+      "attribution_filename": "kristin_huges-angry.flac",
+      "reason": "The pinned voices README omits the second h in huges; the pinned Git tree path and neighboring Kristin Hughes rows establish the filename correction."
+    },
+    "voices/kristin_hughes-sad.flac": {
+      "attribution_filename": "kristin_huges-sad.flac",
+      "reason": "The pinned voices README omits the second h in huges; the pinned Git tree path and neighboring Kristin Hughes rows establish the filename correction."
+    }
+  },
+  "exclude": {
+    "voices/emily_cripps2.flac": {
+      "reason": "Quarantined: the pinned voices README has no exact filename/source row for this original; do not infer its recording attribution from Emily Cripps's other file."
+    },
+    "voices/jodi_krangle-expressive.flac": {
+      "reason": "Quarantined: the pinned voices README has no exact filename/source row for this original; do not infer its recording attribution from Jodi Krangle's other file."
+    },
+    "voices/jodi_krangle2.flac": {
+      "reason": "Quarantined: the pinned voices README has no exact filename/source row for this original; do not infer its recording attribution from Jodi Krangle's other file."
+    }
+  }
+}

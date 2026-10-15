@@ -5,8 +5,8 @@ from pathlib import Path
 from .models import PlaybackError
 
 
-def play_wav(path: str | Path, *, device: str | int | None = None) -> None:
-    """Synchronously play a local WAV through the native sounddevice backend."""
+def play_audio(path: str | Path, *, device: str | int | None = None) -> None:
+    """Synchronously play a local WAV or FLAC through native audio output."""
     try:
         import sounddevice as sd
         import soundfile as sf
@@ -24,3 +24,8 @@ def play_wav(path: str | Path, *, device: str | int | None = None) -> None:
         sd.wait()
     except Exception as exc:
         raise PlaybackError(f"cannot play {audio_path}: {exc}") from exc
+
+
+def play_wav(path: str | Path, *, device: str | int | None = None) -> None:
+    """Compatibility wrapper for the historical WAV-only playback function."""
+    play_audio(path, device=device)

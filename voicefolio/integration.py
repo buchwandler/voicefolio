@@ -6,14 +6,16 @@ from typing import Any
 
 from .cache import fetch
 from .catalog import Catalog, load_catalog
-from .models import FetchProgress, IntegrityError, ResolvedVoice, VoiceEntry
+from .materialize import materialize_wav
+from .models import FetchProgress, IntegrityError, MaterializedVoice, ResolvedVoice, VoiceEntry
+from .progress import ProgressCallback
 
 
 def managed_reference(ref: str, *, catalog: Catalog | None = None) -> dict[str, Any]:
     """Return the portable RenderPlan/VoiceRender voice_source mapping for *ref*.
 
-    It intentionally contains no machine-local path. The SHA and source revision pin the
-    exact WAV while the stable ref remains convenient for plans and profiles.
+    It intentionally contains no machine-local path. The SHA and source revision pin exact source
+    bytes; a renderer WAV derived from FLAC remains a separate runtime artifact.
     """
     entry = (catalog or load_catalog()).get(ref)
     return {
@@ -21,6 +23,7 @@ def managed_reference(ref: str, *, catalog: Catalog | None = None) -> dict[str, 
         "resolver": "voicefolio",
         "value": str(entry.ref),
         "sha256": entry.sha256,
+        "source_format": entry.format,
         "source_revision": entry.source_revision,
         "source_repository": entry.source_repository,
         "source_path": entry.source_path,
@@ -60,6 +63,11 @@ def validate_voice_source(
                 f"Voicefolio source pin {name} changed for {ref}: "
                 f"profile={profile_value!r}, catalog={catalog_value!r}"
             )
+    if "source_format" in source and source["source_format"] != entry.format:
+        raise IntegrityError(
+            f"Voicefolio source pin source_format changed for {ref}: "
+            f"profile={source['source_format']!r}, catalog={entry.format!r}"
+        )
     for name in ("license", "dataset", "variant"):
         if name in source and source[name] != getattr(entry, name):
             raise IntegrityError(
@@ -76,7 +84,16 @@ def resolve_voice_source(
     cache_dir: str | Path | None = None,
     offline: bool = False,
     progress: Callable[[FetchProgress], None] | None = None,
-) -> ResolvedVoice:
-    """Validate and resolve a Voicefolio managed_reference to a verified local WAV."""
+    materialization_progress: ProgressCallback | None = None,
+) -> ResolvedVoice | MaterializedVoice:
+    """Validate a managed reference and resolve its source or renderer WAV."""
     entry = validate_voice_source(source, catalog=catalog)
+    if entry.format == "flac":
+        return materialize_wav(
+            entry,
+            cache_dir=cache_dir,
+            offline=offline,
+            progress=materialization_progress,
+            source_progress=progress,
+        )
     return fetch(entry, cache_dir=cache_dir, offline=offline, progress=progress)

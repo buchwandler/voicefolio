@@ -1,57 +1,59 @@
 # Architecture
 
 ```text
-      kyutai/tts-voices upstream
-                 |
-                 v
-    Voicefolio maintainer tooling + CI
-    pinned discovery / license policy
-    immutable published-ID merge
-                 |
-                 v
-    packaged schema-1 Kyutai catalog
-                 |
-        Voicefolio release artifact
-                 |
-                 v
-  Catalog / preflight validation / fetch
-      |                         |
-      +---- verified cache      +---- exact WAV export / preview
-                 |
-                 v
-        managed_reference
-                 |
-                 v
-            VoiceRender
-              /      \
-             v        v
-      PocketSynth   SoproSynth ...
-                 |
-                 v
-          RenderPlan output
+ Kyutai upstream        Fine Read It HF         Voice-Zero GitHub
+        |                      |                        |
+        +----------------------+------------------------+
+                               |
+                   source-specific maintainer builders
+            pinned revisions + license/attribution evidence
+                               |
+                   append-only immutable-ref merge
+                               |
+                 packaged schema-1 catalog resources
+           Kyutai             Fine Read It          Voice-Zero
+                               |
+                     deterministic wheel / sdist
+                               |
+       Catalog / preflight / verified source cache / CLI / browser
+                               |
+          +--------------------+---------------------+
+          |                    |                     |
+    exact WAV bytes      exact FLAC bytes      pinned demo assets
+          |                    |
+          |             optional deterministic
+          |               FLAC-to-WAV recipe
+          +--------------------+
+                               |
+                 renderer-ready WAV / export
+                               |
+              managed_reference + source SHA-256
+                               |
+                       VoiceRender clients
 ```
 
 ## Ownership and refresh
 
-Voicefolio is the authoritative owner of Kyutai reference IDs, catalog metadata, license policy and evidence, integrity pins, download/cache/offline behavior, and engine-neutral managed-reference validation. Kyutai-specific upstream discovery lives in maintainer tooling rather than the generic `Catalog` model. Normal `list`, `fetch`, preflight, and resolution use the packaged catalog and never discover against upstream `main`.
+Voicefolio owns the source adapters, packaged snapshots, stable source-qualified IDs, metadata and per-row license evidence, integrity pins, cache/export behavior, and renderer-neutral managed-reference validation. Kyutai discovery uses Hugging Face, Fine Read It uses bounded Hugging Face dataset APIs and separately pinned demo assets, and Voice-Zero uses bounded GitHub tree/content APIs. Runtime catalog loading is offline and deterministic; refresh operations are maintainer-only and explicitly networked.
 
-The packaged catalog keeps schema 1 (`kind = "voicefolio-catalog"`) and the `kyutai-tts-voices` namespace. Refresh is append-only by public identity:
+Each namespace has its own append-only identity boundary. A matching ref and SHA-256 preserves the complete previous row; a changed digest for an existing ref fails; removed upstream files remain pinned historical rows; new IDs are appended at one resolved upstream revision. Source-specific verification checks attribution and license evidence. Ambiguous Voice-Zero files remain in quarantine diagnostics rather than being guessed into the catalog. Accent stays separate from language.
 
-- same ID and same SHA-256: preserve the entire published row, including its source revision, URL, and license evidence;
-- existing ID absent upstream: preserve its revision-pinned historical row;
-- existing ID with a different SHA-256: fail the refresh; never reassign the ref;
-- new ID: append a row pinned to the newly resolved 40-character source commit.
+The catalogs retain schema 1 (`kind = "voicefolio-catalog"`). `Catalog.builtin()` loads all packaged catalog JSON resources in stable filename order, then merges explicit local catalogs with duplicate-ref conflict checks. Runtime list/show/binding/validation does not contact upstream services.
 
-Descriptive language tags are source-owned catalog metadata and are validated against the source policy; they do not participate in the stable voice reference or SHA-256 identity. Language metadata is frozen with a published row under the append-only policy; changing an existing label requires an explicit maintainer migration rather than filename or accent guessing.
+## Source bytes, materialization, and browser
 
-Therefore, historical entry revisions may differ from the latest discovery revision recorded in top-level `source` metadata. CI verifies the baseline, rebuilds twice for byte-identical output, and commits only a verified catalog update. Catalog updates are included in Voicefolio releases; the scheduled workflow does not publish to PyPI.
+The managed-reference SHA-256 always identifies exact upstream source bytes. WAV cache paths preserve the released layout; FLAC sources use `.flac` cache paths. Default export and VoiceRender resolution produce renderer-ready WAVs; FLAC conversion is an optional, deterministic `voicefolio[audio]` operation with its own output digest and recipe metadata. Native preview can play WAV or FLAC through the optional playback extra.
+
+Fine Read It synthesized demos are linked assets with their own pinned URL, size, format, and SHA-256. They are fetched only on explicit demo request and never substitute for the reference asset or managed reference.
+
+The local browser binds only to `127.0.0.1`. Facet and language endpoints drive source-aware filtering and paging; text is rendered as text nodes. Audio responses report their real source MIME type (`audio/wav` or `audio/flac`), while renderer-WAV requests are explicit. The server sets `nosniff`, `no-store`, and a hash-based restrictive Content Security Policy.
 
 ## Managed references and runtime
 
-A stable reference identifies one exact WAV through its SHA-256 and pinned source revision. VoiceRender calls `validate_voice_source()` during profile/preflight checks; it validates required pins and optional descriptive fields without downloading. At execution time `resolve_voice_source()` applies the same validation and fetches/verifies the exact WAV before returning a local path. Persisted RenderProfiles retain the managed ref and provenance, never a machine-local cache path.
+A managed reference contains the stable ref, source SHA-256, pinned source revision/repository/path, and descriptive license/dataset/variant metadata. VoiceRender calls `validate_voice_source()` during profile/preflight checks; this validates catalog pins without fetching audio. At execution time `resolve_voice_source()` revalidates, fetches and verifies source bytes, then returns a WAV suitable for renderer consumption (materializing FLAC only when needed). Persisted profiles retain source identity, never a machine-local cache path or derived WAV digest.
 
-`voicefolio preview REF` verifies or fetches the content-addressed asset and plays it synchronously when installed with `voicefolio[playback]`. `fetch` resolves the same verified asset without playback. The core catalog/integration install does not require NumPy or native audio packages.
+`voicefolio preview REF` verifies or fetches the source and plays WAV/FLAC synchronously when installed with `voicefolio[playback]`. `fetch` resolves exact source bytes without playback. The core catalog/integration install does not require soundfile, sounddevice, or a native audio backend.
 
-## Cache rule
+## Cache and trust boundaries
 
-Cache paths are content-addressed by SHA-256. Paths are intentionally not part of render identity. All fetched assets are verified before atomic publication to the cache; offline misses, access failures, missing pinned upstream assets, transport failures, and integrity mismatches have distinct public error types.
+Source downloads require HTTPS (with bounded safe redirects), enforce the pinned size and SHA-256, and publish atomically only after verification. Linked demos use independent pins and bounded downloads. Offline misses, access failures, missing pinned assets, transport failures, and integrity mismatches have distinct public error types. Source inclusion does not grant universal permission to use or clone a person's voice; users must review both the recording license and applicable likeness/consent rights.

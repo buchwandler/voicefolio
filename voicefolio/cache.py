@@ -7,7 +7,7 @@ import urllib.error
 import urllib.request
 from collections.abc import Callable
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 from urllib.parse import urlparse
 
 from .models import (
@@ -21,6 +21,47 @@ from .models import (
     VoiceEntry,
 )
 
+_SOURCE_SUFFIXES = {"wav": ".wav", "flac": ".flac"}
+_MAX_REDIRECTIONS = 5
+MAX_SOURCE_ASSET_BYTES = 512 * 1024 * 1024
+
+
+class _BoundedHTTPSRedirectHandler(urllib.request.HTTPRedirectHandler):
+    max_redirections = _MAX_REDIRECTIONS
+    max_repeats = 3
+
+    def redirect_request(
+        self,
+        req: urllib.request.Request,
+        fp: Any,
+        code: int,
+        msg: str,
+        headers: Any,
+        newurl: str,
+    ) -> urllib.request.Request | None:
+        target = urlparse(newurl)
+        if (
+            target.scheme != "https"
+            or not target.hostname
+            or target.username
+            or target.password
+        ):
+            raise urllib.error.HTTPError(
+                req.full_url,
+                code,
+                "redirect target must be an HTTPS URL without embedded credentials",
+                headers,
+                fp,
+            )
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def _open_url(url: str, *, timeout: float) -> Any:
+    """Open source URLs with bounded HTTPS-only redirects."""
+    return urllib.request.build_opener(_BoundedHTTPSRedirectHandler()).open(
+        url, timeout=timeout
+    )
+
 
 def default_cache_dir() -> Path:
     override = os.environ.get("VOICEFOLIO_CACHE_DIR")
@@ -30,8 +71,11 @@ def default_cache_dir() -> Path:
 
 
 def asset_path(entry: VoiceEntry, cache_dir: str | Path | None = None) -> Path:
+    suffix = _SOURCE_SUFFIXES.get(entry.format)
+    if suffix is None:
+        raise DownloadError(f"unsupported source format {entry.format!r} for {entry.ref}")
     root = Path(cache_dir).expanduser() if cache_dir is not None else default_cache_dir()
-    return root / "assets" / "sha256" / entry.sha256[:2] / f"{entry.sha256}.wav"
+    return root / "assets" / "sha256" / entry.sha256[:2] / f"{entry.sha256}{suffix}"
 
 
 def sha256_file(path: Path) -> str:
@@ -91,7 +135,11 @@ def fetch(
     offline: bool = False,
     progress: Callable[[FetchProgress], None] | None = None,
 ) -> ResolvedVoice:
-    """Fetch and verify a pinned WAV, optionally reporting cache/download progress."""
+    """Fetch and verify exact source bytes, optionally reporting cache/download progress."""
+    if entry.size > MAX_SOURCE_ASSET_BYTES:
+        raise DownloadError(
+            f"source asset for {entry.ref} exceeds {MAX_SOURCE_ASSET_BYTES} bytes"
+        )
     _notify(progress, entry, "cache_check")
     destination = asset_path(entry, cache_dir)
     if destination.exists():
@@ -112,19 +160,30 @@ def fetch(
         with tempfile.NamedTemporaryFile(dir=destination.parent, delete=False) as tmp:
             tmp_path = Path(tmp.name)
             try:
-                with urllib.request.urlopen(entry.url, timeout=60) as response:
+                with _open_url(entry.url, timeout=60) as response:
                     length_header = response.headers.get("Content-Length")
                     try:
-                        total = int(length_header) if length_header is not None else None
+                        declared_size = (
+                            int(length_header) if length_header is not None else None
+                        )
                     except ValueError:
-                        total = None
-                    if total is not None and total < 0:
-                        total = None
+                        declared_size = None
+                    if declared_size is not None and declared_size != entry.size:
+                        raise IntegrityError(
+                            f"size mismatch for {entry.ref}: expected {entry.size}, "
+                            f"response declared {declared_size}"
+                        )
+                    total = entry.size
                     completed = 0
                     _notify(progress, entry, "download", completed=completed, total=total)
                     while chunk := response.read(64 * 1024):
+                        next_completed = completed + len(chunk)
+                        if next_completed > entry.size:
+                            raise IntegrityError(
+                                f"download for {entry.ref} exceeds pinned size {entry.size}"
+                            )
                         tmp.write(chunk)
-                        completed += len(chunk)
+                        completed = next_completed
                         _notify(
                             progress,
                             entry,

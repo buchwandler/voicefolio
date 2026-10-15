@@ -127,7 +127,11 @@ def test_synthetic_append_preserves_baseline_and_validates_as_1162_voices(
     candidate_path.write_text(json.dumps(result), encoding="utf-8")
     validation = CliRunner().invoke(cli.app, ["validate", "--catalog", str(candidate_path)])
     assert validation.exit_code == 0, validation.output
-    assert validation.output.strip() == "ok: 1162 voices"
+    packaged_count = sum(
+        len(json.loads(path.read_text(encoding="utf-8"))["voices"])
+        for path in packaged_path.parent.glob("*.json")
+    )
+    assert validation.output.strip() == f"ok: {packaged_count + 1} voices"
 
 
 def test_license_policy_keeps_override_and_fails_closed() -> None:
@@ -178,7 +182,10 @@ def test_file_integrity_uses_tree_metadata_without_download() -> None:
 def test_file_integrity_downloads_only_when_metadata_is_incomplete() -> None:
     payload = b"wav contents"
     expected = (len(payload), hashlib.sha256(payload).hexdigest())
-    with patch("voicefolio.sources.huggingface._read_url", return_value=payload) as read_url:
+    with patch(
+        "voicefolio.sources.huggingface._stream_url_integrity",
+        return_value=expected,
+    ) as stream_audio:
         assert (
             huggingface.file_integrity(
                 DEFAULT_REPOSITORY,
@@ -188,8 +195,9 @@ def test_file_integrity_downloads_only_when_metadata_is_incomplete() -> None:
             )
             == expected
         )
-    read_url.assert_called_once_with(
-        huggingface.resolve_url(DEFAULT_REPOSITORY, REVISION, "voice-zero/a.wav")
+    stream_audio.assert_called_once_with(
+        huggingface.resolve_url(DEFAULT_REPOSITORY, REVISION, "voice-zero/a.wav"),
+        max_bytes=huggingface.MAX_AUDIO_BYTES,
     )
 
 

@@ -8,7 +8,7 @@
       body {
         font: 16px system-ui, sans-serif;
         margin: 2rem auto;
-        max-width: 60rem;
+        max-width: 72rem;
         padding: 0 1rem;
       }
       form {
@@ -20,6 +20,7 @@
       label {
         display: grid;
         gap: 0.25rem;
+        min-width: 8rem;
       }
       input,
       select,
@@ -41,6 +42,11 @@
       #status {
         min-height: 1.5rem;
       }
+      #paging {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+      }
       audio {
         display: block;
         margin-top: 1rem;
@@ -51,49 +57,106 @@
   <body>
     <h1>Voicefolio</h1>
     <p>
-      Browse the packaged catalog and preview verified voices from your local
-      cache or upstream.
+      Browse packaged, integrity-pinned voice references and separately
+      identified synthesized demos.
     </p>
     <form id="filters">
+      <label
+        >Source namespace
+        <select name="namespace" id="namespace">
+          <option value="">All</option>
+        </select></label
+      >
+      <label
+        >Dataset
+        <select name="dataset" id="dataset">
+          <option value="">All</option>
+        </select></label
+      >
       <label
         >Language
         <select name="language" id="language">
           <option value="">All</option>
-        </select>
-      </label>
-      <label>Search <input name="query" type="search" /></label>
-      <label>Dataset <input name="dataset" /></label>
-      <label>License <input name="license" /></label>
+        </select></label
+      >
+      <label
+        >License
+        <select name="license" id="license">
+          <option value="">All</option>
+        </select></label
+      >
       <label
         >Variant
-        <select name="variant">
+        <select name="variant" id="variant">
           <option value="">All</option>
-          <option value="original">Original</option>
-          <option value="enhanced">Enhanced</option>
-        </select>
-      </label>
+        </select></label
+      >
+      <label>Speaker <input name="speaker" type="search" /></label>
+      <label
+        >Gender
+        <select name="gender" id="gender">
+          <option value="">All</option>
+        </select></label
+      >
+      <label
+        >Pitch band
+        <select name="pitch_band" id="pitch_band">
+          <option value="">All</option>
+        </select></label
+      >
+      <label
+        >Emotion
+        <select name="emotion" id="emotion">
+          <option value="">All</option>
+        </select></label
+      >
+      <label>Search <input name="query" type="search" /></label>
       <button type="submit">Filter</button>
     </form>
-    <p id="status" role="status"></p>
+    <p id="status" role="status" aria-live="polite"></p>
+    <div id="paging">
+      <button id="previous" type="button">Previous</button>
+      <span id="page"></span>
+      <button id="next" type="button">Next</button>
+    </div>
     <ul id="voices"></ul>
     <h2>Preview</h2>
     <audio id="player" controls></audio>
     <script>
       const form = document.querySelector("#filters");
-      const languageSelect = document.querySelector("#language");
       const list = document.querySelector("#voices");
       const status = document.querySelector("#status");
       const player = document.querySelector("#player");
+      const pageLabel = document.querySelector("#page");
+      const previousButton = document.querySelector("#previous");
+      const nextButton = document.querySelector("#next");
+      const pageSize = 50;
+      let offset = 0;
+      let total = 0;
+
+      function addOptions(select, values) {
+        for (const facet of values) {
+          const option = document.createElement("option");
+          option.value = facet.value;
+          option.textContent = `${facet.value} (${facet.count})`;
+          select.append(option);
+        }
+      }
 
       async function loadVoices(event) {
         if (event) event.preventDefault();
         status.textContent = "Loading catalog…";
         const params = new URLSearchParams(new FormData(form));
+        params.set("limit", String(pageSize));
+        params.set("offset", String(offset));
         try {
           const response = await fetch(`/api/voices?${params}`);
           const voices = await response.json();
           if (!response.ok)
             throw new Error(voices.error || "Catalog request failed");
+          total = Number(
+            response.headers.get("X-Total-Count") || voices.length
+          );
           list.replaceChildren();
           for (const voice of voices) {
             const row = document.createElement("li");
@@ -101,47 +164,103 @@
             details.textContent = voice.ref;
             const meta = document.createElement("span");
             meta.className = "meta";
-            meta.textContent = `${voice.dataset} · ${voice.language} · ${voice.variant} · ${voice.license}`;
-            const button = document.createElement("button");
-            button.type = "button";
-            button.textContent = "Play";
-            button.addEventListener("click", () => {
-              player.src = `/api/audio?ref=${encodeURIComponent(voice.ref)}`;
+            const emotion = voice.emotion ? `/${voice.emotion}` : "";
+            const speaker = voice.speaker || "unknown speaker";
+            meta.textContent = `${voice.namespace} · ${voice.language} · ${voice.license} · ${voice.variant}${emotion} · ${speaker}`;
+            const referenceButton = document.createElement("button");
+            referenceButton.type = "button";
+            referenceButton.textContent = "Play reference";
+            referenceButton.addEventListener("click", () => {
+              const audioParams = new URLSearchParams({ ref: voice.ref });
+              if (voice.format === "flac") audioParams.set("renderer", "wav");
+              player.src = `/api/audio?${audioParams}`;
               player.play().catch(() => {
-                status.textContent = "Preview could not be started.";
+                status.textContent = "Reference preview could not be started.";
               });
             });
-            row.append(details, meta, button);
+            row.append(details, meta, referenceButton);
+            if (voice.preview_demo) {
+              const demoButton = document.createElement("button");
+              demoButton.type = "button";
+              demoButton.textContent = "Synthesized demo";
+              demoButton.addEventListener("click", () => {
+                const audioParams = new URLSearchParams({
+                  ref: voice.ref,
+                  asset: "preview_demo",
+                });
+                player.src = `/api/audio?${audioParams}`;
+                player.play().catch(() => {
+                  status.textContent = "Synthesized demo could not be started.";
+                });
+              });
+              row.append(demoButton);
+            }
             list.append(row);
           }
-          status.textContent = `${voices.length} voices`;
+          const pageNumber = Math.floor(offset / pageSize) + 1;
+          const pageCount = Math.max(1, Math.ceil(total / pageSize));
+          pageLabel.textContent = `Page ${pageNumber} of ${pageCount}`;
+          previousButton.disabled = offset === 0;
+          nextButton.disabled = offset + pageSize >= total;
+          status.textContent = `${voices.length} shown (${total} matching voices)`;
         } catch (error) {
-          status.textContent = error.message;
+          status.textContent =
+            error instanceof Error ? error.message : "Catalog request failed";
         }
       }
 
-      form.addEventListener("submit", loadVoices);
-      form.addEventListener("change", loadVoices);
       async function initialize() {
-        status.textContent = "Loading languages…";
+        status.textContent = "Loading source facets…";
         try {
-          const response = await fetch("/api/languages");
-          const languages = await response.json();
+          const response = await fetch("/api/sources");
+          const facets = await response.json();
           if (!response.ok)
+            throw new Error(facets.error || "Source request failed");
+          addOptions(document.querySelector("#namespace"), facets.namespaces);
+          addOptions(document.querySelector("#dataset"), facets.datasets);
+          addOptions(document.querySelector("#license"), facets.licenses);
+          addOptions(document.querySelector("#variant"), facets.variants);
+          addOptions(document.querySelector("#gender"), facets.genders);
+          addOptions(document.querySelector("#pitch_band"), facets.pitch_bands);
+          addOptions(document.querySelector("#emotion"), facets.emotions);
+          const languageResponse = await fetch("/api/languages");
+          const languages = await languageResponse.json();
+          if (!languageResponse.ok)
             throw new Error(languages.error || "Language request failed");
+          const languageSelect = document.querySelector("#language");
           for (const language of languages) {
             const option = document.createElement("option");
             option.value = language.value;
             option.textContent = `${language.label} (${language.count})`;
             languageSelect.append(option);
           }
+          await loadVoices();
         } catch (error) {
-          status.textContent = error.message;
-          return;
+          status.textContent =
+            error instanceof Error ? error.message : "Source request failed";
         }
-        await loadVoices();
       }
 
+      form.addEventListener("submit", (event) => {
+        offset = 0;
+        loadVoices(event);
+      });
+      form.addEventListener("change", () => {
+        offset = 0;
+        loadVoices();
+      });
+      previousButton.addEventListener("click", () => {
+        offset = Math.max(0, offset - pageSize);
+        loadVoices();
+      });
+      nextButton.addEventListener("click", () => {
+        if (offset + pageSize < total) offset += pageSize;
+        loadVoices();
+      });
+      player.addEventListener("error", () => {
+        status.textContent =
+          "Audio unavailable; check the source cache, network, or audio extra.";
+      });
       initialize();
     </script>
   </body>

@@ -1,4 +1,5 @@
 import json
+from dataclasses import replace
 
 import pytest
 
@@ -79,6 +80,28 @@ def test_duplicate_ref_with_different_digest_is_rejected():
     second = VoiceEntry(sha256="1" * 64, **common)
     with pytest.raises(CatalogError):
         Catalog([first, second])
+
+
+def test_exact_duplicate_catalog_rows_are_deduplicated():
+    entry = _language_entry("same", dataset="set", language="en")
+    catalog = Catalog([entry, entry])
+    assert len(catalog) == 1
+    assert catalog.get(entry.ref) == entry
+
+
+@pytest.mark.parametrize(
+    "changes",
+    [
+        {"license": "CC-BY-4.0"},
+        {"source_revision": "different-revision"},
+        {"metadata": {"speaker": "Different"}},
+        {"source_repository": "different/repository"},
+    ],
+)
+def test_same_digest_nonidentical_catalog_rows_are_rejected(changes):
+    entry = _language_entry("same", dataset="set", language="en")
+    with pytest.raises(CatalogError, match="conflicting catalog rows"):
+        Catalog([entry, replace(entry, **changes)])
 
 
 def _language_entry(

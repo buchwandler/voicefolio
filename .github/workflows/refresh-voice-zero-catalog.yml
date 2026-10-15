@@ -1,0 +1,108 @@
+name: Refresh Voice-Zero catalog
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "43 5 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: voicefolio-voice-zero-catalog-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install Voicefolio development tooling
+        run: python -m pip install -e ".[dev]"
+      - name: Validate the checked-in baseline
+        run: |
+          voicefolio catalog verify voicefolio/resources/catalogs/voice-zero.json
+          voicefolio validate
+      - name: Resolve upstream revision once
+        id: source
+        run: |
+          revision="$(python -c 'from voicefolio.sources.github import resolve_revision; print(resolve_revision("OwenTyme/voice-zero", "main"))')"
+          printf 'revision=%s\n' "$revision" >> "$GITHUB_OUTPUT"
+      - name: Build and verify two candidates from the same revision
+        env:
+          VOICE_ZERO_REVISION: ${{ steps.source.outputs.revision }}
+        run: |
+          voicefolio catalog build-voice-zero \
+            --repository OwenTyme/voice-zero \
+            --revision "$VOICE_ZERO_REVISION" \
+            --previous voicefolio/resources/catalogs/voice-zero.json \
+            --output /tmp/voice-zero-candidate-first.json
+          voicefolio catalog verify /tmp/voice-zero-candidate-first.json
+          voicefolio catalog build-voice-zero \
+            --repository OwenTyme/voice-zero \
+            --revision "$VOICE_ZERO_REVISION" \
+            --previous voicefolio/resources/catalogs/voice-zero.json \
+            --output /tmp/voice-zero-candidate-second.json
+          voicefolio catalog verify /tmp/voice-zero-candidate-second.json
+          cmp --silent /tmp/voice-zero-candidate-first.json /tmp/voice-zero-candidate-second.json
+      - name: Assert immutable rows and summarize catalog changes
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          baseline = json.loads(
+              Path("voicefolio/resources/catalogs/voice-zero.json").read_text(encoding="utf-8")
+          )
+          candidate = json.loads(
+              Path("/tmp/voice-zero-candidate-first.json").read_text(encoding="utf-8")
+          )
+          old_rows = {row["id"]: row for row in baseline["voices"]}
+          new_rows = {row["id"]: row for row in candidate["voices"]}
+          removed = sorted(set(old_rows) - set(new_rows))
+          changed = sorted(
+              voice_id for voice_id, row in old_rows.items() if new_rows.get(voice_id) != row
+          )
+          if removed:
+              raise SystemExit(f"refresh removed published IDs: {removed[:10]}")
+          if changed:
+              raise SystemExit(f"refresh modified published rows: {changed[:10]}")
+          print(
+              json.dumps(
+                  {
+                      "source_revision": candidate["source_revision"],
+                      "preserved_rows": len(old_rows),
+                      "appended_ids": sorted(set(new_rows) - set(old_rows)),
+                      "quarantined_paths": len(candidate["quarantined"]),
+                  },
+                  indent=2,
+                  sort_keys=True,
+              )
+          )
+          PY
+      - name: Run Voice-Zero source tests and static checks
+        run: |
+          python -m pytest -q tests/test_voice_zero_source.py tests/test_github_source.py
+          ruff check voicefolio tests
+          mypy voicefolio
+      - name: Commit an unchanged-identity catalog update
+        run: |
+          catalog=voicefolio/resources/catalogs/voice-zero.json
+          if cmp --silent "$catalog" /tmp/voice-zero-candidate-first.json; then
+            echo "Voice-Zero catalog is unchanged"
+            exit 0
+          fi
+          cp /tmp/voice-zero-candidate-first.json "$catalog"
+          voicefolio catalog verify "$catalog"
+          voicefolio validate
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$catalog"
+          git commit -m "chore: refresh Voicefolio Voice-Zero catalog"
+          git push origin HEAD:main

@@ -72,6 +72,23 @@ def test_catalog_verify_accepts_packaged_catalog() -> None:
     assert result.output.strip() == f"ok: {len(raw['voices'])} voices"
 
 
+@pytest.mark.parametrize("arguments", [["--version"], ["version"]])
+def test_eager_and_subcommand_version_match(arguments):
+    result = CliRunner().invoke(cli.app, arguments)
+    assert result.exit_code == 0, result.output
+    assert result.output.strip() == cli.__version__
+
+
+def test_narrow_help_is_readable_and_deterministic():
+    runner = CliRunner()
+    first = runner.invoke(cli.app, ["list", "--help"], terminal_width=48)
+    second = runner.invoke(cli.app, ["list", "--help"], terminal_width=48)
+    assert first.exit_code == 0, first.output
+    assert first.output == second.output
+    assert "--namespace" in first.output
+    assert "SSMD" not in first.output
+
+
 def test_catalog_build_uses_packaged_previous_catalog_by_default(
     monkeypatch, tmp_path: Path
 ) -> None:
@@ -91,6 +108,37 @@ def test_catalog_build_uses_packaged_previous_catalog_by_default(
     assert result.exit_code == 0, result.output
     assert calls == [(packaged, "kyutai/tts-voices", "main")]
     assert json.loads(output.read_text(encoding="utf-8"))["namespace"] == ("kyutai-tts-voices")
+
+
+def test_fine_read_it_catalog_build_requires_bootstrap_and_writes_candidate(
+    monkeypatch, tmp_path: Path
+) -> None:
+    packaged = Path("voicefolio/resources/catalogs/fine-read-it-voices.json")
+    output = tmp_path / "fine-read-it-candidate.json"
+    calls = []
+    catalog = {
+        "schema": 1,
+        "kind": "voicefolio-catalog",
+        "namespace": "fine-read-it-voices",
+        "source_repository": "zloezlo/fine-read-it-voices",
+        "source_revision": "a" * 40,
+        "voices": [],
+    }
+
+    def fake_build(previous, *, repository, revision, bootstrap):
+        calls.append((previous, repository, revision, bootstrap))
+        return catalog
+
+    monkeypatch.setattr(cli, "_builtin_fine_read_it_catalog_path", lambda: packaged)
+    monkeypatch.setattr(cli, "build_fine_read_it_catalog", fake_build)
+    result = CliRunner().invoke(
+        cli.app,
+        ["catalog", "build-fine-read-it", "--bootstrap", "--output", str(output)],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert calls == [(packaged, "zloezlo/fine-read-it-voices", "main", True)]
+    assert json.loads(output.read_text(encoding="utf-8")) == catalog
 
 
 @pytest.mark.parametrize(
@@ -141,10 +189,12 @@ def _browse_entries():
     return tuple(
         SimpleNamespace(
             ref=f"demo:{name}",
+            namespace="demo",
             language=language,
             license="CC0-1.0",
             variant="original",
             dataset="demo",
+            to_dict=lambda name=name: {"ref": f"demo:{name}"},
         )
         for name, language in (
             ("voice-1", "en"),
@@ -155,8 +205,22 @@ def _browse_entries():
 
 
 def _browse_catalog(entries):
-    def list_voices(*, dataset=None, language=None, license=None, variant=None, query=None):
+    def list_voices(
+        *,
+        namespace=None,
+        dataset=None,
+        language=None,
+        license=None,
+        variant=None,
+        query=None,
+        speaker=None,
+        gender=None,
+        pitch_band=None,
+        emotion=None,
+    ):
         rows = entries
+        if namespace:
+            rows = tuple(entry for entry in rows if entry.namespace == namespace)
         if dataset:
             rows = tuple(entry for entry in rows if entry.dataset == dataset)
         if language:
@@ -167,6 +231,27 @@ def _browse_catalog(entries):
             rows = tuple(entry for entry in rows if entry.variant == variant)
         if query:
             rows = tuple(entry for entry in rows if query.lower() in str(entry.ref).lower())
+        if speaker:
+            rows = tuple(
+                entry
+                for entry in rows
+                if speaker.lower() in str(entry.ref).lower()
+                or speaker.lower()
+                in str(getattr(entry, "metadata", {}).get("speaker_name", "")).lower()
+                or speaker.lower()
+                in str(getattr(entry, "metadata", {}).get("speaker_id", "")).lower()
+            )
+        for field, selected in (
+            ("gender", gender),
+            ("pitch_band", pitch_band),
+            ("emotion", emotion),
+        ):
+            if selected:
+                rows = tuple(
+                    entry
+                    for entry in rows
+                    if getattr(entry, "metadata", {}).get(field) == selected
+                )
         return rows
 
     return SimpleNamespace(list=list_voices)
@@ -291,6 +376,16 @@ def test_list_language_filter_outputs_language_column(monkeypatch):
     assert "demo:voice-1" not in result.output
 
 
+def test_list_namespace_filter_outputs_json(monkeypatch):
+    entries = _browse_entries()
+    monkeypatch.setattr(cli, "_catalog", lambda paths: _browse_catalog(entries))
+    result = CliRunner().invoke(cli.app, ["list", "--namespace", "demo", "--json"])
+    assert result.exit_code == 0, result.output
+    rows = json.loads(result.output)
+    assert len(rows) == 3
+    assert all(row["ref"].startswith("demo:") for row in rows)
+
+
 def test_browse_language_option_filters_rows_and_shows_active_filters(monkeypatch):
     entries = _browse_entries()
     monkeypatch.setattr(cli, "_catalog", lambda paths: _browse_catalog(entries))
@@ -342,6 +437,45 @@ def test_browse_invalid_language_keeps_active_filter(monkeypatch):
     assert result.exit_code == 0, result.output
     assert "Unknown language 'de'. Available: en, fr, und." in result.output
     assert result.output.count("language=en") == 2
+
+
+def test_browse_source_and_facet_controls_filter_and_reset_page(monkeypatch):
+    entries = []
+    for index, entry in enumerate(_browse_entries()):
+        data = dict(entry.__dict__)
+        data["metadata"] = {
+            "speaker_name": f"Speaker {index + 1}",
+            "gender": "female" if index != 1 else "male",
+            "pitch_band": "low",
+            "emotion": "calm",
+        }
+        entries.append(SimpleNamespace(**data))
+    entries.append(
+        SimpleNamespace(
+            ref="else:voice",
+            namespace="else",
+            language="en",
+            license="CC0-1.0",
+            variant="original",
+            dataset="else",
+            metadata={"gender": "male", "pitch_band": "high", "emotion": "happy"},
+        )
+    )
+    monkeypatch.setattr(cli, "_catalog", lambda paths: _browse_catalog(tuple(entries)))
+
+    result = CliRunner().invoke(
+        cli.app,
+        ["browse", "--page-size", "1"],
+        input="n\nn\ns\ndemo\nf\ngender\nfemale\nq\n",
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "Unknown source" not in result.output
+    assert "gender=female" in result.output
+    assert "namespace=demo" in result.output
+    assert "Page 1/2" in result.output
+    assert "source=demo" in result.output
+    assert "pitch=low" in result.output
 
 
 def test_browse_number_selects_entry_after_interactive_language_filter(

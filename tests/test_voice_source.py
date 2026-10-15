@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from typing import Any
 from unittest.mock import patch
 
@@ -7,7 +8,7 @@ import pytest
 
 from voicefolio import validate_voice_source
 from voicefolio.catalog import Catalog
-from voicefolio.integration import resolve_voice_source
+from voicefolio.integration import managed_reference, resolve_voice_source
 from voicefolio.models import IntegrityError, VoiceNotFoundError
 
 REF = "kyutai-tts-voices:voice-donations/0a67"
@@ -41,6 +42,7 @@ def test_validate_voice_source_checks_pins_without_fetching() -> None:
     ("field", "value"),
     [
         ("sha256", "0" * 64),
+        ("source_format", "flac"),
         ("source_revision", "a" * 40),
         ("source_repository", "other/repo"),
         ("source_path", "voice-zero/other.wav"),
@@ -108,4 +110,31 @@ def test_resolve_voice_source_validates_then_passes_progress_to_fetch() -> None:
         cache_dir="cache",
         offline=True,
         progress=progress,
+    )
+
+
+def test_resolve_flac_managed_reference_materializes_with_source_pins() -> None:
+    entry = Catalog.builtin().get(REF)
+    flac_entry = replace(entry, format="flac", source_path="voice-donations/0a67.flac")
+    catalog = Catalog([flac_entry])
+    source = managed_reference(REF, catalog=catalog)
+    source_progress = object()
+    materialization_progress = object()
+    result = object()
+    with patch("voicefolio.integration.materialize_wav", return_value=result) as materialize:
+        actual = resolve_voice_source(
+            source,
+            catalog=catalog,
+            cache_dir="cache",
+            offline=True,
+            progress=source_progress,  # type: ignore[arg-type]
+            materialization_progress=materialization_progress,  # type: ignore[arg-type]
+        )
+    assert actual is result
+    materialize.assert_called_once_with(
+        flac_entry,
+        cache_dir="cache",
+        offline=True,
+        progress=materialization_progress,
+        source_progress=source_progress,
     )

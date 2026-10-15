@@ -5,41 +5,38 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Literal
 
+from .errors import (
+    AccessError,
+    AssetNotFoundError,
+    CatalogError,
+    DownloadError,
+    IntegrityError,
+    MaterializationError,
+    MissingAudioDependencyError,
+    OfflineError,
+    PlaybackError,
+    VoicefolioError,
+    VoiceNotFoundError,
+)
 
-class VoicefolioError(Exception):
-    """Base error for public Voicefolio failures."""
-
-
-class CatalogError(VoicefolioError):
-    """Catalog data is malformed or inconsistent."""
-
-
-class VoiceNotFoundError(VoicefolioError):
-    """A stable voice reference is not present in the active catalog."""
-
-
-class IntegrityError(VoicefolioError):
-    """Downloaded or exported audio does not match its catalog pin."""
-
-
-class OfflineError(VoicefolioError):
-    """A requested asset is unavailable because offline mode is enabled."""
-
-
-class DownloadError(VoicefolioError):
-    """A cataloged asset could not be downloaded."""
-
-
-class AccessError(DownloadError):
-    """The upstream provider denied access to a cataloged asset."""
-
-
-class AssetNotFoundError(DownloadError):
-    """A cataloged asset is missing at its pinned upstream revision."""
-
-
-class PlaybackError(VoicefolioError):
-    """A verified local voice could not be played through the native audio backend."""
+__all__ = [
+    "AccessError",
+    "AssetNotFoundError",
+    "CatalogError",
+    "DownloadError",
+    "FetchProgress",
+    "IntegrityError",
+    "MaterializationError",
+    "MaterializedVoice",
+    "MissingAudioDependencyError",
+    "OfflineError",
+    "PlaybackError",
+    "ResolvedVoice",
+    "VoiceEntry",
+    "VoiceNotFoundError",
+    "VoiceRef",
+    "VoicefolioError",
+]
 
 
 @dataclass(frozen=True, slots=True)
@@ -101,14 +98,15 @@ class VoiceEntry:
     metadata: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        if self.variant not in {"original", "enhanced"}:
+        if self.variant not in {"original", "enhanced", "emotion"}:
             raise CatalogError(f"unsupported variant {self.variant!r} for {self.ref}")
         if not isinstance(self.language, str) or self.language not in {"en", "fr", "und"}:
             raise CatalogError(
                 f"unsupported language {self.language!r} for {self.ref}; expected en, fr, or und"
             )
-        if self.format.lower() != "wav":
-            raise CatalogError(f"MVP supports WAV catalog assets only: {self.ref}")
+        if self.format.lower() not in {"wav", "flac"}:
+            raise CatalogError(f"unsupported audio format {self.format!r} for {self.ref}")
+        object.__setattr__(self, "format", self.format.lower())
         if self.size <= 0:
             raise CatalogError(f"size must be positive for {self.ref}")
         if len(self.sha256) != 64 or any(c not in "0123456789abcdef" for c in self.sha256):
@@ -150,3 +148,28 @@ class ResolvedVoice:
     @property
     def sha256(self) -> str:
         return self.entry.sha256
+
+
+@dataclass(frozen=True, slots=True)
+class MaterializedVoice:
+    """Renderer-ready WAV plus its independently pinned source asset."""
+
+    source: ResolvedVoice
+    path: Path
+    sha256: str
+    recipe: str
+    sample_rate: int
+    channels: int
+    subtype: str
+
+    @property
+    def entry(self) -> VoiceEntry:
+        return self.source.entry
+
+    @property
+    def ref(self) -> VoiceRef:
+        return self.source.ref
+
+    @property
+    def source_sha256(self) -> str:
+        return self.source.sha256

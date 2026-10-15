@@ -70,6 +70,16 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
         language_member = "voicefolio/resources/sources/kyutai-tts-voices-languages.json"
         assert language_member in archive.namelist()
         assert archive.read(language_member) == language_policy.read_bytes()
+        for filename in (
+            "fine-read-it-voices.json",
+            "voice-zero.json",
+        ):
+            packaged = f"voicefolio/resources/catalogs/{filename}"
+            assert packaged in archive.namelist()
+            assert archive.read(packaged) == (root / packaged).read_bytes()
+        override_member = "voicefolio/resources/sources/voice-zero-overrides.json"
+        assert override_member in archive.namelist()
+        assert archive.read(override_member) == (root / override_member).read_bytes()
         assert "voicefolio/py.typed" in archive.namelist()
         metadata_member = next(
             name for name in archive.namelist() if name.endswith(".dist-info/METADATA")
@@ -79,12 +89,17 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
             line for line in metadata.splitlines() if line.startswith("Requires-Dist:")
         ]
         assert not any(line.startswith("Requires-Dist: numpy") for line in requirements)
-        for dependency in ("sounddevice", "soundfile"):
+        optional_extras = {
+            "sounddevice": {"playback"},
+            "soundfile": {"audio", "playback", "dev"},
+        }
+        for dependency, extras in optional_extras.items():
             declarations = [
                 line for line in requirements if line.startswith(f"Requires-Dist: {dependency}")
             ]
-            assert len(declarations) == 1
-            assert 'extra == "playback"' in declarations[0]
+            assert len(declarations) == len(extras)
+            for extra in extras:
+                assert any(f'extra == "{extra}"' in line for line in declarations)
         browser_member = "voicefolio/resources/web/index.html"
         assert browser_member in archive.namelist()
         assert archive.read(browser_member) == browser_page.read_bytes()
@@ -115,6 +130,15 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
         language_policy_source = archive.extractfile(language_policy_member)
         assert language_policy_source is not None
         assert language_policy_source.read() == language_policy.read_bytes()
+        for resource in (
+            "voicefolio/resources/catalogs/fine-read-it-voices.json",
+            "voicefolio/resources/catalogs/voice-zero.json",
+            "voicefolio/resources/sources/voice-zero-overrides.json",
+        ):
+            member = next(name for name in archive.getnames() if name.endswith(f"/{resource}"))
+            source_member = archive.extractfile(member)
+            assert source_member is not None
+            assert source_member.read() == (root / resource).read_bytes()
         assert any(name.endswith("/voicefolio/py.typed") for name in archive.getnames())
         browser_member = next(
             name
@@ -148,5 +172,8 @@ def test_built_wheel_and_sdist_include_complete_catalog(tmp_path: Path):
         capture_output=True,
         text=True,
     )
-    expected_count = len(json.loads(catalog.read_text(encoding="utf-8"))["voices"])
+    expected_count = sum(
+        len(json.loads(path.read_text(encoding="utf-8"))["voices"])
+        for path in (root / "voicefolio/resources/catalogs").glob("*.json")
+    )
     assert smoke.stdout.strip() == f"wheel catalog: {expected_count}"

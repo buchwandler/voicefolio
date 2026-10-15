@@ -21,9 +21,9 @@ class Catalog:
         for entry in entries:
             key = str(entry.ref)
             previous = by_ref.get(key)
-            if previous is not None and previous.sha256 != entry.sha256:
+            if previous is not None and previous != entry:
                 raise CatalogError(
-                    f"stable voice id {key!r} maps to multiple SHA-256 values: "
+                    f"stable voice id {key!r} has conflicting catalog rows: "
                     f"{previous.sha256} != {entry.sha256}"
                 )
             by_ref[key] = entry
@@ -51,8 +51,13 @@ class Catalog:
         variant: str | None = None,
         license: str | None = None,
         query: str | None = None,
+        speaker: str | None = None,
+        gender: str | None = None,
+        pitch_band: str | None = None,
+        emotion: str | None = None,
     ) -> tuple[VoiceEntry, ...]:
-        query_l = query.lower() if query else None
+        query_l = query.casefold() if query else None
+        speaker_l = speaker.casefold() if speaker else None
         rows = []
         for entry in self._entries.values():
             if namespace and entry.ref.namespace != namespace:
@@ -65,12 +70,42 @@ class Catalog:
                 continue
             if license and entry.license != license:
                 continue
-            if (
-                query_l
-                and query_l not in str(entry.ref).lower()
-                and query_l not in entry.dataset.lower()
+            metadata = entry.metadata
+            if speaker_l:
+                speaker_values = (metadata.get("speaker_name"), metadata.get("speaker_id"))
+                if not any(
+                    isinstance(value, str) and speaker_l in value.casefold()
+                    for value in speaker_values
+                ):
+                    continue
+            facets = (
+                ("gender", gender),
+                ("pitch_band", pitch_band),
+                ("emotion", emotion),
+            )
+            if any(
+                selected is not None
+                and (
+                    not isinstance(metadata.get(key), str)
+                    or metadata[key].casefold() != selected.casefold()
+                )
+                for key, selected in facets
             ):
                 continue
+            if query_l:
+                searchable = (
+                    str(entry.ref),
+                    entry.dataset,
+                    metadata.get("speaker_name"),
+                    metadata.get("speaker_id"),
+                    metadata.get("emotion"),
+                    metadata.get("pitch_band"),
+                )
+                if not any(
+                    isinstance(value, str) and query_l in value.casefold()
+                    for value in searchable
+                ):
+                    continue
             rows.append(entry)
         return tuple(sorted(rows, key=lambda item: str(item.ref)))
 
@@ -85,7 +120,7 @@ class Catalog:
     def builtin(cls) -> Catalog:
         package_dir = files("voicefolio").joinpath("resources").joinpath("catalogs")
         entries: list[VoiceEntry] = []
-        for resource in package_dir.iterdir():
+        for resource in sorted(package_dir.iterdir(), key=lambda resource: resource.name):
             if resource.name.endswith(".json"):
                 with resource.open("r", encoding="utf-8") as handle:
                     entries.extend(_parse_catalog(json.load(handle), source=resource.name))

@@ -1,0 +1,9 @@
+include README.md
+include RELEASING.md
+recursive-include docs *.md *.py *.txt
+recursive-include tools *.py
+recursive-include tests/typecheck *.py *.ini
+recursive-include tests/fixtures *.json
+recursive-include .github/workflows *.yml
+prune docs/_build
+prune .ledger
