@@ -28,11 +28,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F002.wav?download=true"
         },
         "qa": {
-          "clone_f0": [152, 158],
+          "clone_f0": [
+            152,
+            158
+          ],
           "drift": 0.026,
           "ok": true,
           "reasons": [],
-          "secs": [5.76, 5.92],
+          "secs": [
+            5.76,
+            5.92
+          ],
           "spread": 0.039
         },
         "reader": "Leni",
@@ -73,11 +79,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F003.wav?download=true"
         },
         "qa": {
-          "clone_f0": [142, 151],
+          "clone_f0": [
+            142,
+            151
+          ],
           "drift": 0.101,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 6.4],
+          "secs": [
+            5.92,
+            6.4
+          ],
           "spread": 0.063
         },
         "reader": "Kate Adams",
@@ -118,11 +130,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F004.wav?download=true"
         },
         "qa": {
-          "clone_f0": [160, 159],
+          "clone_f0": [
+            160,
+            159
+          ],
           "drift": 0.03,
           "ok": true,
           "reasons": [],
-          "secs": [6.08, 5.92],
+          "secs": [
+            6.08,
+            5.92
+          ],
           "spread": 0.006
         },
         "reader": "Tamara R. Schwartz",
@@ -163,11 +181,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F006.wav?download=true"
         },
         "qa": {
-          "clone_f0": [173, 171],
+          "clone_f0": [
+            173,
+            171
+          ],
           "drift": 0.036,
           "ok": true,
           "reasons": [],
-          "secs": [3.52, 4.32],
+          "secs": [
+            3.52,
+            4.32
+          ],
           "spread": 0.012
         },
         "reader": "Judy Guinan",
@@ -208,11 +232,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F007.wav?download=true"
         },
         "qa": {
-          "clone_f0": [178, 180],
+          "clone_f0": [
+            178,
+            180
+          ],
           "drift": 0.053,
           "ok": true,
           "reasons": [],
-          "secs": [4.16, 4.8],
+          "secs": [
+            4.16,
+            4.8
+          ],
           "spread": 0.011
         },
         "reader": "sarac",
@@ -253,11 +283,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F008.wav?download=true"
         },
         "qa": {
-          "clone_f0": [185, 180],
+          "clone_f0": [
+            185,
+            180
+          ],
           "drift": 0.082,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 5.12],
+          "secs": [
+            5.92,
+            5.12
+          ],
           "spread": 0.028
         },
         "reader": "Julia Albath",
@@ -298,11 +334,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F009.wav?download=true"
         },
         "qa": {
-          "clone_f0": [168, 170],
+          "clone_f0": [
+            168,
+            170
+          ],
           "drift": 0.034,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 4.96],
+          "secs": [
+            4.96,
+            4.96
+          ],
           "spread": 0.012
         },
         "reader": "zinniz",
@@ -343,11 +385,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F011.wav?download=true"
         },
         "qa": {
-          "clone_f0": [174, 200],
+          "clone_f0": [
+            174,
+            200
+          ],
           "drift": 0.117,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.44],
+          "secs": [
+            4.96,
+            5.44
+          ],
           "spread": 0.149
         },
         "reader": "Jen Maxwell",
@@ -388,11 +436,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F013.wav?download=true"
         },
         "qa": {
-          "clone_f0": [215, 199],
+          "clone_f0": [
+            215,
+            199
+          ],
           "drift": 0.181,
           "ok": true,
           "reasons": [],
-          "secs": [5.6, 5.6],
+          "secs": [
+            5.6,
+            5.6
+          ],
           "spread": 0.08
         },
         "reader": "rachelellen",
@@ -433,11 +487,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F015.wav?download=true"
         },
         "qa": {
-          "clone_f0": [171, 194],
+          "clone_f0": [
+            171,
+            194
+          ],
           "drift": 0.066,
           "ok": true,
           "reasons": [],
-          "secs": [4.8, 4.96],
+          "secs": [
+            4.8,
+            4.96
+          ],
           "spread": 0.135
         },
         "reader": "Arie",
@@ -478,11 +538,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F016.wav?download=true"
         },
         "qa": {
-          "clone_f0": [181, 180],
+          "clone_f0": [
+            181,
+            180
+          ],
           "drift": 0.027,
           "ok": true,
           "reasons": [],
-          "secs": [5.6, 6.24],
+          "secs": [
+            5.6,
+            6.24
+          ],
           "spread": 0.006
         },
         "reader": "Laura Caldwell",
@@ -523,11 +589,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F017.wav?download=true"
         },
         "qa": {
-          "clone_f0": [193, 203],
+          "clone_f0": [
+            193,
+            203
+          ],
           "drift": 0.091,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 4.16],
+          "secs": [
+            4.96,
+            4.16
+          ],
           "spread": 0.052
         },
         "reader": "Jennifer Wiginton",
@@ -568,11 +640,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F018.wav?download=true"
         },
         "qa": {
-          "clone_f0": [211, 211],
+          "clone_f0": [
+            211,
+            211
+          ],
           "drift": 0.134,
           "ok": true,
           "reasons": [],
-          "secs": [4.0, 4.8],
+          "secs": [
+            4.0,
+            4.8
+          ],
           "spread": 0.0
         },
         "reader": "Liberty Stump",
@@ -613,11 +691,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F019.wav?download=true"
         },
         "qa": {
-          "clone_f0": [200, 194],
+          "clone_f0": [
+            200,
+            194
+          ],
           "drift": 0.064,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.12],
+          "secs": [
+            5.12,
+            5.12
+          ],
           "spread": 0.031
         },
         "reader": "Jill Engle",
@@ -658,11 +742,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F020.wav?download=true"
         },
         "qa": {
-          "clone_f0": [185, 184],
+          "clone_f0": [
+            185,
+            184
+          ],
           "drift": 0.021,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.44],
+          "secs": [
+            5.12,
+            5.44
+          ],
           "spread": 0.005
         },
         "reader": "Ransom",
@@ -703,11 +793,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F021.wav?download=true"
         },
         "qa": {
-          "clone_f0": [190, 198],
+          "clone_f0": [
+            190,
+            198
+          ],
           "drift": 0.042,
           "ok": true,
           "reasons": [],
-          "secs": [4.8, 5.44],
+          "secs": [
+            4.8,
+            5.44
+          ],
           "spread": 0.042
         },
         "reader": "Elaine Hamby",
@@ -748,11 +844,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F022.wav?download=true"
         },
         "qa": {
-          "clone_f0": [203, 203],
+          "clone_f0": [
+            203,
+            203
+          ],
           "drift": 0.068,
           "ok": true,
           "reasons": [],
-          "secs": [6.72, 6.4],
+          "secs": [
+            6.72,
+            6.4
+          ],
           "spread": 0.0
         },
         "reader": "Kirsten Wever",
@@ -793,11 +895,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F023.wav?download=true"
         },
         "qa": {
-          "clone_f0": [205, 201],
+          "clone_f0": [
+            205,
+            201
+          ],
           "drift": 0.057,
           "ok": true,
           "reasons": [],
-          "secs": [3.84, 4.16],
+          "secs": [
+            3.84,
+            4.16
+          ],
           "spread": 0.02
         },
         "reader": "Christie Nowak",
@@ -838,11 +946,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F025.wav?download=true"
         },
         "qa": {
-          "clone_f0": [190, 197],
+          "clone_f0": [
+            190,
+            197
+          ],
           "drift": 0.021,
           "ok": true,
           "reasons": [],
-          "secs": [4.48, 4.48],
+          "secs": [
+            4.48,
+            4.48
+          ],
           "spread": 0.037
         },
         "reader": "Megan Stemm-Wade",
@@ -883,11 +997,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F027.wav?download=true"
         },
         "qa": {
-          "clone_f0": [213, 199],
+          "clone_f0": [
+            213,
+            199
+          ],
           "drift": 0.081,
           "ok": true,
           "reasons": [],
-          "secs": [4.32, 4.64],
+          "secs": [
+            4.32,
+            4.64
+          ],
           "spread": 0.07
         },
         "reader": "Daryl Wor",
@@ -928,11 +1048,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F029.wav?download=true"
         },
         "qa": {
-          "clone_f0": [201, 217],
+          "clone_f0": [
+            201,
+            217
+          ],
           "drift": 0.096,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.28],
+          "secs": [
+            4.96,
+            5.28
+          ],
           "spread": 0.08
         },
         "reader": "Sheila Wood",
@@ -973,11 +1099,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F030.wav?download=true"
         },
         "qa": {
-          "clone_f0": [194, 204],
+          "clone_f0": [
+            194,
+            204
+          ],
           "drift": 0.03,
           "ok": true,
           "reasons": [],
-          "secs": [5.44, 5.6],
+          "secs": [
+            5.44,
+            5.6
+          ],
           "spread": 0.052
         },
         "reader": "xinamarieuhl",
@@ -1018,11 +1150,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F031.wav?download=true"
         },
         "qa": {
-          "clone_f0": [220, 212],
+          "clone_f0": [
+            220,
+            212
+          ],
           "drift": 0.1,
           "ok": true,
           "reasons": [],
-          "secs": [3.52, 4.48],
+          "secs": [
+            3.52,
+            4.48
+          ],
           "spread": 0.038
         },
         "reader": "Karen Savage",
@@ -1063,11 +1201,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F032.wav?download=true"
         },
         "qa": {
-          "clone_f0": [222, 209],
+          "clone_f0": [
+            222,
+            209
+          ],
           "drift": 0.099,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.28],
+          "secs": [
+            5.28,
+            5.28
+          ],
           "spread": 0.062
         },
         "reader": "tazzle",
@@ -1108,11 +1252,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F033.wav?download=true"
         },
         "qa": {
-          "clone_f0": [204, 213],
+          "clone_f0": [
+            204,
+            213
+          ],
           "drift": 0.054,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.12],
+          "secs": [
+            5.28,
+            5.12
+          ],
           "spread": 0.044
         },
         "reader": "Asta1234",
@@ -1153,11 +1303,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F035.wav?download=true"
         },
         "qa": {
-          "clone_f0": [200, 198],
+          "clone_f0": [
+            200,
+            198
+          ],
           "drift": 0.034,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 4.96],
+          "secs": [
+            5.28,
+            4.96
+          ],
           "spread": 0.01
         },
         "reader": "Erin Hastings",
@@ -1198,11 +1354,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F036.wav?download=true"
         },
         "qa": {
-          "clone_f0": [213, 214],
+          "clone_f0": [
+            213,
+            214
+          ],
           "drift": 0.034,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 4.48],
+          "secs": [
+            5.12,
+            4.48
+          ],
           "spread": 0.005
         },
         "reader": "nprigoda",
@@ -1243,11 +1405,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F037.wav?download=true"
         },
         "qa": {
-          "clone_f0": [206, 194],
+          "clone_f0": [
+            206,
+            194
+          ],
           "drift": 0.063,
           "ok": true,
           "reasons": [],
-          "secs": [4.32, 4.96],
+          "secs": [
+            4.32,
+            4.96
+          ],
           "spread": 0.062
         },
         "reader": "Ella Jane Quentin",
@@ -1288,11 +1456,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F040.wav?download=true"
         },
         "qa": {
-          "clone_f0": [200, 202],
+          "clone_f0": [
+            200,
+            202
+          ],
           "drift": 0.043,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 4.96],
+          "secs": [
+            5.28,
+            4.96
+          ],
           "spread": 0.01
         },
         "reader": "Kara Shallenberg",
@@ -1333,11 +1507,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F041.wav?download=true"
         },
         "qa": {
-          "clone_f0": [196, 206],
+          "clone_f0": [
+            196,
+            206
+          ],
           "drift": 0.062,
           "ok": true,
           "reasons": [],
-          "secs": [6.56, 6.72],
+          "secs": [
+            6.56,
+            6.72
+          ],
           "spread": 0.051
         },
         "reader": "TinaNygard2",
@@ -1378,11 +1558,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F042.wav?download=true"
         },
         "qa": {
-          "clone_f0": [223, 218],
+          "clone_f0": [
+            223,
+            218
+          ],
           "drift": 0.057,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.12],
+          "secs": [
+            4.96,
+            5.12
+          ],
           "spread": 0.023
         },
         "reader": "calystra",
@@ -1423,11 +1609,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F043.wav?download=true"
         },
         "qa": {
-          "clone_f0": [214, 221],
+          "clone_f0": [
+            214,
+            221
+          ],
           "drift": 0.047,
           "ok": true,
           "reasons": [],
-          "secs": [6.24, 6.08],
+          "secs": [
+            6.24,
+            6.08
+          ],
           "spread": 0.033
         },
         "reader": "Dawn",
@@ -1468,11 +1660,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F046.wav?download=true"
         },
         "qa": {
-          "clone_f0": [251, 255],
+          "clone_f0": [
+            251,
+            255
+          ],
           "drift": 0.192,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.28],
+          "secs": [
+            5.28,
+            5.28
+          ],
           "spread": 0.016
         },
         "reader": "Christabel",
@@ -1513,11 +1711,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F047.wav?download=true"
         },
         "qa": {
-          "clone_f0": [225, 205],
+          "clone_f0": [
+            225,
+            205
+          ],
           "drift": 0.051,
           "ok": true,
           "reasons": [],
-          "secs": [6.08, 6.08],
+          "secs": [
+            6.08,
+            6.08
+          ],
           "spread": 0.098
         },
         "reader": "Barbara Derksen",
@@ -1558,11 +1762,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F049.wav?download=true"
         },
         "qa": {
-          "clone_f0": [208, 220],
+          "clone_f0": [
+            208,
+            220
+          ],
           "drift": 0.046,
           "ok": true,
           "reasons": [],
-          "secs": [4.8, 4.96],
+          "secs": [
+            4.8,
+            4.96
+          ],
           "spread": 0.058
         },
         "reader": "roolynninms",
@@ -1603,11 +1813,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F050.wav?download=true"
         },
         "qa": {
-          "clone_f0": [221, 223],
+          "clone_f0": [
+            221,
+            223
+          ],
           "drift": 0.023,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 6.24],
+          "secs": [
+            5.92,
+            6.24
+          ],
           "spread": 0.009
         },
         "reader": "Viridian",
@@ -1648,11 +1864,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F051.wav?download=true"
         },
         "qa": {
-          "clone_f0": [219, 244],
+          "clone_f0": [
+            219,
+            244
+          ],
           "drift": 0.109,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.6],
+          "secs": [
+            5.12,
+            5.6
+          ],
           "spread": 0.114
         },
         "reader": "Heather Barnett",
@@ -1693,11 +1915,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F052.wav?download=true"
         },
         "qa": {
-          "clone_f0": [251, 225],
+          "clone_f0": [
+            251,
+            225
+          ],
           "drift": 0.131,
           "ok": true,
           "reasons": [],
-          "secs": [5.76, 5.44],
+          "secs": [
+            5.76,
+            5.44
+          ],
           "spread": 0.116
         },
         "reader": "amicrazy2u",
@@ -1738,11 +1966,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F053.wav?download=true"
         },
         "qa": {
-          "clone_f0": [229, 222],
+          "clone_f0": [
+            229,
+            222
+          ],
           "drift": 0.022,
           "ok": true,
           "reasons": [],
-          "secs": [4.0, 5.28],
+          "secs": [
+            4.0,
+            5.28
+          ],
           "spread": 0.032
         },
         "reader": "Kate West",
@@ -1783,11 +2017,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F054.wav?download=true"
         },
         "qa": {
-          "clone_f0": [240, 223],
+          "clone_f0": [
+            240,
+            223
+          ],
           "drift": 0.071,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.6],
+          "secs": [
+            5.12,
+            5.6
+          ],
           "spread": 0.076
         },
         "reader": "kiwafruit",
@@ -1828,11 +2068,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F055.wav?download=true"
         },
         "qa": {
-          "clone_f0": [235, 267],
+          "clone_f0": [
+            235,
+            267
+          ],
           "drift": 0.166,
           "ok": true,
           "reasons": [],
-          "secs": [4.64, 5.6],
+          "secs": [
+            4.64,
+            5.6
+          ],
           "spread": 0.136
         },
         "reader": "Sharon Bautista",
@@ -1873,11 +2119,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F056.wav?download=true"
         },
         "qa": {
-          "clone_f0": [258, 262],
+          "clone_f0": [
+            258,
+            262
+          ],
           "drift": 0.124,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.28],
+          "secs": [
+            5.28,
+            5.28
+          ],
           "spread": 0.016
         },
         "reader": "Arielle Lipshaw",
@@ -1918,11 +2170,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F057.wav?download=true"
         },
         "qa": {
-          "clone_f0": [235, 226],
+          "clone_f0": [
+            235,
+            226
+          ],
           "drift": 0.034,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.76],
+          "secs": [
+            4.96,
+            5.76
+          ],
           "spread": 0.04
         },
         "reader": "dobsonfly",
@@ -1963,11 +2221,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F058.wav?download=true"
         },
         "qa": {
-          "clone_f0": [236, 241],
+          "clone_f0": [
+            236,
+            241
+          ],
           "drift": 0.025,
           "ok": true,
           "reasons": [],
-          "secs": [4.64, 5.28],
+          "secs": [
+            4.64,
+            5.28
+          ],
           "spread": 0.021
         },
         "reader": "Janna",
@@ -2008,11 +2272,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/F059.wav?download=true"
         },
         "qa": {
-          "clone_f0": [250, 268],
+          "clone_f0": [
+            250,
+            268
+          ],
           "drift": 0.094,
           "ok": true,
           "reasons": [],
-          "secs": [6.88, 6.56],
+          "secs": [
+            6.88,
+            6.56
+          ],
           "spread": 0.072
         },
         "reader": "Fox in the Stars",
@@ -2053,11 +2323,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M001.wav?download=true"
         },
         "qa": {
-          "clone_f0": [80, 88],
+          "clone_f0": [
+            80,
+            88
+          ],
           "drift": 0.08,
           "ok": true,
           "reasons": [],
-          "secs": [5.44, 5.28],
+          "secs": [
+            5.44,
+            5.28
+          ],
           "spread": 0.1
         },
         "reader": "John Dennison",
@@ -2098,11 +2374,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M002.wav?download=true"
         },
         "qa": {
-          "clone_f0": [92, 94],
+          "clone_f0": [
+            92,
+            94
+          ],
           "drift": 0.021,
           "ok": true,
           "reasons": [],
-          "secs": [4.64, 5.6],
+          "secs": [
+            4.64,
+            5.6
+          ],
           "spread": 0.022
         },
         "reader": "Robin Balmer",
@@ -2143,11 +2425,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M003.wav?download=true"
         },
         "qa": {
-          "clone_f0": [101, 98],
+          "clone_f0": [
+            101,
+            98
+          ],
           "drift": 0.041,
           "ok": true,
           "reasons": [],
-          "secs": [4.64, 5.6],
+          "secs": [
+            4.64,
+            5.6
+          ],
           "spread": 0.031
         },
         "reader": "Garth Comira",
@@ -2188,11 +2476,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M005.wav?download=true"
         },
         "qa": {
-          "clone_f0": [106, 110],
+          "clone_f0": [
+            106,
+            110
+          ],
           "drift": 0.111,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 4.64],
+          "secs": [
+            4.96,
+            4.64
+          ],
           "spread": 0.038
         },
         "reader": "webslog",
@@ -2233,11 +2527,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M006.wav?download=true"
         },
         "qa": {
-          "clone_f0": [104, 103],
+          "clone_f0": [
+            104,
+            103
+          ],
           "drift": 0.04,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.44],
+          "secs": [
+            4.96,
+            5.44
+          ],
           "spread": 0.01
         },
         "reader": "Jason Bolestridge",
@@ -2278,11 +2578,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M007.wav?download=true"
         },
         "qa": {
-          "clone_f0": [98, 100],
+          "clone_f0": [
+            98,
+            100
+          ],
           "drift": 0.02,
           "ok": true,
           "reasons": [],
-          "secs": [6.08, 5.6],
+          "secs": [
+            6.08,
+            5.6
+          ],
           "spread": 0.02
         },
         "reader": "ricell",
@@ -2323,11 +2629,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M009.wav?download=true"
         },
         "qa": {
-          "clone_f0": [100, 103],
+          "clone_f0": [
+            100,
+            103
+          ],
           "drift": 0.029,
           "ok": true,
           "reasons": [],
-          "secs": [5.44, 4.96],
+          "secs": [
+            5.44,
+            4.96
+          ],
           "spread": 0.03
         },
         "reader": "jgoffena",
@@ -2368,11 +2680,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M010.wav?download=true"
         },
         "qa": {
-          "clone_f0": [108, 96],
+          "clone_f0": [
+            108,
+            96
+          ],
           "drift": 0.077,
           "ok": true,
           "reasons": [],
-          "secs": [5.76, 6.08],
+          "secs": [
+            5.76,
+            6.08
+          ],
           "spread": 0.125
         },
         "reader": "Charles Bice",
@@ -2413,11 +2731,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M011.wav?download=true"
         },
         "qa": {
-          "clone_f0": [116, 109],
+          "clone_f0": [
+            116,
+            109
+          ],
           "drift": 0.105,
           "ok": true,
           "reasons": [],
-          "secs": [6.08, 5.92],
+          "secs": [
+            6.08,
+            5.92
+          ],
           "spread": 0.064
         },
         "reader": "Matthew Wall",
@@ -2458,11 +2782,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M012.wav?download=true"
         },
         "qa": {
-          "clone_f0": [107, 95],
+          "clone_f0": [
+            107,
+            95
+          ],
           "drift": 0.104,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.76],
+          "secs": [
+            4.96,
+            5.76
+          ],
           "spread": 0.126
         },
         "reader": "dasbury",
@@ -2503,11 +2833,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M013.wav?download=true"
         },
         "qa": {
-          "clone_f0": [106, 110],
+          "clone_f0": [
+            106,
+            110
+          ],
           "drift": 0.028,
           "ok": true,
           "reasons": [],
-          "secs": [4.16, 4.96],
+          "secs": [
+            4.16,
+            4.96
+          ],
           "spread": 0.038
         },
         "reader": "David Mix",
@@ -2548,11 +2884,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M016.wav?download=true"
         },
         "qa": {
-          "clone_f0": [118, 113],
+          "clone_f0": [
+            118,
+            113
+          ],
           "drift": 0.083,
           "ok": true,
           "reasons": [],
-          "secs": [4.64, 5.44],
+          "secs": [
+            4.64,
+            5.44
+          ],
           "spread": 0.044
         },
         "reader": "Michael Packard",
@@ -2593,11 +2935,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M017.wav?download=true"
         },
         "qa": {
-          "clone_f0": [130, 124],
+          "clone_f0": [
+            130,
+            124
+          ],
           "drift": 0.182,
           "ok": true,
           "reasons": [],
-          "secs": [5.44, 5.12],
+          "secs": [
+            5.44,
+            5.12
+          ],
           "spread": 0.048
         },
         "reader": "Jon Kissack",
@@ -2638,11 +2986,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M020.wav?download=true"
         },
         "qa": {
-          "clone_f0": [126, 119],
+          "clone_f0": [
+            126,
+            119
+          ],
           "drift": 0.135,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.44],
+          "secs": [
+            5.28,
+            5.44
+          ],
           "spread": 0.059
         },
         "reader": "Sean McKinley",
@@ -2683,11 +3037,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M021.wav?download=true"
         },
         "qa": {
-          "clone_f0": [110, 105],
+          "clone_f0": [
+            110,
+            105
+          ],
           "drift": 0.063,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 6.4],
+          "secs": [
+            5.28,
+            6.4
+          ],
           "spread": 0.048
         },
         "reader": "flakker",
@@ -2728,11 +3088,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M023.wav?download=true"
         },
         "qa": {
-          "clone_f0": [109, 112],
+          "clone_f0": [
+            109,
+            112
+          ],
           "drift": 0.044,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.44],
+          "secs": [
+            4.96,
+            5.44
+          ],
           "spread": 0.028
         },
         "reader": "John Hoerr",
@@ -2773,11 +3139,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M024.wav?download=true"
         },
         "qa": {
-          "clone_f0": [132, 118],
+          "clone_f0": [
+            132,
+            118
+          ],
           "drift": 0.158,
           "ok": true,
           "reasons": [],
-          "secs": [4.16, 4.32],
+          "secs": [
+            4.16,
+            4.32
+          ],
           "spread": 0.119
         },
         "reader": "Kevin O'Coin",
@@ -2818,11 +3190,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M026.wav?download=true"
         },
         "qa": {
-          "clone_f0": [128, 117],
+          "clone_f0": [
+            128,
+            117
+          ],
           "drift": 0.113,
           "ok": true,
           "reasons": [],
-          "secs": [5.44, 4.96],
+          "secs": [
+            5.44,
+            4.96
+          ],
           "spread": 0.094
         },
         "reader": "David Anton",
@@ -2863,11 +3241,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M028.wav?download=true"
         },
         "qa": {
-          "clone_f0": [113, 117],
+          "clone_f0": [
+            113,
+            117
+          ],
           "drift": 0.034,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.44],
+          "secs": [
+            5.28,
+            5.44
+          ],
           "spread": 0.035
         },
         "reader": "George Aalto",
@@ -2908,11 +3292,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M029.wav?download=true"
         },
         "qa": {
-          "clone_f0": [132, 136],
+          "clone_f0": [
+            132,
+            136
+          ],
           "drift": 0.162,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.92],
+          "secs": [
+            5.28,
+            5.92
+          ],
           "spread": 0.03
         },
         "reader": "Aaron Teiser",
@@ -2953,11 +3343,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M030.wav?download=true"
         },
         "qa": {
-          "clone_f0": [124, 121],
+          "clone_f0": [
+            124,
+            121
+          ],
           "drift": 0.042,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.28],
+          "secs": [
+            4.96,
+            5.28
+          ],
           "spread": 0.025
         },
         "reader": "Barry Eads",
@@ -2998,11 +3394,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M031.wav?download=true"
         },
         "qa": {
-          "clone_f0": [134, 134],
+          "clone_f0": [
+            134,
+            134
+          ],
           "drift": 0.117,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.44],
+          "secs": [
+            5.12,
+            5.44
+          ],
           "spread": 0.0
         },
         "reader": "Greg Bryant",
@@ -3043,11 +3445,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M032.wav?download=true"
         },
         "qa": {
-          "clone_f0": [102, 101],
+          "clone_f0": [
+            102,
+            101
+          ],
           "drift": 0.158,
           "ok": true,
           "reasons": [],
-          "secs": [5.44, 4.16],
+          "secs": [
+            5.44,
+            4.16
+          ],
           "spread": 0.01
         },
         "reader": "Robert Snoza",
@@ -3088,11 +3496,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M034.wav?download=true"
         },
         "qa": {
-          "clone_f0": [129, 137],
+          "clone_f0": [
+            129,
+            137
+          ],
           "drift": 0.123,
           "ok": true,
           "reasons": [],
-          "secs": [5.6, 5.44],
+          "secs": [
+            5.6,
+            5.44
+          ],
           "spread": 0.062
         },
         "reader": "KarlHenning",
@@ -3133,11 +3547,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M035.wav?download=true"
         },
         "qa": {
-          "clone_f0": [120, 111],
+          "clone_f0": [
+            120,
+            111
+          ],
           "drift": 0.09,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.6],
+          "secs": [
+            5.12,
+            5.6
+          ],
           "spread": 0.081
         },
         "reader": "Rob Powell",
@@ -3178,11 +3598,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M036.wav?download=true"
         },
         "qa": {
-          "clone_f0": [146, 146],
+          "clone_f0": [
+            146,
+            146
+          ],
           "drift": 0.197,
           "ok": true,
           "reasons": [],
-          "secs": [4.48, 4.48],
+          "secs": [
+            4.48,
+            4.48
+          ],
           "spread": 0.0
         },
         "reader": "John Garvin",
@@ -3223,11 +3649,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M038.wav?download=true"
         },
         "qa": {
-          "clone_f0": [123, 131],
+          "clone_f0": [
+            123,
+            131
+          ],
           "drift": 0.056,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 4.96],
+          "secs": [
+            5.12,
+            4.96
+          ],
           "spread": 0.065
         },
         "reader": "Tom Clifton",
@@ -3268,11 +3700,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M039.wav?download=true"
         },
         "qa": {
-          "clone_f0": [131, 127],
+          "clone_f0": [
+            131,
+            127
+          ],
           "drift": 0.04,
           "ok": true,
           "reasons": [],
-          "secs": [5.6, 5.28],
+          "secs": [
+            5.6,
+            5.28
+          ],
           "spread": 0.031
         },
         "reader": "Bill Kneeland",
@@ -3313,11 +3751,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M040.wav?download=true"
         },
         "qa": {
-          "clone_f0": [140, 130],
+          "clone_f0": [
+            140,
+            130
+          ],
           "drift": 0.094,
           "ok": true,
           "reasons": [],
-          "secs": [5.6, 5.92],
+          "secs": [
+            5.6,
+            5.92
+          ],
           "spread": 0.077
         },
         "reader": "greatbasinrain",
@@ -3358,11 +3802,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M041.wav?download=true"
         },
         "qa": {
-          "clone_f0": [117, 134],
+          "clone_f0": [
+            117,
+            134
+          ],
           "drift": 0.093,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.6],
+          "secs": [
+            5.28,
+            5.6
+          ],
           "spread": 0.145
         },
         "reader": "Jon Smith",
@@ -3403,11 +3853,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M042.wav?download=true"
         },
         "qa": {
-          "clone_f0": [142, 147],
+          "clone_f0": [
+            142,
+            147
+          ],
           "drift": 0.131,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 6.08],
+          "secs": [
+            5.28,
+            6.08
+          ],
           "spread": 0.035
         },
         "reader": "Nodo420",
@@ -3448,11 +3904,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M043.wav?download=true"
         },
         "qa": {
-          "clone_f0": [128, 125],
+          "clone_f0": [
+            128,
+            125
+          ],
           "drift": 0.038,
           "ok": true,
           "reasons": [],
-          "secs": [4.48, 4.96],
+          "secs": [
+            4.48,
+            4.96
+          ],
           "spread": 0.024
         },
         "reader": "Winston Tharp",
@@ -3493,11 +3955,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M044.wav?download=true"
         },
         "qa": {
-          "clone_f0": [144, 144],
+          "clone_f0": [
+            144,
+            144
+          ],
           "drift": 0.091,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 4.8],
+          "secs": [
+            4.96,
+            4.8
+          ],
           "spread": 0.0
         },
         "reader": "Mitchell L Leopard",
@@ -3538,11 +4006,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M046.wav?download=true"
         },
         "qa": {
-          "clone_f0": [139, 142],
+          "clone_f0": [
+            139,
+            142
+          ],
           "drift": 0.068,
           "ok": true,
           "reasons": [],
-          "secs": [4.8, 4.8],
+          "secs": [
+            4.8,
+            4.8
+          ],
           "spread": 0.022
         },
         "reader": "Alex Buie",
@@ -3583,11 +4057,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M052.wav?download=true"
         },
         "qa": {
-          "clone_f0": [150, 138],
+          "clone_f0": [
+            150,
+            138
+          ],
           "drift": 0.048,
           "ok": true,
           "reasons": [],
-          "secs": [6.56, 8.16],
+          "secs": [
+            6.56,
+            8.16
+          ],
           "spread": 0.087
         },
         "reader": "Taylor Burton-Edward",
@@ -3628,11 +4108,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M055.wav?download=true"
         },
         "qa": {
-          "clone_f0": [154, 158],
+          "clone_f0": [
+            154,
+            158
+          ],
           "drift": 0.019,
           "ok": true,
           "reasons": [],
-          "secs": [6.56, 7.2],
+          "secs": [
+            6.56,
+            7.2
+          ],
           "spread": 0.026
         },
         "reader": "Kathy Caver",
@@ -3673,11 +4159,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M056.wav?download=true"
         },
         "qa": {
-          "clone_f0": [139, 152],
+          "clone_f0": [
+            139,
+            152
+          ],
           "drift": 0.115,
           "ok": true,
           "reasons": [],
-          "secs": [6.4, 7.36],
+          "secs": [
+            6.4,
+            7.36
+          ],
           "spread": 0.094
         },
         "reader": "Leanne Kinkopf",
@@ -3718,11 +4210,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M058.wav?download=true"
         },
         "qa": {
-          "clone_f0": [164, 161],
+          "clone_f0": [
+            164,
+            161
+          ],
           "drift": 0.018,
           "ok": true,
           "reasons": [],
-          "secs": [4.64, 5.44],
+          "secs": [
+            4.64,
+            5.44
+          ],
           "spread": 0.019
         },
         "reader": "Sean McClain",
@@ -3763,11 +4261,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M059.wav?download=true"
         },
         "qa": {
-          "clone_f0": [175, 154],
+          "clone_f0": [
+            175,
+            154
+          ],
           "drift": 0.099,
           "ok": true,
           "reasons": [],
-          "secs": [5.76, 6.4],
+          "secs": [
+            5.76,
+            6.4
+          ],
           "spread": 0.136
         },
         "reader": "Chris Gladis",
@@ -3808,11 +4312,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/M060.wav?download=true"
         },
         "qa": {
-          "clone_f0": [205, 190],
+          "clone_f0": [
+            205,
+            190
+          ],
           "drift": 0.051,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.92],
+          "secs": [
+            5.28,
+            5.92
+          ],
           "spread": 0.079
         },
         "reader": "JenniferRutters",
@@ -3853,11 +4363,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1089.wav?download=true"
         },
         "qa": {
-          "clone_f0": [126, 127],
+          "clone_f0": [
+            126,
+            127
+          ],
           "drift": 0.085,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.44],
+          "secs": [
+            4.96,
+            5.44
+          ],
           "spread": 0.008
         },
         "reader": "Peter Bobbe",
@@ -3898,11 +4414,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1188.wav?download=true"
         },
         "qa": {
-          "clone_f0": [107, 98],
+          "clone_f0": [
+            107,
+            98
+          ],
           "drift": 0.092,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.92],
+          "secs": [
+            4.96,
+            5.92
+          ],
           "spread": 0.092
         },
         "reader": "Duncan Murrell",
@@ -3943,11 +4465,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1235.wav?download=true"
         },
         "qa": {
-          "clone_f0": [117, 129],
+          "clone_f0": [
+            117,
+            129
+          ],
           "drift": 0.173,
           "ok": true,
           "reasons": [],
-          "secs": [5.6, 5.6],
+          "secs": [
+            5.6,
+            5.6
+          ],
           "spread": 0.103
         },
         "reader": "Tim Gregory",
@@ -3988,11 +4516,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1246.wav?download=true"
         },
         "qa": {
-          "clone_f0": [204, 211],
+          "clone_f0": [
+            204,
+            211
+          ],
           "drift": 0.055,
           "ok": true,
           "reasons": [],
-          "secs": [4.48, 4.96],
+          "secs": [
+            4.48,
+            4.96
+          ],
           "spread": 0.034
         },
         "reader": "Sandra",
@@ -4033,11 +4567,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S125.wav?download=true"
         },
         "qa": {
-          "clone_f0": [232, 225],
+          "clone_f0": [
+            232,
+            225
+          ],
           "drift": 0.036,
           "ok": true,
           "reasons": [],
-          "secs": [4.64, 4.96],
+          "secs": [
+            4.64,
+            4.96
+          ],
           "spread": 0.031
         },
         "reader": "Claire Goget",
@@ -4078,11 +4618,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1272.wav?download=true"
         },
         "qa": {
-          "clone_f0": [117, 129],
+          "clone_f0": [
+            117,
+            129
+          ],
           "drift": 0.056,
           "ok": true,
           "reasons": [],
-          "secs": [6.56, 6.56],
+          "secs": [
+            6.56,
+            6.56
+          ],
           "spread": 0.103
         },
         "reader": "John Rose",
@@ -4123,11 +4669,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1320.wav?download=true"
         },
         "qa": {
-          "clone_f0": [120, 133],
+          "clone_f0": [
+            120,
+            133
+          ],
           "drift": 0.09,
           "ok": true,
           "reasons": [],
-          "secs": [5.6, 5.92],
+          "secs": [
+            5.6,
+            5.92
+          ],
           "spread": 0.108
         },
         "reader": "number6",
@@ -4168,11 +4720,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1447.wav?download=true"
         },
         "qa": {
-          "clone_f0": [175, 157],
+          "clone_f0": [
+            175,
+            157
+          ],
           "drift": 0.06,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.28],
+          "secs": [
+            5.28,
+            5.28
+          ],
           "spread": 0.115
         },
         "reader": "Luigina",
@@ -4213,11 +4771,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1462.wav?download=true"
         },
         "qa": {
-          "clone_f0": [189, 200],
+          "clone_f0": [
+            189,
+            200
+          ],
           "drift": 0.045,
           "ok": true,
           "reasons": [],
-          "secs": [6.08, 5.6],
+          "secs": [
+            6.08,
+            5.6
+          ],
           "spread": 0.058
         },
         "reader": "E. Tavano",
@@ -4258,11 +4822,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1502.wav?download=true"
         },
         "qa": {
-          "clone_f0": [167, 182],
+          "clone_f0": [
+            167,
+            182
+          ],
           "drift": 0.072,
           "ok": true,
           "reasons": [],
-          "secs": [5.6, 5.76],
+          "secs": [
+            5.6,
+            5.76
+          ],
           "spread": 0.09
         },
         "reader": "Ann Boyer",
@@ -4303,11 +4873,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1553.wav?download=true"
         },
         "qa": {
-          "clone_f0": [185, 172],
+          "clone_f0": [
+            185,
+            172
+          ],
           "drift": 0.055,
           "ok": true,
           "reasons": [],
-          "secs": [4.8, 4.64],
+          "secs": [
+            4.8,
+            4.64
+          ],
           "spread": 0.076
         },
         "reader": "Mim Ritty",
@@ -4348,11 +4924,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1578.wav?download=true"
         },
         "qa": {
-          "clone_f0": [191, 192],
+          "clone_f0": [
+            191,
+            192
+          ],
           "drift": 0.005,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 5.28],
+          "secs": [
+            5.92,
+            5.28
+          ],
           "spread": 0.005
         },
         "reader": "Lorelle Anderson",
@@ -4393,11 +4975,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1580.wav?download=true"
         },
         "qa": {
-          "clone_f0": [230, 255],
+          "clone_f0": [
+            230,
+            255
+          ],
           "drift": 0.061,
           "ok": true,
           "reasons": [],
-          "secs": [4.32, 4.32],
+          "secs": [
+            4.32,
+            4.32
+          ],
           "spread": 0.109
         },
         "reader": "TinyPines",
@@ -4438,11 +5026,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1624.wav?download=true"
         },
         "qa": {
-          "clone_f0": [110, 114],
+          "clone_f0": [
+            110,
+            114
+          ],
           "drift": 0.036,
           "ok": true,
           "reasons": [],
-          "secs": [5.76, 5.92],
+          "secs": [
+            5.76,
+            5.92
+          ],
           "spread": 0.036
         },
         "reader": "Daniel Shorten",
@@ -4483,11 +5077,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1867.wav?download=true"
         },
         "qa": {
-          "clone_f0": [172, 150],
+          "clone_f0": [
+            172,
+            150
+          ],
           "drift": 0.11,
           "ok": true,
           "reasons": [],
-          "secs": [5.44, 4.32],
+          "secs": [
+            5.44,
+            4.32
+          ],
           "spread": 0.147
         },
         "reader": "Rowdy Delaney",
@@ -4528,11 +5128,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1898.wav?download=true"
         },
         "qa": {
-          "clone_f0": [176, 175],
+          "clone_f0": [
+            176,
+            175
+          ],
           "drift": 0.054,
           "ok": true,
           "reasons": [],
-          "secs": [6.4, 6.24],
+          "secs": [
+            6.4,
+            6.24
+          ],
           "spread": 0.006
         },
         "reader": "Jennifer",
@@ -4573,11 +5179,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1926.wav?download=true"
         },
         "qa": {
-          "clone_f0": [205, 203],
+          "clone_f0": [
+            205,
+            203
+          ],
           "drift": 0.038,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 4.8],
+          "secs": [
+            5.28,
+            4.8
+          ],
           "spread": 0.01
         },
         "reader": "Nikki Sullivan",
@@ -4618,11 +5230,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S196.wav?download=true"
         },
         "qa": {
-          "clone_f0": [125, 130],
+          "clone_f0": [
+            125,
+            130
+          ],
           "drift": 0.083,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 5.92],
+          "secs": [
+            5.92,
+            5.92
+          ],
           "spread": 0.04
         },
         "reader": "Stewart Wills",
@@ -4663,11 +5281,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1963.wav?download=true"
         },
         "qa": {
-          "clone_f0": [180, 168],
+          "clone_f0": [
+            180,
+            168
+          ],
           "drift": 0.04,
           "ok": true,
           "reasons": [],
-          "secs": [6.08, 6.24],
+          "secs": [
+            6.08,
+            6.24
+          ],
           "spread": 0.071
         },
         "reader": "Belinda Brown",
@@ -4708,11 +5332,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1970.wav?download=true"
         },
         "qa": {
-          "clone_f0": [211, 202],
+          "clone_f0": [
+            211,
+            202
+          ],
           "drift": 0.088,
           "ok": true,
           "reasons": [],
-          "secs": [6.08, 6.56],
+          "secs": [
+            6.08,
+            6.56
+          ],
           "spread": 0.045
         },
         "reader": "Dawn Larsen",
@@ -4753,11 +5383,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1992.wav?download=true"
         },
         "qa": {
-          "clone_f0": [205, 210],
+          "clone_f0": [
+            205,
+            210
+          ],
           "drift": 0.024,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.44],
+          "secs": [
+            4.96,
+            5.44
+          ],
           "spread": 0.024
         },
         "reader": "Michelle White",
@@ -4798,11 +5434,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1993.wav?download=true"
         },
         "qa": {
-          "clone_f0": [224, 216],
+          "clone_f0": [
+            224,
+            216
+          ],
           "drift": 0.047,
           "ok": true,
           "reasons": [],
-          "secs": [5.44, 5.6],
+          "secs": [
+            5.44,
+            5.6
+          ],
           "spread": 0.037
         },
         "reader": "Wendy Belcher",
@@ -4843,11 +5485,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S1995.wav?download=true"
         },
         "qa": {
-          "clone_f0": [179, 172],
+          "clone_f0": [
+            179,
+            172
+          ],
           "drift": 0.09,
           "ok": true,
           "reasons": [],
-          "secs": [6.24, 6.72],
+          "secs": [
+            6.24,
+            6.72
+          ],
           "spread": 0.041
         },
         "reader": "AJai Hilton",
@@ -4888,11 +5536,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S200.wav?download=true"
         },
         "qa": {
-          "clone_f0": [225, 218],
+          "clone_f0": [
+            225,
+            218
+          ],
           "drift": 0.023,
           "ok": true,
           "reasons": [],
-          "secs": [5.6, 5.44],
+          "secs": [
+            5.6,
+            5.44
+          ],
           "spread": 0.032
         },
         "reader": "Maureen S. O'Brien",
@@ -4933,11 +5587,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S2002.wav?download=true"
         },
         "qa": {
-          "clone_f0": [136, 130],
+          "clone_f0": [
+            136,
+            130
+          ],
           "drift": 0.071,
           "ok": true,
           "reasons": [],
-          "secs": [6.4, 5.92],
+          "secs": [
+            6.4,
+            5.92
+          ],
           "spread": 0.046
         },
         "reader": "Larry Maddocks",
@@ -4978,11 +5638,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S2086.wav?download=true"
         },
         "qa": {
-          "clone_f0": [143, 145],
+          "clone_f0": [
+            143,
+            145
+          ],
           "drift": 0.043,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 4.64],
+          "secs": [
+            5.12,
+            4.64
+          ],
           "spread": 0.014
         },
         "reader": "Nicodemus",
@@ -5023,11 +5689,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S2159.wav?download=true"
         },
         "qa": {
-          "clone_f0": [105, 102],
+          "clone_f0": [
+            105,
+            102
+          ],
           "drift": 0.04,
           "ok": true,
           "reasons": [],
-          "secs": [6.4, 6.4],
+          "secs": [
+            6.4,
+            6.4
+          ],
           "spread": 0.029
         },
         "reader": "Matthew Westra",
@@ -5068,11 +5740,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S2196.wav?download=true"
         },
         "qa": {
-          "clone_f0": [206, 205],
+          "clone_f0": [
+            206,
+            205
+          ],
           "drift": 0.102,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 5.92],
+          "secs": [
+            5.92,
+            5.92
+          ],
           "spread": 0.005
         },
         "reader": "Andrea Fiore",
@@ -5113,11 +5791,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S226.wav?download=true"
         },
         "qa": {
-          "clone_f0": [213, 227],
+          "clone_f0": [
+            213,
+            227
+          ],
           "drift": 0.086,
           "ok": true,
           "reasons": [],
-          "secs": [5.6, 5.12],
+          "secs": [
+            5.6,
+            5.12
+          ],
           "spread": 0.066
         },
         "reader": "Deb Bacon-Ziegler",
@@ -5158,11 +5842,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S229.wav?download=true"
         },
         "qa": {
-          "clone_f0": [134, 138],
+          "clone_f0": [
+            134,
+            138
+          ],
           "drift": 0.05,
           "ok": true,
           "reasons": [],
-          "secs": [4.8, 4.96],
+          "secs": [
+            4.8,
+            4.96
+          ],
           "spread": 0.03
         },
         "reader": "carnright",
@@ -5203,11 +5893,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S2384.wav?download=true"
         },
         "qa": {
-          "clone_f0": [110, 117],
+          "clone_f0": [
+            110,
+            117
+          ],
           "drift": 0.093,
           "ok": true,
           "reasons": [],
-          "secs": [4.48, 4.96],
+          "secs": [
+            4.48,
+            4.96
+          ],
           "spread": 0.064
         },
         "reader": "Ger",
@@ -5248,11 +5944,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S2391.wav?download=true"
         },
         "qa": {
-          "clone_f0": [221, 235],
+          "clone_f0": [
+            221,
+            235
+          ],
           "drift": 0.078,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.76],
+          "secs": [
+            4.96,
+            5.76
+          ],
           "spread": 0.063
         },
         "reader": "treefingers",
@@ -5293,11 +5995,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S2428.wav?download=true"
         },
         "qa": {
-          "clone_f0": [129, 136],
+          "clone_f0": [
+            129,
+            136
+          ],
           "drift": 0.106,
           "ok": true,
           "reasons": [],
-          "secs": [5.6, 5.28],
+          "secs": [
+            5.6,
+            5.28
+          ],
           "spread": 0.054
         },
         "reader": "Stephen Kinford",
@@ -5338,11 +6046,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S2436.wav?download=true"
         },
         "qa": {
-          "clone_f0": [102, 97],
+          "clone_f0": [
+            102,
+            97
+          ],
           "drift": 0.03,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.12],
+          "secs": [
+            5.28,
+            5.12
+          ],
           "spread": 0.052
         },
         "reader": "Seth Adam Sher",
@@ -5383,11 +6097,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S250.wav?download=true"
         },
         "qa": {
-          "clone_f0": [173, 163],
+          "clone_f0": [
+            173,
+            163
+          ],
           "drift": 0.063,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.28],
+          "secs": [
+            5.12,
+            5.28
+          ],
           "spread": 0.061
         },
         "reader": "Mary Reagan",
@@ -5428,11 +6148,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S254.wav?download=true"
         },
         "qa": {
-          "clone_f0": [105, 97],
+          "clone_f0": [
+            105,
+            97
+          ],
           "drift": 0.076,
           "ok": true,
           "reasons": [],
-          "secs": [6.08, 5.92],
+          "secs": [
+            6.08,
+            5.92
+          ],
           "spread": 0.082
         },
         "reader": "Alan Davis Drake (1945-2010)",
@@ -5473,11 +6199,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S26.wav?download=true"
         },
         "qa": {
-          "clone_f0": [127, 129],
+          "clone_f0": [
+            127,
+            129
+          ],
           "drift": 0.032,
           "ok": true,
           "reasons": [],
-          "secs": [6.72, 5.6],
+          "secs": [
+            6.72,
+            5.6
+          ],
           "spread": 0.016
         },
         "reader": "Denny Sayers",
@@ -5518,11 +6250,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S2803.wav?download=true"
         },
         "qa": {
-          "clone_f0": [101, 109],
+          "clone_f0": [
+            101,
+            109
+          ],
           "drift": 0.047,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.92],
+          "secs": [
+            5.28,
+            5.92
+          ],
           "spread": 0.079
         },
         "reader": "aquielisunari",
@@ -5563,11 +6301,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S2817.wav?download=true"
         },
         "qa": {
-          "clone_f0": [231, 232],
+          "clone_f0": [
+            231,
+            232
+          ],
           "drift": 0.009,
           "ok": true,
           "reasons": [],
-          "secs": [5.6, 5.6],
+          "secs": [
+            5.6,
+            5.6
+          ],
           "spread": 0.004
         },
         "reader": "Catherine Millward",
@@ -5608,11 +6352,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S2830.wav?download=true"
         },
         "qa": {
-          "clone_f0": [133, 140],
+          "clone_f0": [
+            133,
+            140
+          ],
           "drift": 0.043,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.44],
+          "secs": [
+            4.96,
+            5.44
+          ],
           "spread": 0.053
         },
         "reader": "Tim Perkins",
@@ -5653,11 +6403,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S2836.wav?download=true"
         },
         "qa": {
-          "clone_f0": [277, 255],
+          "clone_f0": [
+            277,
+            255
+          ],
           "drift": 0.121,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 4.96],
+          "secs": [
+            4.96,
+            4.96
+          ],
           "spread": 0.086
         },
         "reader": "Linda McDaniel",
@@ -5698,11 +6454,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S2902.wav?download=true"
         },
         "qa": {
-          "clone_f0": [137, 139],
+          "clone_f0": [
+            137,
+            139
+          ],
           "drift": 0.069,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.6],
+          "secs": [
+            5.12,
+            5.6
+          ],
           "spread": 0.015
         },
         "reader": "dexter",
@@ -5743,11 +6505,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S2989.wav?download=true"
         },
         "qa": {
-          "clone_f0": [214, 218],
+          "clone_f0": [
+            214,
+            218
+          ],
           "drift": 0.053,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 4.96],
+          "secs": [
+            4.96,
+            4.96
+          ],
           "spread": 0.019
         },
         "reader": "Jamie Strassenburg, Cypress, California",
@@ -5788,11 +6556,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S302.wav?download=true"
         },
         "qa": {
-          "clone_f0": [216, 198],
+          "clone_f0": [
+            216,
+            198
+          ],
           "drift": 0.125,
           "ok": true,
           "reasons": [],
-          "secs": [6.4, 5.92],
+          "secs": [
+            6.4,
+            5.92
+          ],
           "spread": 0.091
         },
         "reader": "Chris Peterson",
@@ -5833,11 +6607,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S311.wav?download=true"
         },
         "qa": {
-          "clone_f0": [105, 97],
+          "clone_f0": [
+            105,
+            97
+          ],
           "drift": 0.126,
           "ok": true,
           "reasons": [],
-          "secs": [5.44, 5.44],
+          "secs": [
+            5.44,
+            5.44
+          ],
           "spread": 0.082
         },
         "reader": "deadwhitemales",
@@ -5878,11 +6658,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S3214.wav?download=true"
         },
         "qa": {
-          "clone_f0": [133, 134],
+          "clone_f0": [
+            133,
+            134
+          ],
           "drift": 0.165,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.12],
+          "secs": [
+            5.12,
+            5.12
+          ],
           "spread": 0.008
         },
         "reader": "fourteatoo",
@@ -5923,11 +6709,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S322.wav?download=true"
         },
         "qa": {
-          "clone_f0": [175, 183],
+          "clone_f0": [
+            175,
+            183
+          ],
           "drift": 0.022,
           "ok": true,
           "reasons": [],
-          "secs": [5.76, 6.4],
+          "secs": [
+            5.76,
+            6.4
+          ],
           "spread": 0.046
         },
         "reader": "Elisabeth Shields",
@@ -5968,11 +6760,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S3242.wav?download=true"
         },
         "qa": {
-          "clone_f0": [133, 116],
+          "clone_f0": [
+            133,
+            116
+          ],
           "drift": 0.188,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.76],
+          "secs": [
+            5.12,
+            5.76
+          ],
           "spread": 0.147
         },
         "reader": "peac",
@@ -6013,11 +6811,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S3374.wav?download=true"
         },
         "qa": {
-          "clone_f0": [136, 138],
+          "clone_f0": [
+            136,
+            138
+          ],
           "drift": 0.015,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 5.44],
+          "secs": [
+            5.92,
+            5.44
+          ],
           "spread": 0.015
         },
         "reader": "Craig Campbell",
@@ -6058,11 +6862,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S3436.wav?download=true"
         },
         "qa": {
-          "clone_f0": [162, 151],
+          "clone_f0": [
+            162,
+            151
+          ],
           "drift": 0.149,
           "ok": true,
           "reasons": [],
-          "secs": [4.48, 5.28],
+          "secs": [
+            4.48,
+            5.28
+          ],
           "spread": 0.073
         },
         "reader": "Anders Lankford",
@@ -6103,11 +6913,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S3440.wav?download=true"
         },
         "qa": {
-          "clone_f0": [220, 219],
+          "clone_f0": [
+            220,
+            219
+          ],
           "drift": 0.019,
           "ok": true,
           "reasons": [],
-          "secs": [5.44, 4.96],
+          "secs": [
+            5.44,
+            4.96
+          ],
           "spread": 0.005
         },
         "reader": "Heidi Will",
@@ -6148,11 +6964,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S3526.wav?download=true"
         },
         "qa": {
-          "clone_f0": [198, 210],
+          "clone_f0": [
+            198,
+            210
+          ],
           "drift": 0.05,
           "ok": true,
           "reasons": [],
-          "secs": [6.08, 5.44],
+          "secs": [
+            6.08,
+            5.44
+          ],
           "spread": 0.061
         },
         "reader": "Bereni",
@@ -6193,11 +7015,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S3575.wav?download=true"
         },
         "qa": {
-          "clone_f0": [191, 205],
+          "clone_f0": [
+            191,
+            205
+          ],
           "drift": 0.057,
           "ok": true,
           "reasons": [],
-          "secs": [4.8, 4.64],
+          "secs": [
+            4.8,
+            4.64
+          ],
           "spread": 0.073
         },
         "reader": "supergirl",
@@ -6238,11 +7066,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S3576.wav?download=true"
         },
         "qa": {
-          "clone_f0": [179, 172],
+          "clone_f0": [
+            179,
+            172
+          ],
           "drift": 0.078,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 7.04],
+          "secs": [
+            5.92,
+            7.04
+          ],
           "spread": 0.041
         },
         "reader": "JudyGibson",
@@ -6283,11 +7117,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S3607.wav?download=true"
         },
         "qa": {
-          "clone_f0": [123, 127],
+          "clone_f0": [
+            123,
+            127
+          ],
           "drift": 0.039,
           "ok": true,
           "reasons": [],
-          "secs": [4.0, 4.0],
+          "secs": [
+            4.0,
+            4.0
+          ],
           "spread": 0.033
         },
         "reader": "Richard Wallis",
@@ -6328,11 +7168,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S3729.wav?download=true"
         },
         "qa": {
-          "clone_f0": [186, 191],
+          "clone_f0": [
+            186,
+            191
+          ],
           "drift": 0.085,
           "ok": true,
           "reasons": [],
-          "secs": [6.4, 6.88],
+          "secs": [
+            6.4,
+            6.88
+          ],
           "spread": 0.027
         },
         "reader": "Heather Hogan",
@@ -6373,11 +7219,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S374.wav?download=true"
         },
         "qa": {
-          "clone_f0": [171, 183],
+          "clone_f0": [
+            171,
+            183
+          ],
           "drift": 0.076,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.6],
+          "secs": [
+            5.28,
+            5.6
+          ],
           "spread": 0.07
         },
         "reader": "kumarei",
@@ -6418,11 +7270,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S3752.wav?download=true"
         },
         "qa": {
-          "clone_f0": [122, 127],
+          "clone_f0": [
+            122,
+            127
+          ],
           "drift": 0.039,
           "ok": true,
           "reasons": [],
-          "secs": [5.6, 4.96],
+          "secs": [
+            5.6,
+            4.96
+          ],
           "spread": 0.041
         },
         "reader": "Mark Welch",
@@ -6463,11 +7321,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S3807.wav?download=true"
         },
         "qa": {
-          "clone_f0": [103, 101],
+          "clone_f0": [
+            103,
+            101
+          ],
           "drift": 0.029,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.28],
+          "secs": [
+            5.12,
+            5.28
+          ],
           "spread": 0.02
         },
         "reader": "Jesse Noar",
@@ -6508,11 +7372,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S3830.wav?download=true"
         },
         "qa": {
-          "clone_f0": [130, 143],
+          "clone_f0": [
+            130,
+            143
+          ],
           "drift": 0.109,
           "ok": true,
           "reasons": [],
-          "secs": [6.24, 5.92],
+          "secs": [
+            6.24,
+            5.92
+          ],
           "spread": 0.1
         },
         "reader": "rymd80",
@@ -6553,11 +7423,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S3853.wav?download=true"
         },
         "qa": {
-          "clone_f0": [204, 210],
+          "clone_f0": [
+            204,
+            210
+          ],
           "drift": 0.061,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 4.96],
+          "secs": [
+            4.96,
+            4.96
+          ],
           "spread": 0.029
         },
         "reader": "M. Bertke",
@@ -6598,11 +7474,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S39.wav?download=true"
         },
         "qa": {
-          "clone_f0": [223, 214],
+          "clone_f0": [
+            223,
+            214
+          ],
           "drift": 0.104,
           "ok": true,
           "reasons": [],
-          "secs": [6.4, 5.92],
+          "secs": [
+            6.4,
+            5.92
+          ],
           "spread": 0.042
         },
         "reader": "Sherry Crowther",
@@ -6643,11 +7525,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S3947.wav?download=true"
         },
         "qa": {
-          "clone_f0": [197, 198],
+          "clone_f0": [
+            197,
+            198
+          ],
           "drift": 0.005,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.44],
+          "secs": [
+            5.12,
+            5.44
+          ],
           "spread": 0.005
         },
         "reader": "johnell",
@@ -6688,11 +7576,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S40.wav?download=true"
         },
         "qa": {
-          "clone_f0": [234, 241],
+          "clone_f0": [
+            234,
+            241
+          ],
           "drift": 0.095,
           "ok": true,
           "reasons": [],
-          "secs": [4.32, 6.72],
+          "secs": [
+            4.32,
+            6.72
+          ],
           "spread": 0.03
         },
         "reader": "Vicki Barbour",
@@ -6733,11 +7627,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4018.wav?download=true"
         },
         "qa": {
-          "clone_f0": [131, 129],
+          "clone_f0": [
+            131,
+            129
+          ],
           "drift": 0.037,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.44],
+          "secs": [
+            5.28,
+            5.44
+          ],
           "spread": 0.016
         },
         "reader": "Nicholas Clifford",
@@ -6778,11 +7678,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S403.wav?download=true"
         },
         "qa": {
-          "clone_f0": [183, 176],
+          "clone_f0": [
+            183,
+            176
+          ],
           "drift": 0.049,
           "ok": true,
           "reasons": [],
-          "secs": [5.76, 5.6],
+          "secs": [
+            5.76,
+            5.6
+          ],
           "spread": 0.04
         },
         "reader": "Nocturna",
@@ -6823,11 +7729,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S405.wav?download=true"
         },
         "qa": {
-          "clone_f0": [109, 122],
+          "clone_f0": [
+            109,
+            122
+          ],
           "drift": 0.173,
           "ok": true,
           "reasons": [],
-          "secs": [5.76, 4.96],
+          "secs": [
+            5.76,
+            4.96
+          ],
           "spread": 0.119
         },
         "reader": "Eric Dennison",
@@ -6868,11 +7780,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4051.wav?download=true"
         },
         "qa": {
-          "clone_f0": [211, 214],
+          "clone_f0": [
+            211,
+            214
+          ],
           "drift": 0.024,
           "ok": true,
           "reasons": [],
-          "secs": [5.44, 5.44],
+          "secs": [
+            5.44,
+            5.44
+          ],
           "spread": 0.014
         },
         "reader": "Liz Devens",
@@ -6913,11 +7831,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4077.wav?download=true"
         },
         "qa": {
-          "clone_f0": [111, 117],
+          "clone_f0": [
+            111,
+            117
+          ],
           "drift": 0.09,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.6],
+          "secs": [
+            5.12,
+            5.6
+          ],
           "spread": 0.054
         },
         "reader": "Nathan Markham",
@@ -6958,11 +7882,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4088.wav?download=true"
         },
         "qa": {
-          "clone_f0": [233, 223],
+          "clone_f0": [
+            233,
+            223
+          ],
           "drift": 0.079,
           "ok": true,
           "reasons": [],
-          "secs": [4.64, 4.96],
+          "secs": [
+            4.64,
+            4.96
+          ],
           "spread": 0.045
         },
         "reader": "Blazin48",
@@ -7003,11 +7933,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4137.wav?download=true"
         },
         "qa": {
-          "clone_f0": [234, 221],
+          "clone_f0": [
+            234,
+            221
+          ],
           "drift": 0.153,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.76],
+          "secs": [
+            4.96,
+            5.76
+          ],
           "spread": 0.059
         },
         "reader": "Sarah LuAnn",
@@ -7048,11 +7984,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4160.wav?download=true"
         },
         "qa": {
-          "clone_f0": [211, 211],
+          "clone_f0": [
+            211,
+            211
+          ],
           "drift": 0.045,
           "ok": true,
           "reasons": [],
-          "secs": [4.16, 4.96],
+          "secs": [
+            4.16,
+            4.96
+          ],
           "spread": 0.0
         },
         "reader": "Rosie",
@@ -7093,11 +8035,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4195.wav?download=true"
         },
         "qa": {
-          "clone_f0": [190, 191],
+          "clone_f0": [
+            190,
+            191
+          ],
           "drift": 0.027,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 4.96],
+          "secs": [
+            5.28,
+            4.96
+          ],
           "spread": 0.005
         },
         "reader": "bj",
@@ -7138,11 +8086,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S426.wav?download=true"
         },
         "qa": {
-          "clone_f0": [174, 192],
+          "clone_f0": [
+            174,
+            192
+          ],
           "drift": 0.073,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 4.96],
+          "secs": [
+            5.28,
+            4.96
+          ],
           "spread": 0.103
         },
         "reader": "Norah Piehl",
@@ -7183,11 +8137,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4267.wav?download=true"
         },
         "qa": {
-          "clone_f0": [164, 186],
+          "clone_f0": [
+            164,
+            186
+          ],
           "drift": 0.089,
           "ok": true,
           "reasons": [],
-          "secs": [6.08, 6.08],
+          "secs": [
+            6.08,
+            6.08
+          ],
           "spread": 0.134
         },
         "reader": "Ric F",
@@ -7228,11 +8188,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4297.wav?download=true"
         },
         "qa": {
-          "clone_f0": [194, 186],
+          "clone_f0": [
+            194,
+            186
+          ],
           "drift": 0.066,
           "ok": true,
           "reasons": [],
-          "secs": [4.64, 4.96],
+          "secs": [
+            4.64,
+            4.96
+          ],
           "spread": 0.043
         },
         "reader": "Tina Horning",
@@ -7273,11 +8239,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4362.wav?download=true"
         },
         "qa": {
-          "clone_f0": [188, 203],
+          "clone_f0": [
+            188,
+            203
+          ],
           "drift": 0.08,
           "ok": true,
           "reasons": [],
-          "secs": [4.64, 5.28],
+          "secs": [
+            4.64,
+            5.28
+          ],
           "spread": 0.08
         },
         "reader": "Michelle Montano",
@@ -7318,11 +8290,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4441.wav?download=true"
         },
         "qa": {
-          "clone_f0": [107, 117],
+          "clone_f0": [
+            107,
+            117
+          ],
           "drift": 0.064,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.6],
+          "secs": [
+            5.12,
+            5.6
+          ],
           "spread": 0.093
         },
         "reader": "William Peck",
@@ -7363,11 +8341,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4481.wav?download=true"
         },
         "qa": {
-          "clone_f0": [169, 166],
+          "clone_f0": [
+            169,
+            166
+          ],
           "drift": 0.03,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.12],
+          "secs": [
+            4.96,
+            5.12
+          ],
           "spread": 0.018
         },
         "reader": "margo zinberg",
@@ -7408,11 +8392,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S460.wav?download=true"
         },
         "qa": {
-          "clone_f0": [104, 95],
+          "clone_f0": [
+            104,
+            95
+          ],
           "drift": 0.12,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.28],
+          "secs": [
+            5.12,
+            5.28
+          ],
           "spread": 0.095
         },
         "reader": "Dave Ranson",
@@ -7453,11 +8443,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4640.wav?download=true"
         },
         "qa": {
-          "clone_f0": [208, 207],
+          "clone_f0": [
+            208,
+            207
+          ],
           "drift": 0.124,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 5.92],
+          "secs": [
+            5.92,
+            5.92
+          ],
           "spread": 0.005
         },
         "reader": "Karen Mason",
@@ -7498,11 +8494,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4680.wav?download=true"
         },
         "qa": {
-          "clone_f0": [221, 234],
+          "clone_f0": [
+            221,
+            234
+          ],
           "drift": 0.158,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 6.24],
+          "secs": [
+            5.12,
+            6.24
+          ],
           "spread": 0.059
         },
         "reader": "pachayes",
@@ -7543,11 +8545,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4788.wav?download=true"
         },
         "qa": {
-          "clone_f0": [140, 136],
+          "clone_f0": [
+            140,
+            136
+          ],
           "drift": 0.085,
           "ok": true,
           "reasons": [],
-          "secs": [4.8, 4.48],
+          "secs": [
+            4.8,
+            4.48
+          ],
           "spread": 0.029
         },
         "reader": "Bill Boerst",
@@ -7588,11 +8596,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S481.wav?download=true"
         },
         "qa": {
-          "clone_f0": [119, 123],
+          "clone_f0": [
+            119,
+            123
+          ],
           "drift": 0.025,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 4.8],
+          "secs": [
+            5.12,
+            4.8
+          ],
           "spread": 0.034
         },
         "reader": "Neal Foley",
@@ -7633,11 +8647,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4813.wav?download=true"
         },
         "qa": {
-          "clone_f0": [112, 115],
+          "clone_f0": [
+            112,
+            115
+          ],
           "drift": 0.065,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.28],
+          "secs": [
+            4.96,
+            5.28
+          ],
           "spread": 0.027
         },
         "reader": "Steve Mattern",
@@ -7678,11 +8698,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4859.wav?download=true"
         },
         "qa": {
-          "clone_f0": [103, 97],
+          "clone_f0": [
+            103,
+            97
+          ],
           "drift": 0.073,
           "ok": true,
           "reasons": [],
-          "secs": [3.84, 4.48],
+          "secs": [
+            3.84,
+            4.48
+          ],
           "spread": 0.062
         },
         "reader": "nathank",
@@ -7723,11 +8749,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4970.wav?download=true"
         },
         "qa": {
-          "clone_f0": [212, 213],
+          "clone_f0": [
+            212,
+            213
+          ],
           "drift": 0.062,
           "ok": true,
           "reasons": [],
-          "secs": [4.16, 4.8],
+          "secs": [
+            4.16,
+            4.8
+          ],
           "spread": 0.005
         },
         "reader": "airandwaters",
@@ -7768,11 +8800,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S4992.wav?download=true"
         },
         "qa": {
-          "clone_f0": [178, 195],
+          "clone_f0": [
+            178,
+            195
+          ],
           "drift": 0.053,
           "ok": true,
           "reasons": [],
-          "secs": [4.8, 5.44],
+          "secs": [
+            4.8,
+            5.44
+          ],
           "spread": 0.096
         },
         "reader": "Joyce Martin",
@@ -7813,11 +8851,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S5049.wav?download=true"
         },
         "qa": {
-          "clone_f0": [120, 117],
+          "clone_f0": [
+            120,
+            117
+          ],
           "drift": 0.041,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 5.76],
+          "secs": [
+            5.92,
+            5.76
+          ],
           "spread": 0.026
         },
         "reader": "Bradley Smith",
@@ -7858,11 +8902,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S5142.wav?download=true"
         },
         "qa": {
-          "clone_f0": [199, 201],
+          "clone_f0": [
+            199,
+            201
+          ],
           "drift": 0.02,
           "ok": true,
           "reasons": [],
-          "secs": [4.0, 4.32],
+          "secs": [
+            4.0,
+            4.32
+          ],
           "spread": 0.01
         },
         "reader": "Mary Ballard-Johansson",
@@ -7903,11 +8953,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S5163.wav?download=true"
         },
         "qa": {
-          "clone_f0": [185, 211],
+          "clone_f0": [
+            185,
+            211
+          ],
           "drift": 0.075,
           "ok": true,
           "reasons": [],
-          "secs": [4.16, 5.12],
+          "secs": [
+            4.16,
+            5.12
+          ],
           "spread": 0.141
         },
         "reader": "LilyAnne",
@@ -7948,11 +9004,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S5338.wav?download=true"
         },
         "qa": {
-          "clone_f0": [207, 224],
+          "clone_f0": [
+            207,
+            224
+          ],
           "drift": 0.103,
           "ok": true,
           "reasons": [],
-          "secs": [4.16, 5.28],
+          "secs": [
+            4.16,
+            5.28
+          ],
           "spread": 0.082
         },
         "reader": "S R Colon",
@@ -7993,11 +9055,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S5339.wav?download=true"
         },
         "qa": {
-          "clone_f0": [151, 159],
+          "clone_f0": [
+            151,
+            159
+          ],
           "drift": 0.112,
           "ok": true,
           "reasons": [],
-          "secs": [5.44, 4.96],
+          "secs": [
+            5.44,
+            4.96
+          ],
           "spread": 0.053
         },
         "reader": "Lauren McCullough",
@@ -8038,11 +9106,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S5393.wav?download=true"
         },
         "qa": {
-          "clone_f0": [204, 199],
+          "clone_f0": [
+            204,
+            199
+          ],
           "drift": 0.07,
           "ok": true,
           "reasons": [],
-          "secs": [4.8, 5.44],
+          "secs": [
+            4.8,
+            5.44
+          ],
           "spread": 0.025
         },
         "reader": "Amy Hengst",
@@ -8083,11 +9157,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S5456.wav?download=true"
         },
         "qa": {
-          "clone_f0": [110, 102],
+          "clone_f0": [
+            110,
+            102
+          ],
           "drift": 0.068,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.6],
+          "secs": [
+            4.96,
+            5.6
+          ],
           "spread": 0.078
         },
         "reader": "e_scarab",
@@ -8128,11 +9208,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S5561.wav?download=true"
         },
         "qa": {
-          "clone_f0": [150, 145],
+          "clone_f0": [
+            150,
+            145
+          ],
           "drift": 0.046,
           "ok": true,
           "reasons": [],
-          "secs": [4.48, 4.48],
+          "secs": [
+            4.48,
+            4.48
+          ],
           "spread": 0.034
         },
         "reader": "Ellen Jones",
@@ -8173,11 +9259,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S5808.wav?download=true"
         },
         "qa": {
-          "clone_f0": [121, 124],
+          "clone_f0": [
+            121,
+            124
+          ],
           "drift": 0.025,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.44],
+          "secs": [
+            5.12,
+            5.44
+          ],
           "spread": 0.025
         },
         "reader": "jeandelfrio",
@@ -8218,11 +9310,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S5867.wav?download=true"
         },
         "qa": {
-          "clone_f0": [196, 188],
+          "clone_f0": [
+            196,
+            188
+          ],
           "drift": 0.146,
           "ok": true,
           "reasons": [],
-          "secs": [5.44, 5.28],
+          "secs": [
+            5.44,
+            5.28
+          ],
           "spread": 0.043
         },
         "reader": "Sharon Omi",
@@ -8263,11 +9361,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S60.wav?download=true"
         },
         "qa": {
-          "clone_f0": [98, 95],
+          "clone_f0": [
+            98,
+            95
+          ],
           "drift": 0.021,
           "ok": true,
           "reasons": [],
-          "secs": [6.56, 6.56],
+          "secs": [
+            6.56,
+            6.56
+          ],
           "spread": 0.032
         },
         "reader": "LibriVox volunteer",
@@ -8308,11 +9412,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S6019.wav?download=true"
         },
         "qa": {
-          "clone_f0": [153, 158],
+          "clone_f0": [
+            153,
+            158
+          ],
           "drift": 0.033,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.6],
+          "secs": [
+            5.28,
+            5.6
+          ],
           "spread": 0.033
         },
         "reader": "DerekP",
@@ -8353,11 +9463,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S6181.wav?download=true"
         },
         "qa": {
-          "clone_f0": [110, 109],
+          "clone_f0": [
+            110,
+            109
+          ],
           "drift": 0.009,
           "ok": true,
           "reasons": [],
-          "secs": [6.72, 7.36],
+          "secs": [
+            6.72,
+            7.36
+          ],
           "spread": 0.009
         },
         "reader": "Mike",
@@ -8398,11 +9514,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S6209.wav?download=true"
         },
         "qa": {
-          "clone_f0": [128, 123],
+          "clone_f0": [
+            128,
+            123
+          ],
           "drift": 0.143,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 5.44],
+          "secs": [
+            5.92,
+            5.44
+          ],
           "spread": 0.041
         },
         "reader": "deckerteach",
@@ -8443,11 +9565,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S6272.wav?download=true"
         },
         "qa": {
-          "clone_f0": [171, 180],
+          "clone_f0": [
+            171,
+            180
+          ],
           "drift": 0.05,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.28],
+          "secs": [
+            5.12,
+            5.28
+          ],
           "spread": 0.053
         },
         "reader": "jlenardon",
@@ -8488,11 +9616,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S6345.wav?download=true"
         },
         "qa": {
-          "clone_f0": [205, 214],
+          "clone_f0": [
+            205,
+            214
+          ],
           "drift": 0.034,
           "ok": true,
           "reasons": [],
-          "secs": [4.16, 5.28],
+          "secs": [
+            4.16,
+            5.28
+          ],
           "spread": 0.044
         },
         "reader": "Jean Bascom",
@@ -8533,11 +9667,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S6385.wav?download=true"
         },
         "qa": {
-          "clone_f0": [289, 258],
+          "clone_f0": [
+            289,
+            258
+          ],
           "drift": 0.12,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 5.6],
+          "secs": [
+            5.92,
+            5.6
+          ],
           "spread": 0.12
         },
         "reader": "Novella Serena",
@@ -8578,11 +9718,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S652.wav?download=true"
         },
         "qa": {
-          "clone_f0": [100, 96],
+          "clone_f0": [
+            100,
+            96
+          ],
           "drift": 0.02,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.6],
+          "secs": [
+            4.96,
+            5.6
+          ],
           "spread": 0.042
         },
         "reader": "Scott Walter",
@@ -8623,11 +9769,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S6529.wav?download=true"
         },
         "qa": {
-          "clone_f0": [123, 120],
+          "clone_f0": [
+            123,
+            120
+          ],
           "drift": 0.016,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 5.6],
+          "secs": [
+            5.92,
+            5.6
+          ],
           "spread": 0.025
         },
         "reader": "Fred DeBerardinis",
@@ -8668,11 +9820,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S6531.wav?download=true"
         },
         "qa": {
-          "clone_f0": [168, 178],
+          "clone_f0": [
+            168,
+            178
+          ],
           "drift": 0.134,
           "ok": true,
           "reasons": [],
-          "secs": [4.48, 4.48],
+          "secs": [
+            4.48,
+            4.48
+          ],
           "spread": 0.06
         },
         "reader": "janesandberg",
@@ -8713,11 +9871,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S669.wav?download=true"
         },
         "qa": {
-          "clone_f0": [160, 156],
+          "clone_f0": [
+            160,
+            156
+          ],
           "drift": 0.066,
           "ok": true,
           "reasons": [],
-          "secs": [6.56, 7.36],
+          "secs": [
+            6.56,
+            7.36
+          ],
           "spread": 0.026
         },
         "reader": "Anne",
@@ -8758,11 +9922,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S6818.wav?download=true"
         },
         "qa": {
-          "clone_f0": [223, 221],
+          "clone_f0": [
+            223,
+            221
+          ],
           "drift": 0.199,
           "ok": true,
           "reasons": [],
-          "secs": [6.72, 6.24],
+          "secs": [
+            6.72,
+            6.24
+          ],
           "spread": 0.009
         },
         "reader": "beckyboyd",
@@ -8803,11 +9973,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S6880.wav?download=true"
         },
         "qa": {
-          "clone_f0": [106, 109],
+          "clone_f0": [
+            106,
+            109
+          ],
           "drift": 0.028,
           "ok": true,
           "reasons": [],
-          "secs": [6.08, 5.6],
+          "secs": [
+            6.08,
+            5.6
+          ],
           "spread": 0.028
         },
         "reader": "Capybara",
@@ -8848,11 +10024,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S6925.wav?download=true"
         },
         "qa": {
-          "clone_f0": [116, 103],
+          "clone_f0": [
+            116,
+            103
+          ],
           "drift": 0.137,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.6],
+          "secs": [
+            4.96,
+            5.6
+          ],
           "spread": 0.126
         },
         "reader": "Thomas Meaney",
@@ -8893,11 +10075,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S7078.wav?download=true"
         },
         "qa": {
-          "clone_f0": [183, 204],
+          "clone_f0": [
+            183,
+            204
+          ],
           "drift": 0.057,
           "ok": true,
           "reasons": [],
-          "secs": [5.44, 5.44],
+          "secs": [
+            5.44,
+            5.44
+          ],
           "spread": 0.115
         },
         "reader": "Mary in Arkansas",
@@ -8938,11 +10126,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S7113.wav?download=true"
         },
         "qa": {
-          "clone_f0": [212, 227],
+          "clone_f0": [
+            212,
+            227
+          ],
           "drift": 0.097,
           "ok": true,
           "reasons": [],
-          "secs": [6.88, 7.68],
+          "secs": [
+            6.88,
+            7.68
+          ],
           "spread": 0.071
         },
         "reader": "Sukaina Jaffer",
@@ -8983,11 +10177,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S7148.wav?download=true"
         },
         "qa": {
-          "clone_f0": [171, 168],
+          "clone_f0": [
+            171,
+            168
+          ],
           "drift": 0.069,
           "ok": true,
           "reasons": [],
-          "secs": [6.24, 6.4],
+          "secs": [
+            6.24,
+            6.4
+          ],
           "spread": 0.018
         },
         "reader": "Vickie Ranz",
@@ -9028,11 +10228,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S7178.wav?download=true"
         },
         "qa": {
-          "clone_f0": [201, 212],
+          "clone_f0": [
+            201,
+            212
+          ],
           "drift": 0.069,
           "ok": true,
           "reasons": [],
-          "secs": [6.56, 5.92],
+          "secs": [
+            6.56,
+            5.92
+          ],
           "spread": 0.055
         },
         "reader": "J.K. Neely",
@@ -9073,11 +10279,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S7190.wav?download=true"
         },
         "qa": {
-          "clone_f0": [108, 115],
+          "clone_f0": [
+            108,
+            115
+          ],
           "drift": 0.061,
           "ok": true,
           "reasons": [],
-          "secs": [4.0, 4.0],
+          "secs": [
+            4.0,
+            4.0
+          ],
           "spread": 0.065
         },
         "reader": "Tony Posante",
@@ -9118,11 +10330,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S7226.wav?download=true"
         },
         "qa": {
-          "clone_f0": [118, 122],
+          "clone_f0": [
+            118,
+            122
+          ],
           "drift": 0.08,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.12],
+          "secs": [
+            5.12,
+            5.12
+          ],
           "spread": 0.034
         },
         "reader": "Jonathan Moore",
@@ -9163,11 +10381,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S730.wav?download=true"
         },
         "qa": {
-          "clone_f0": [193, 168],
+          "clone_f0": [
+            193,
+            168
+          ],
           "drift": 0.116,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 5.44],
+          "secs": [
+            5.92,
+            5.44
+          ],
           "spread": 0.149
         },
         "reader": "Karen Labenz",
@@ -9208,11 +10432,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S7312.wav?download=true"
         },
         "qa": {
-          "clone_f0": [150, 150],
+          "clone_f0": [
+            150,
+            150
+          ],
           "drift": 0.007,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.44],
+          "secs": [
+            5.28,
+            5.44
+          ],
           "spread": 0.0
         },
         "reader": "nkneer",
@@ -9253,11 +10483,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S7367.wav?download=true"
         },
         "qa": {
-          "clone_f0": [113, 108],
+          "clone_f0": [
+            113,
+            108
+          ],
           "drift": 0.037,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.28],
+          "secs": [
+            5.12,
+            5.28
+          ],
           "spread": 0.046
         },
         "reader": "NIneFive83",
@@ -9298,11 +10534,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S7402.wav?download=true"
         },
         "qa": {
-          "clone_f0": [155, 138],
+          "clone_f0": [
+            155,
+            138
+          ],
           "drift": 0.086,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 4.96],
+          "secs": [
+            4.96,
+            4.96
+          ],
           "spread": 0.123
         },
         "reader": "Canby Ibarra",
@@ -9343,11 +10585,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S7511.wav?download=true"
         },
         "qa": {
-          "clone_f0": [223, 240],
+          "clone_f0": [
+            223,
+            240
+          ],
           "drift": 0.132,
           "ok": true,
           "reasons": [],
-          "secs": [4.48, 4.96],
+          "secs": [
+            4.48,
+            4.96
+          ],
           "spread": 0.076
         },
         "reader": "Sherri Vance",
@@ -9388,11 +10636,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S7517.wav?download=true"
         },
         "qa": {
-          "clone_f0": [186, 173],
+          "clone_f0": [
+            186,
+            173
+          ],
           "drift": 0.049,
           "ok": true,
           "reasons": [],
-          "secs": [6.08, 6.4],
+          "secs": [
+            6.08,
+            6.4
+          ],
           "spread": 0.075
         },
         "reader": "Raz Mason",
@@ -9433,11 +10687,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S7729.wav?download=true"
         },
         "qa": {
-          "clone_f0": [93, 96],
+          "clone_f0": [
+            93,
+            96
+          ],
           "drift": 0.032,
           "ok": true,
           "reasons": [],
-          "secs": [5.76, 5.92],
+          "secs": [
+            5.76,
+            5.92
+          ],
           "spread": 0.032
         },
         "reader": "Tim Bower",
@@ -9478,11 +10738,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S7794.wav?download=true"
         },
         "qa": {
-          "clone_f0": [204, 221],
+          "clone_f0": [
+            204,
+            221
+          ],
           "drift": 0.081,
           "ok": true,
           "reasons": [],
-          "secs": [5.12, 5.12],
+          "secs": [
+            5.12,
+            5.12
+          ],
           "spread": 0.083
         },
         "reader": "mlcui",
@@ -9523,11 +10789,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S8014.wav?download=true"
         },
         "qa": {
-          "clone_f0": [238, 270],
+          "clone_f0": [
+            238,
+            270
+          ],
           "drift": 0.159,
           "ok": true,
           "reasons": [],
-          "secs": [5.28, 5.12],
+          "secs": [
+            5.28,
+            5.12
+          ],
           "spread": 0.134
         },
         "reader": "constatine",
@@ -9568,11 +10840,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S8051.wav?download=true"
         },
         "qa": {
-          "clone_f0": [205, 218],
+          "clone_f0": [
+            205,
+            218
+          ],
           "drift": 0.043,
           "ok": true,
           "reasons": [],
-          "secs": [5.44, 5.44],
+          "secs": [
+            5.44,
+            5.44
+          ],
           "spread": 0.063
         },
         "reader": "Maria Kasper",
@@ -9613,11 +10891,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S8095.wav?download=true"
         },
         "qa": {
-          "clone_f0": [130, 134],
+          "clone_f0": [
+            130,
+            134
+          ],
           "drift": 0.072,
           "ok": true,
           "reasons": [],
-          "secs": [6.24, 5.44],
+          "secs": [
+            6.24,
+            5.44
+          ],
           "spread": 0.031
         },
         "reader": "Theodulf",
@@ -9658,11 +10942,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S8098.wav?download=true"
         },
         "qa": {
-          "clone_f0": [106, 96],
+          "clone_f0": [
+            106,
+            96
+          ],
           "drift": 0.071,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 5.44],
+          "secs": [
+            5.92,
+            5.44
+          ],
           "spread": 0.104
         },
         "reader": "Arnold",
@@ -9703,11 +10993,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S8226.wav?download=true"
         },
         "qa": {
-          "clone_f0": [193, 181],
+          "clone_f0": [
+            193,
+            181
+          ],
           "drift": 0.055,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 6.24],
+          "secs": [
+            5.92,
+            6.24
+          ],
           "spread": 0.066
         },
         "reader": "Adam Picot",
@@ -9748,11 +11044,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S8230.wav?download=true"
         },
         "qa": {
-          "clone_f0": [113, 106],
+          "clone_f0": [
+            113,
+            106
+          ],
           "drift": 0.056,
           "ok": true,
           "reasons": [],
-          "secs": [5.76, 5.44],
+          "secs": [
+            5.76,
+            5.44
+          ],
           "spread": 0.066
         },
         "reader": "David Jenkins",
@@ -9793,11 +11095,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S8297.wav?download=true"
         },
         "qa": {
-          "clone_f0": [118, 119],
+          "clone_f0": [
+            118,
+            119
+          ],
           "drift": 0.017,
           "ok": true,
           "reasons": [],
-          "secs": [7.84, 7.36],
+          "secs": [
+            7.84,
+            7.36
+          ],
           "spread": 0.008
         },
         "reader": "David Mecionis",
@@ -9838,11 +11146,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S8312.wav?download=true"
         },
         "qa": {
-          "clone_f0": [207, 205],
+          "clone_f0": [
+            207,
+            205
+          ],
           "drift": 0.01,
           "ok": true,
           "reasons": [],
-          "secs": [5.6, 6.08],
+          "secs": [
+            5.6,
+            6.08
+          ],
           "spread": 0.01
         },
         "reader": "Jaimie Noy",
@@ -9883,11 +11197,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S8324.wav?download=true"
         },
         "qa": {
-          "clone_f0": [202, 204],
+          "clone_f0": [
+            202,
+            204
+          ],
           "drift": 0.024,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 5.76],
+          "secs": [
+            4.96,
+            5.76
+          ],
           "spread": 0.01
         },
         "reader": "Kathy Wright",
@@ -9928,11 +11248,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S839.wav?download=true"
         },
         "qa": {
-          "clone_f0": [134, 143],
+          "clone_f0": [
+            134,
+            143
+          ],
           "drift": 0.1,
           "ok": true,
           "reasons": [],
-          "secs": [6.08, 6.4],
+          "secs": [
+            6.08,
+            6.4
+          ],
           "spread": 0.067
         },
         "reader": "rovert405",
@@ -9973,11 +11299,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S8463.wav?download=true"
         },
         "qa": {
-          "clone_f0": [172, 157],
+          "clone_f0": [
+            172,
+            157
+          ],
           "drift": 0.11,
           "ok": true,
           "reasons": [],
-          "secs": [5.92, 5.6],
+          "secs": [
+            5.92,
+            5.6
+          ],
           "spread": 0.096
         },
         "reader": "Michele Fry",
@@ -10018,11 +11350,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S8468.wav?download=true"
         },
         "qa": {
-          "clone_f0": [198, 217],
+          "clone_f0": [
+            198,
+            217
+          ],
           "drift": 0.059,
           "ok": true,
           "reasons": [],
-          "secs": [4.8, 5.44],
+          "secs": [
+            4.8,
+            5.44
+          ],
           "spread": 0.096
         },
         "reader": "Jennifer Dorr",
@@ -10063,11 +11401,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S8555.wav?download=true"
         },
         "qa": {
-          "clone_f0": [197, 206],
+          "clone_f0": [
+            197,
+            206
+          ],
           "drift": 0.048,
           "ok": true,
           "reasons": [],
-          "secs": [4.8, 4.96],
+          "secs": [
+            4.8,
+            4.96
+          ],
           "spread": 0.046
         },
         "reader": "Michelle Goode",
@@ -10108,11 +11452,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S8630.wav?download=true"
         },
         "qa": {
-          "clone_f0": [138, 133],
+          "clone_f0": [
+            138,
+            133
+          ],
           "drift": 0.062,
           "ok": true,
           "reasons": [],
-          "secs": [6.08, 5.6],
+          "secs": [
+            6.08,
+            5.6
+          ],
           "spread": 0.038
         },
         "reader": "Eduardo",
@@ -10153,11 +11503,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S8797.wav?download=true"
         },
         "qa": {
-          "clone_f0": [112, 118],
+          "clone_f0": [
+            112,
+            118
+          ],
           "drift": 0.043,
           "ok": true,
           "reasons": [],
-          "secs": [4.64, 4.48],
+          "secs": [
+            4.64,
+            4.48
+          ],
           "spread": 0.054
         },
         "reader": "Sean Grabosky",
@@ -10198,11 +11554,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S8842.wav?download=true"
         },
         "qa": {
-          "clone_f0": [198, 190],
+          "clone_f0": [
+            198,
+            190
+          ],
           "drift": 0.048,
           "ok": true,
           "reasons": [],
-          "secs": [4.96, 4.96],
+          "secs": [
+            4.96,
+            4.96
+          ],
           "spread": 0.042
         },
         "reader": "Mary J",
@@ -10243,11 +11605,17 @@
           "url": "https://huggingface.co/datasets/zloezlo/fine-read-it-voices/resolve/c78cad410088021052ccf044fb5eb8b464ecd66d/samples/S911.wav?download=true"
         },
         "qa": {
-          "clone_f0": [118, 110],
+          "clone_f0": [
+            118,
+            110
+          ],
           "drift": 0.044,
           "ok": true,
           "reasons": [],
-          "secs": [6.08, 6.24],
+          "secs": [
+            6.08,
+            6.24
+          ],
           "spread": 0.073
         },
         "reader": "frankjf",
