@@ -1,0 +1,109 @@
+schema_version: 1
+object_type: commit_audit_sheet
+versioning:
+  schema_version: 1
+  revision: 1
+release_version: 0.1.2
+git_base_ref: v0.1.1
+git_base_sha: 577b812ceab1aebd67f9919f34c84f8e91ed5fb8
+git_head_ref: HEAD
+git_head_sha: 93bea04d210d509b59e8e616f1be1cf1d816a19d
+git_range: 577b812ceab1aebd67f9919f34c84f8e91ed5fb8..93bea04d210d509b59e8e616f1be1cf1d816a19d
+commit_count: 2
+rows:
+  - sha: 4108e70977fb44803f51fc83c525b9930521de12
+    source_ref: git:4108e70977fb44803f51fc83c525b9930521de12
+    short_sha: 4108e70
+    changed_paths:
+      - .github/workflows/ci.yml
+      - .github/workflows/python-publish.yml
+      - .github/workflows/refresh-fine-read-it-catalog.yml
+      - .github/workflows/refresh-voice-zero-catalog.yml
+      - MANIFEST.in
+      - README.md
+      - RELEASING.md
+      - docs/api.md
+      - docs/architecture.md
+      - docs/conf.py
+      - docs/index.md
+      - docs/installation.md
+      - docs/license-and-provenance.md
+      - docs/requirements.txt
+      - docs/sources.md
+      - docs/usage.md
+      - docs/voicerender-integration.md
+      - pyproject.toml
+      - tests/fixtures/fine-read-it-baseline.json
+      - tests/fixtures/voice-zero-baseline.json
+      - tests/test_catalog.py
+      - tests/test_cli.py
+      - tests/test_export.py
+      - tests/test_fetch_contract.py
+      - tests/test_fine_read_it_source.py
+      - tests/test_github_source.py
+      - tests/test_huggingface_source.py
+      - tests/test_integration.py
+      - tests/test_kyutai_source.py
+      - tests/test_linked_assets.py
+      - tests/test_materialize.py
+      - tests/test_packaging.py
+      - tests/test_playback.py
+      - tests/test_progress.py
+      - tests/test_server.py
+      - tests/test_voice_source.py
+      - tests/test_voice_zero_source.py
+      - tests/typecheck/mypy.ini
+      - tests/typecheck/public_api.py
+      - tools/check_release_artifacts.py
+      - tools/smoke_installed.py
+      - voicefolio/__init__.py
+      - voicefolio/cache.py
+      - voicefolio/catalog.py
+      - voicefolio/cli.py
+      - voicefolio/cli_help.py
+      - voicefolio/cli_progress.py
+      - voicefolio/errors.py
+      - voicefolio/integration.py
+      - voicefolio/linked_assets.py
+      - voicefolio/materialize.py
+      - voicefolio/models.py
+      - voicefolio/playback.py
+      - voicefolio/progress.py
+      - voicefolio/resources/catalogs/fine-read-it-voices.json
+      - voicefolio/resources/catalogs/voice-zero.json
+      - voicefolio/resources/sources/voice-zero-overrides.json
+      - voicefolio/resources/web/index.html
+      - voicefolio/server.py
+      - voicefolio/sources/base.py
+      - voicefolio/sources/fine_read_it_voices.py
+      - voicefolio/sources/github.py
+      - voicefolio/sources/huggingface.py
+      - voicefolio/sources/registry.py
+      - voicefolio/sources/voice_zero.py
+    stats:
+      files_changed: 65
+      insertions: 100927
+      deletions: 361
+    inspected: false
+    inspected_paths: []
+    observed_behavior: ""
+    public_impact: unknown
+    decision: needs_review
+    stale: false
+    evidence_subject: "feat: add two more catalogs"
+  - sha: 93bea04d210d509b59e8e616f1be1cf1d816a19d
+    source_ref: git:93bea04d210d509b59e8e616f1be1cf1d816a19d
+    short_sha: 93bea04
+    changed_paths:
+      - voicefolio/resources/catalogs/fine-read-it-voices.json
+    stats:
+      files_changed: 1
+      insertions: 1824
+      deletions: 456
+    inspected: false
+    inspected_paths: []
+    observed_behavior: ""
+    public_impact: unknown
+    decision: needs_review
+    stale: false
+    evidence_subject: "chore: refresh Voicefolio Fine Read It catalog"

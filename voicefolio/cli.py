@@ -121,7 +121,7 @@ def _builtin_voice_zero_catalog_path() -> Path:
 
 @catalog_app.command("build-kyutai")  # type: ignore[untyped-decorator]
 def build_kyutai_command(
-    repository: Annotated[str, typer.Option(help="Hugging Face dataset repository.")] = (
+    repository: Annotated[str, typer.Option(help="Hugging Face model repository.")] = (
         DEFAULT_REPOSITORY
     ),
     revision: Annotated[str, typer.Option(help="Upstream branch, tag, or commit.")] = (

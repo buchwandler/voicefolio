@@ -213,9 +213,11 @@ def discover_snapshot(
         raise CatalogError("license policy source_readme must be a non-empty path")
     _safe_relative_path(source_readme, "license policy source_readme")
 
-    actual_revision = _revision(resolve_revision(repository, revision), "resolved revision")
+    actual_revision = _revision(
+        resolve_revision(repository, revision, repo_kind="model"), "resolved revision"
+    )
     rows: list[dict[str, Any]] = []
-    for metadata in repository_tree(repository, actual_revision):
+    for metadata in repository_tree(repository, actual_revision, repo_kind="model"):
         path_value = metadata.get("path")
         if not isinstance(path_value, str) or not path_value.endswith(".wav"):
             continue

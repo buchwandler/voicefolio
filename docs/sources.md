@@ -8,6 +8,7 @@ Every packaged namespace has a source-specific builder and verifier. Runtime `Ca
 | `fine-read-it-voices` | `zloezlo/fine-read-it-voices` |      228 reference WAVs | Each available synthesized demo is an independently pinned linked asset.                      |
 | `voice-zero`          | `OwenTyme/voice-zero`         | 2,114 curated FLAC rows | Original and emotion variants use pinned source bytes; unresolved attribution is quarantined. |
 
+Hugging Face repository kind is explicit: Kyutai (`kyutai/tts-voices`) uses model revision and tree endpoints; Fine Read It (`zloezlo/fine-read-it-voices`) uses dataset endpoints. Revision resolution and tree listing must use the same repository kind. Fine Read It and Voice-Zero builders validate the explicit previous snapshot or bootstrap condition before resolving upstream revisions, so a missing or invalid baseline fails without network access.
 The current Fine Read It catalog is pinned to commit `c78cad410088021052ccf044fb5eb8b464ecd66d`. The current Voice-Zero catalog is pinned to commit `490cfbee850a6d409076f477c766f567000a79b6`. Catalog rows retain their own source revision, repository, path, size, digest, license, and evidence; historical entry revisions can differ from the latest top-level discovery revision.
 
 ## Refresh commands

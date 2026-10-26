@@ -16,6 +16,8 @@ include = [
   "**/*.csv",
   "**/*.tsv",
   "**/*.yaml",
+  "**/*.ini",
+  "MANIFEST.in",
   "**/*.yml",
   "**/*.ssmd",
   "LICENSE",

@@ -66,7 +66,6 @@ def _previous_rows(
     *,
     bootstrap: bool,
     repository: str,
-    revision: str,
 ) -> list[Mapping[str, Any]]:
     if previous_path is None:
         if not bootstrap:
@@ -99,15 +98,14 @@ def build_catalog(
     """Build a deterministic Fine Read It catalog from a pinned Hugging Face snapshot."""
     if repository != DEFAULT_REPOSITORY:
         raise CatalogError(f"Fine Read It repository must be {DEFAULT_REPOSITORY!r}")
-    pinned_revision = resolve_revision(repository, revision)
-    if _SHA_RE.fullmatch(pinned_revision) is None:
-        raise CatalogError("Fine Read It revision did not resolve to a 40-character commit")
     previous_rows = _previous_rows(
         previous_path,
         bootstrap=bootstrap,
         repository=repository,
-        revision=pinned_revision,
     )
+    pinned_revision = resolve_revision(repository, revision, repo_kind="dataset")
+    if _SHA_RE.fullmatch(pinned_revision) is None:
+        raise CatalogError("Fine Read It revision did not resolve to a 40-character commit")
 
     raw_pool = _read_json(repository, pinned_revision, "pool.json")
     if not isinstance(raw_pool, list) or not raw_pool:
@@ -122,7 +120,7 @@ def build_catalog(
             raise CatalogError(f"Fine Read It pool.json contains duplicate id {voice_id!r}")
         pool[voice_id] = row
 
-    tree = repository_tree(repository, pinned_revision)
+    tree = repository_tree(repository, pinned_revision, repo_kind="dataset")
     by_path: dict[str, Mapping[str, Any]] = {}
     for item in tree:
         if not isinstance(item, Mapping):

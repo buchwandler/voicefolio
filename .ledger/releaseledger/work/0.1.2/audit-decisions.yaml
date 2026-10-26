@@ -1,0 +1,69 @@
+rows:
+  - sha: 4108e70977fb44803f51fc83c525b9930521de12
+    inspected: true
+    inspected_paths:
+      - .github/workflows/ci.yml
+      - .github/workflows/python-publish.yml
+      - .github/workflows/refresh-fine-read-it-catalog.yml
+      - .github/workflows/refresh-voice-zero-catalog.yml
+      - MANIFEST.in
+      - README.md
+      - RELEASING.md
+      - docs/api.md
+      - docs/architecture.md
+      - docs/installation.md
+      - docs/license-and-provenance.md
+      - docs/sources.md
+      - docs/usage.md
+      - docs/voicerender-integration.md
+      - pyproject.toml
+      - tests/test_catalog.py
+      - tests/test_cli.py
+      - tests/test_export.py
+      - tests/test_fine_read_it_source.py
+      - tests/test_github_source.py
+      - tests/test_linked_assets.py
+      - tests/test_materialize.py
+      - tests/test_packaging.py
+      - tests/test_progress.py
+      - tests/test_server.py
+      - tests/test_voice_zero_source.py
+      - tools/check_release_artifacts.py
+      - tools/smoke_installed.py
+      - voicefolio/cache.py
+      - voicefolio/catalog.py
+      - voicefolio/cli.py
+      - voicefolio/integration.py
+      - voicefolio/linked_assets.py
+      - voicefolio/materialize.py
+      - voicefolio/progress.py
+      - voicefolio/server.py
+      - voicefolio/sources/fine_read_it_voices.py
+      - voicefolio/sources/github.py
+      - voicefolio/sources/voice_zero.py
+      - voicefolio/resources/catalogs/fine-read-it-voices.json
+      - voicefolio/resources/catalogs/voice-zero.json
+      - voicefolio/resources/sources/voice-zero-overrides.json
+      - voicefolio/resources/web/index.html
+    observed_behavior: >-
+      Added curated Fine Read It and Voice-Zero catalog sources with revision-pinned license and attribution evidence; added separately pinned Fine Read It demos, verified source-byte caching and FLAC-to-WAV materialization, provenance-aware exports, catalog filters and typed progress events; expanded documentation, scheduled source refresh workflows, CI, release artifact validation, and isolated installed-wheel smoke tests.
+    public_impact: public
+    decision: accepted
+    target_entry_key: null
+    target_entry_id: null
+    notes: >-
+      Reviewed source implementations, relevant tests, documentation, refresh and publish workflows, CI, and release-artifact checks. Use behavior-specific entries; do not treat the commit subject as release prose.
+    stale: false
+  - sha: 93bea04d210d509b59e8e616f1be1cf1d816a19d
+    inspected: true
+    inspected_paths:
+      - voicefolio/resources/catalogs/fine-read-it-voices.json
+    observed_behavior: >-
+      Re-serialized the Fine Read It catalog JSON arrays without changing parsed catalog data: both revisions contain 228 rows and the same pinned upstream revision.
+    public_impact: none
+    decision: internal
+    target_entry_key: null
+    target_entry_id: null
+    notes: >-
+      Semantic JSON comparison against the parent commit was equal. Record as internal formatting maintenance and omit from public release notes.
+    stale: false

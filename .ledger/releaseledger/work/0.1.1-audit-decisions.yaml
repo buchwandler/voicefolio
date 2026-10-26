@@ -1,0 +1,11 @@
+rows:
+  - sha: 577b812ceab1aebd67f9919f34c84f8e91ed5fb8
+    inspected: true
+    inspected_paths:
+      - .github/workflows/python-publish.yml
+    observed_behavior: "The package-publishing workflow applies fetch-depth under the checkout action's with block, ensuring full Git history is fetched as configured."
+    public_impact: public
+    decision: accepted
+    target_entry_key: null
+    target_entry_id: null
+    notes: "Release-workflow quality correction; no Voicefolio runtime/API behavior changed."

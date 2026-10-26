@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import io
 import json
-from typing import Any, Self
+from typing import Any
 from unittest.mock import patch
 
 import pytest
@@ -20,7 +20,7 @@ class _Response:
         self._stream = io.BytesIO(payload)
         self.headers = {"Link": link}
 
-    def __enter__(self) -> Self:
+    def __enter__(self) -> _Response:  # noqa: PYI034
         return self
 
     def __exit__(self, *_args: object) -> None:
@@ -32,6 +32,45 @@ class _Response:
 
 def _entry(path: str, kind: str) -> dict[str, str]:
     return {"type": kind, "path": path}
+
+
+@pytest.mark.parametrize(
+    ("repo_kind", "repository", "api_namespace"),
+    [("model", "kyutai/tts-voices", "models"), ("dataset", REPOSITORY, "datasets")],
+)
+def test_revision_resolution_uses_configured_repository_api(
+    repo_kind: huggingface.HuggingFaceRepoKind, repository: str, api_namespace: str
+) -> None:
+    payload = json.dumps({"sha": REVISION}).encode()
+    with patch("voicefolio.sources.huggingface._read_url", return_value=payload) as read_url:
+        assert huggingface.resolve_revision(repository, "main", repo_kind=repo_kind) == REVISION
+    read_url.assert_called_once_with(
+        f"https://huggingface.co/api/{api_namespace}/{repository}/revision/main"
+    )
+
+
+@pytest.mark.parametrize(
+    ("repo_kind", "repository", "api_namespace"),
+    [("model", "kyutai/tts-voices", "models"), ("dataset", REPOSITORY, "datasets")],
+)
+def test_repository_tree_uses_configured_repository_api(
+    repo_kind: huggingface.HuggingFaceRepoKind, repository: str, api_namespace: str
+) -> None:
+    with patch(
+        "voicefolio.sources.huggingface.urllib.request.urlopen",
+        return_value=_Response(b"[]"),
+    ) as open_url:
+        assert huggingface.repository_tree(repository, REVISION, repo_kind=repo_kind) == []
+    request = open_url.call_args.args[0]
+    assert request.full_url == (
+        f"https://huggingface.co/api/{api_namespace}/{repository}/tree/{REVISION}"
+        "?recursive=true&expand=true"
+    )
+
+
+def test_repository_api_rejects_unknown_kind() -> None:
+    with pytest.raises(CatalogError, match="repo_kind"):
+        huggingface._api_namespace("unknown")
 
 
 def test_read_file_uses_pinned_raw_path_and_size_limit() -> None:
@@ -86,7 +125,7 @@ def test_repository_tree_follows_directory_paths_and_same_path_pagination() -> N
         return pages[url]
 
     with patch("voicefolio.sources.huggingface.urllib.request.urlopen", side_effect=open_url):
-        result = huggingface.repository_tree(REPOSITORY, REVISION)
+        result = huggingface.repository_tree(REPOSITORY, REVISION, repo_kind="dataset")
 
     assert [row["path"] for row in result] == [
         "pool.json",
@@ -107,7 +146,7 @@ def test_repository_tree_rejects_external_pagination_links() -> None:
         patch("voicefolio.sources.huggingface.urllib.request.urlopen", return_value=response),
         pytest.raises(CatalogError, match="same-origin"),
     ):
-        huggingface.repository_tree(REPOSITORY, REVISION)
+        huggingface.repository_tree(REPOSITORY, REVISION, repo_kind="dataset")
 
 
 def test_repository_tree_rejects_malformed_entries() -> None:
@@ -116,7 +155,7 @@ def test_repository_tree_rejects_malformed_entries() -> None:
         patch("voicefolio.sources.huggingface.urllib.request.urlopen", return_value=response),
         pytest.raises(CatalogError, match="no path"),
     ):
-        huggingface.repository_tree(REPOSITORY, REVISION)
+        huggingface.repository_tree(REPOSITORY, REVISION, repo_kind="dataset")
 
 
 def test_stream_audio_integrity_is_incremental_and_rejects_pointer_or_oversize() -> None:

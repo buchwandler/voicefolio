@@ -1,0 +1,24 @@
+schema: releaseledger.entry-batch.v1
+operation: create
+schema_version: 1
+object_type: release_entry_batch
+release_version: 0.1.1
+git_base_ref: 6147f05c35eda529cb0e74684673193f9ff87526
+git_base_sha: 6147f05c35eda529cb0e74684673193f9ff87526
+git_head_ref: 577b812ceab1aebd67f9919f34c84f8e91ed5fb8
+git_head_sha: 577b812ceab1aebd67f9919f34c84f8e91ed5fb8
+include_merges: nontrivial
+entries:
+  - kind: quality
+    summary: "Improved package-publishing reliability by correcting full-history checkout configuration"
+    status: accepted
+    source_refs:
+      - git:577b812ceab1aebd67f9919f34c84f8e91ed5fb8
+    paths:
+      - .github/workflows/python-publish.yml
+    sources:
+      - git:577b812ceab1aebd67f9919f34c84f8e91ed5fb8
+    prs: []
+    issues: []
+    contributors:
+      - "@holgern"

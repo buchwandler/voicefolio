@@ -413,14 +413,14 @@ def build_catalog(
     """Build a deterministic, append-only Voice-Zero catalog from a pinned Git tree."""
     if repository != DEFAULT_REPOSITORY:
         raise CatalogError(f"Voice-Zero repository must be {DEFAULT_REPOSITORY!r}")
-    pinned_revision = resolve_revision(repository, revision)
-    if _SHA_RE.fullmatch(pinned_revision) is None:
-        raise CatalogError("Voice-Zero revision did not resolve to a 40-character commit")
     previous_rows = _previous_rows(
         previous_path,
         bootstrap=bootstrap,
         repository=repository,
     )
+    pinned_revision = resolve_revision(repository, revision)
+    if _SHA_RE.fullmatch(pinned_revision) is None:
+        raise CatalogError("Voice-Zero revision did not resolve to a 40-character commit")
     previous_by_id = {str(row["id"]): row for row in previous_rows}
     policy = load_overrides()
     tree = _tree_index(repository, pinned_revision)

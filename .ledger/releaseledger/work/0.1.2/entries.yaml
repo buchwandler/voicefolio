@@ -1,0 +1,138 @@
+schema: releaseledger.entry-batch.v1
+operation: create
+schema_version: 1
+object_type: release_entry_batch
+release_version: 0.1.2
+git_base_ref: 577b812ceab1aebd67f9919f34c84f8e91ed5fb8
+git_base_sha: 577b812ceab1aebd67f9919f34c84f8e91ed5fb8
+git_head_ref: HEAD
+git_head_sha: 93bea04d210d509b59e8e616f1be1cf1d816a19d
+include_merges: nontrivial
+entries:
+  - kind: added
+    summary: Added curated Fine Read It and Voice-Zero catalogs with revision-pinned source and attribution evidence
+    status: accepted
+    source_refs:
+      - git:4108e70977fb44803f51fc83c525b9930521de12
+    paths:
+      - voicefolio/sources/fine_read_it_voices.py
+      - voicefolio/sources/voice_zero.py
+      - voicefolio/resources/catalogs/fine-read-it-voices.json
+      - voicefolio/resources/catalogs/voice-zero.json
+      - voicefolio/resources/sources/voice-zero-overrides.json
+      - docs/sources.md
+      - docs/license-and-provenance.md
+    sources:
+      - git:4108e70977fb44803f51fc83c525b9930521de12
+    prs: []
+    issues: []
+    contributors:
+      - "@holgern"
+  - kind: added
+    summary: Added separately pinned Fine Read It demos and deterministic FLAC-to-WAV materialization for renderer-ready audio
+    status: accepted
+    source_refs: []
+    paths:
+      - voicefolio/linked_assets.py
+      - voicefolio/materialize.py
+      - voicefolio/integration.py
+      - tests/test_linked_assets.py
+      - tests/test_materialize.py
+      - docs/voicerender-integration.md
+    sources:
+      - git:4108e70977fb44803f51fc83c525b9930521de12
+    prs: []
+    issues: []
+    contributors:
+      - "@holgern"
+  - kind: changed
+    summary: Changed exports and managed references to distinguish exact source bytes from derived renderer WAVs
+    status: accepted
+    source_refs: []
+    paths:
+      - voicefolio/cli.py
+      - voicefolio/integration.py
+      - voicefolio/models.py
+      - tests/test_export.py
+      - tests/test_integration.py
+    sources:
+      - git:4108e70977fb44803f51fc83c525b9930521de12
+    prs: []
+    issues: []
+    contributors:
+      - "@holgern"
+  - kind: added
+    summary: Added namespace-aware browsing filters, web catalog facets, and typed progress events
+    status: accepted
+    source_refs: []
+    paths:
+      - voicefolio/catalog.py
+      - voicefolio/cli.py
+      - voicefolio/server.py
+      - voicefolio/resources/web/index.html
+      - voicefolio/progress.py
+      - voicefolio/cli_progress.py
+      - tests/test_catalog.py
+      - tests/test_cli.py
+      - tests/test_server.py
+      - tests/test_progress.py
+    sources:
+      - git:4108e70977fb44803f51fc83c525b9930521de12
+    prs: []
+    issues: []
+    contributors:
+      - "@holgern"
+  - kind: quality
+    summary: Improved scheduled source-refresh workflows with release-artifact checks and isolated installed-wheel smoke tests
+    status: accepted
+    source_refs: []
+    paths:
+      - .github/workflows/ci.yml
+      - .github/workflows/python-publish.yml
+      - .github/workflows/refresh-fine-read-it-catalog.yml
+      - .github/workflows/refresh-voice-zero-catalog.yml
+      - MANIFEST.in
+      - pyproject.toml
+      - tools/check_release_artifacts.py
+      - tools/smoke_installed.py
+      - tests/test_packaging.py
+    sources:
+      - git:4108e70977fb44803f51fc83c525b9930521de12
+    prs: []
+    issues: []
+    contributors:
+      - "@holgern"
+  - kind: docs
+    summary: Documented source attribution, renderer materialization, catalog browsing, and release procedures
+    status: accepted
+    source_refs: []
+    paths:
+      - README.md
+      - RELEASING.md
+      - docs/api.md
+      - docs/architecture.md
+      - docs/installation.md
+      - docs/license-and-provenance.md
+      - docs/sources.md
+      - docs/usage.md
+      - docs/voicerender-integration.md
+    sources:
+      - git:4108e70977fb44803f51fc83c525b9930521de12
+    prs: []
+    issues: []
+    contributors:
+      - "@holgern"
+  - kind: internal
+    summary: Changed Fine Read It snapshot formatting without changing its 228 voice records or pinned source revision
+    status: accepted
+    internal: true
+    source_refs:
+      - git:93bea04d210d509b59e8e616f1be1cf1d816a19d
+    paths:
+      - voicefolio/resources/catalogs/fine-read-it-voices.json
+    sources:
+      - git:93bea04d210d509b59e8e616f1be1cf1d816a19d
+    prs: []
+    issues: []
+    contributors:
+      - "@github-actions[bot]"

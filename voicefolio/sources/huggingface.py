@@ -7,7 +7,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from collections.abc import Mapping
-from typing import Any
+from typing import Any, Literal
 
 from ..models import CatalogError
 
@@ -21,12 +21,22 @@ MAX_TREE_ENTRIES = 200_000
 MAX_AUDIO_BYTES = 128 * 1024 * 1024
 _LFS_POINTER = b"version https://git-lfs.github.com/spec/v1"
 
+HuggingFaceRepoKind = Literal["model", "dataset"]
+
 
 def _quote_repository(repository: str) -> str:
     parts = repository.split("/") if isinstance(repository, str) else []
     if len(parts) != 2 or any(not part or part in {".", ".."} for part in parts):
         raise CatalogError("Hugging Face repository must be an owner/name path")
     return "/".join(urllib.parse.quote(part, safe="") for part in parts)
+
+
+def _api_namespace(repo_kind: str) -> str:
+    if repo_kind == "model":
+        return "models"
+    if repo_kind == "dataset":
+        return "datasets"
+    raise CatalogError("Hugging Face repo_kind must be 'model' or 'dataset'")
 
 
 def _validate_path(path: str) -> str:
@@ -80,24 +90,36 @@ def raw_url(repository: str, revision: str, path: str) -> str:
     return f"https://huggingface.co/datasets/{repo}/raw/{revision}/{asset}"
 
 
-def resolve_revision(repository: str, revision: str) -> str:
-    """Resolve a dataset branch or tag to its exact lowercase commit SHA."""
+def resolve_revision(
+    repository: str,
+    revision: str,
+    *,
+    repo_kind: HuggingFaceRepoKind,
+) -> str:
+    """Resolve a branch or tag to its exact lowercase commit SHA."""
     repo = _quote_repository(repository)
+    api_namespace = _api_namespace(repo_kind)
     rev = urllib.parse.quote(revision, safe="")
-    payload = _read_url(f"https://huggingface.co/api/datasets/{repo}/revision/{rev}")
+    payload = _read_url(f"https://huggingface.co/api/{api_namespace}/{repo}/revision/{rev}")
     try:
         data = json.loads(payload.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise CatalogError("Hugging Face revision metadata is not valid UTF-8 JSON") from exc
     resolved = data.get("sha") if isinstance(data, Mapping) else None
     if not isinstance(resolved, str) or _SHA_RE.fullmatch(resolved.lower()) is None:
-        raise CatalogError("Unable to resolve an exact 40-character dataset commit SHA")
+        raise CatalogError("Unable to resolve an exact 40-character repository commit SHA")
     return resolved.lower()
 
 
-def repository_tree(repository: str, revision: str) -> list[dict[str, Any]]:
+def repository_tree(
+    repository: str,
+    revision: str,
+    *,
+    repo_kind: HuggingFaceRepoKind,
+) -> list[dict[str, Any]]:
     """Return every nested tree entry for an exact revision, following bounded pages."""
     repo = _quote_repository(repository)
+    api_namespace = _api_namespace(repo_kind)
     rev = urllib.parse.quote(revision, safe="")
     pending_dirs = [""]
     visited_dirs: set[str] = set()
@@ -113,7 +135,7 @@ def repository_tree(repository: str, revision: str) -> list[dict[str, Any]]:
             f"/{urllib.parse.quote(_validate_path(directory), safe='/')}" if directory else ""
         )
         url = (
-            f"https://huggingface.co/api/datasets/{repo}/tree/{rev}{path_suffix}"
+            f"https://huggingface.co/api/{api_namespace}/{repo}/tree/{rev}{path_suffix}"
             "?recursive=true&expand=true"
         )
         expected_path = urllib.parse.urlsplit(url).path
@@ -155,7 +177,6 @@ def repository_tree(repository: str, revision: str) -> list[dict[str, Any]]:
                     raise CatalogError(
                         f"Hugging Face tree entry has unsupported type: {item_path!r}"
                     )
-                prior = entries.get(item_path)
                 prior = entries.get(item_path)
                 if prior is not None:
                     identity_fields = ("type", "path", "oid", "size", "lfs", "xetHash")

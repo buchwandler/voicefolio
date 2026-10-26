@@ -34,9 +34,10 @@
 
 ## Ownership and refresh
 
-Voicefolio owns the source adapters, packaged snapshots, stable source-qualified IDs, metadata and per-row license evidence, integrity pins, cache/export behavior, and renderer-neutral managed-reference validation. Kyutai discovery uses Hugging Face, Fine Read It uses bounded Hugging Face dataset APIs and separately pinned demo assets, and Voice-Zero uses bounded GitHub tree/content APIs. Runtime catalog loading is offline and deterministic; refresh operations are maintainer-only and explicitly networked.
+Voicefolio owns the source adapters, packaged snapshots, stable source-qualified IDs, metadata and per-row license evidence, integrity pins, cache/export behavior, and renderer-neutral managed-reference validation. Kyutai discovery uses Hugging Face model APIs, while Fine Read It uses bounded Hugging Face dataset APIs and separately pinned demo assets; each adapter passes its repository kind to revision and tree requests, and Voice-Zero uses bounded GitHub tree/content APIs. Runtime catalog loading is offline and deterministic; refresh operations are maintainer-only and explicitly networked.
 
 Each namespace has its own append-only identity boundary. A matching ref and SHA-256 preserves the complete previous row; a changed digest for an existing ref fails; removed upstream files remain pinned historical rows; new IDs are appended at one resolved upstream revision. Source-specific verification checks attribution and license evidence. Ambiguous Voice-Zero files remain in quarantine diagnostics rather than being guessed into the catalog. Accent stays separate from language.
+Fine Read It and Voice-Zero builders validate the explicit previous snapshot or bootstrap condition before resolving upstream revisions; an invalid or missing baseline fails locally without making a network request.
 
 The catalogs retain schema 1 (`kind = "voicefolio-catalog"`). `Catalog.builtin()` loads all packaged catalog JSON resources in stable filename order, then merges explicit local catalogs with duplicate-ref conflict checks. Runtime list/show/binding/validation does not contact upstream services.
 

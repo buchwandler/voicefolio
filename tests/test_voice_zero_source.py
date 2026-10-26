@@ -89,6 +89,31 @@ def _setup_fake_source(
     return files
 
 
+def test_voice_zero_requires_bootstrap_without_network(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        voice_zero,
+        "resolve_revision",
+        lambda *_args, **_kwargs: pytest.fail("network must not be touched"),
+    )
+    with pytest.raises(CatalogError, match="explicit bootstrap"):
+        voice_zero.build_catalog()
+
+
+def test_voice_zero_missing_previous_fails_without_network(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    monkeypatch.setattr(
+        voice_zero,
+        "resolve_revision",
+        lambda *_args, **_kwargs: pytest.fail("network must not be touched"),
+    )
+    with pytest.raises(CatalogError, match="previous Voice-Zero catalog does not exist"):
+        voice_zero.build_catalog(tmp_path / "missing.json", bootstrap=True)
+
+
 def test_build_catalog_preserves_stable_ids_metadata_and_quarantine(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

@@ -211,8 +211,12 @@ def test_discovery_filters_wavs_pins_metadata_and_sorts() -> None:
     ]
     tree = [{"path": path, "size": len(path), "lfs": {"oid": "d" * 64}} for path in paths]
     with (
-        patch("voicefolio.sources.kyutai_tts_voices.resolve_revision", return_value=REVISION),
-        patch("voicefolio.sources.kyutai_tts_voices.repository_tree", return_value=tree),
+        patch(
+            "voicefolio.sources.kyutai_tts_voices.resolve_revision", return_value=REVISION
+        ) as revision_resolver,
+        patch(
+            "voicefolio.sources.kyutai_tts_voices.repository_tree", return_value=tree
+        ) as tree_reader,
         patch(
             "voicefolio.sources.kyutai_tts_voices.file_integrity",
             side_effect=lambda _repo, _rev, path, _meta: (
@@ -222,6 +226,9 @@ def test_discovery_filters_wavs_pins_metadata_and_sorts() -> None:
         ),
     ):
         catalog = discover_snapshot()
+
+    revision_resolver.assert_called_once_with(DEFAULT_REPOSITORY, "main", repo_kind="model")
+    tree_reader.assert_called_once_with(DEFAULT_REPOSITORY, REVISION, repo_kind="model")
     rows = catalog["voices"]
     assert [row["id"] for row in rows] == [
         "ears/sample",

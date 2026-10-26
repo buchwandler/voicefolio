@@ -1,0 +1,34 @@
+schema_version: 1
+object_type: commit_audit_sheet
+versioning:
+  schema_version: 1
+  revision: 3
+release_version: 0.1.1
+git_base_ref: v0.1.0
+git_base_sha: 6147f05c35eda529cb0e74684673193f9ff87526
+git_head_ref: v0.1.1
+git_head_sha: 577b812ceab1aebd67f9919f34c84f8e91ed5fb8
+git_range: 6147f05c35eda529cb0e74684673193f9ff87526..577b812ceab1aebd67f9919f34c84f8e91ed5fb8
+commit_count: 1
+rows:
+  - sha: 577b812ceab1aebd67f9919f34c84f8e91ed5fb8
+    source_ref: git:577b812ceab1aebd67f9919f34c84f8e91ed5fb8
+    short_sha: 577b812
+    changed_paths:
+      - .github/workflows/python-publish.yml
+    stats:
+      files_changed: 1
+      insertions: 1
+      deletions: 1
+    inspected: true
+    inspected_paths:
+      - .github/workflows/python-publish.yml
+    observed_behavior:
+      The package-publishing workflow applies fetch-depth under the
+      checkout action's with block, ensuring full Git history is fetched as configured.
+    public_impact: public
+    decision: accepted
+    stale: false
+    evidence_subject: "chore: fix ci"
+    target_entry_id: entry-0001
+    notes: Release-workflow quality correction; no Voicefolio runtime/API behavior changed.

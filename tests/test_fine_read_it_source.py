@@ -46,9 +46,16 @@ def _install_source(
     pool: list[dict[str, Any]] | None = None,
     include_transcripts: bool = True,
     attribution: str | None = None,
+    repository_kinds: list[tuple[str, str]] | None = None,
 ) -> None:
     rows = _pool() if pool is None else pool
-    monkeypatch.setattr(source, "resolve_revision", lambda _repo, _rev: REVISION)
+
+    def resolve_revision(_repo: str, _rev: str, *, repo_kind: str) -> str:
+        if repository_kinds is not None:
+            repository_kinds.append(("revision", repo_kind))
+        return REVISION
+
+    monkeypatch.setattr(source, "resolve_revision", resolve_revision)
 
     tree: list[dict[str, Any]] = []
     files: dict[str, bytes] = {"pool.json": json.dumps(rows).encode()}
@@ -65,7 +72,13 @@ def _install_source(
             text_path = f"{voice_id}.txt"
             tree.append({"type": "file", "path": text_path, "size": 12})
             files[text_path] = f"Transcript for {voice_id}.".encode()
-    monkeypatch.setattr(source, "repository_tree", lambda _repo, _rev: tree)
+
+    def repository_tree(_repo: str, _rev: str, *, repo_kind: str) -> list[dict[str, Any]]:
+        if repository_kinds is not None:
+            repository_kinds.append(("tree", repo_kind))
+        return tree
+
+    monkeypatch.setattr(source, "repository_tree", repository_tree)
 
     def read_file(_repo: str, _rev: str, path: str, *, max_bytes: int) -> bytes:
         del max_bytes
@@ -107,7 +120,25 @@ def test_fine_read_it_builder_builds_deterministic_catalog_and_separate_demo() -
         source.verify_fine_read_it_catalog(catalog)
 
 
-def test_fine_read_it_builder_requires_explicit_bootstrap() -> None:
+def test_fine_read_it_build_uses_dataset_repository_kind(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    repository_kinds: list[tuple[str, str]] = []
+    _install_source(monkeypatch, repository_kinds=repository_kinds)
+
+    source.build_catalog(bootstrap=True)
+
+    assert repository_kinds == [("revision", "dataset"), ("tree", "dataset")]
+
+
+def test_fine_read_it_builder_requires_explicit_bootstrap(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        source,
+        "resolve_revision",
+        lambda *_args, **_kwargs: pytest.fail("network must not be touched"),
+    )
     with pytest.raises(CatalogError, match="explicit bootstrap"):
         source.build_catalog()
 
@@ -116,7 +147,11 @@ def test_bootstrap_cannot_ignore_an_explicit_missing_previous_catalog(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ) -> None:
-    monkeypatch.setattr(source, "resolve_revision", lambda _repo, _rev: REVISION)
+    monkeypatch.setattr(
+        source,
+        "resolve_revision",
+        lambda *_args, **_kwargs: pytest.fail("network must not be touched"),
+    )
     with pytest.raises(CatalogError, match="previous Fine Read It catalog does not exist"):
         source.build_catalog(tmp_path / "missing.json", bootstrap=True)
 
@@ -139,7 +174,13 @@ def test_fine_read_it_immutable_merge_keeps_previous_row_and_provenance(
     changed_pool[0]["reader"] = "Changed upstream reader label"
     _install_source(monkeypatch, pool=changed_pool)
     next_revision = "b" * 40
-    monkeypatch.setattr(source, "resolve_revision", lambda _repo, _rev: next_revision)
+    monkeypatch.setattr(
+        source,
+        "resolve_revision",
+        lambda _repo, _rev, *, repo_kind: (
+            next_revision if repo_kind == "dataset" else pytest.fail("unexpected repo kind")
+        ),
+    )
     result = source.build_catalog(previous, revision="main")
 
     assert result["source_revision"] == next_revision
